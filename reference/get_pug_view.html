@@ -120,7 +120,59 @@ for different output formats including JSON and SVG.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span>  <span class="fu">get_pug_view</span><span class="op">(</span>identifier <span class="op">=</span> <span class="st">"2244"</span>, annotation <span class="op">=</span> <span class="st">"linkout"</span>, domain <span class="op">=</span> <span class="st">"compound"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in curl::curl_fetch_memory(url, handle = handle):</span> Timeout was reached: [pubchem.ncbi.nlm.nih.gov] Failed to connect to pubchem.ncbi.nlm.nih.gov port 443 after 10005 ms: Timeout was reached</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$RecordType</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "compound"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$RecordNumber</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2244</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[1]]$Url</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "http://partnersolution.ingenuity.com/?cid=97ae3f91eab87a&amp;p1=EntrezPubChem&amp;p2=GV&amp;s=&amp;ipaUri=%2Fpa%2Fapi%2Fv2%2Fgeneview%3Fapplicationname%3DEntrezPubChem%26geneId%3DING:ohn%26geneidtype%3Dingenuity"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[1]]$SubjectType</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "molecular interactions"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[1]]$Category</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Chemical Information"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[1]]$Attribute</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "subscription/membership/fee required"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[1]]$Provider</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                          Name                      NameAbbr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "Ingenuity Pathways Analysis"                   "Ingenuity" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                            Id                           Url </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                        "5628"    "http://www.ingenuity.com" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[2]]$Url</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "http://sideeffects.embl.de/drugs/2244/"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[2]]$LinkName</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Side effects of aspirin"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[2]]$SubjectType</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "biological properties"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[2]]$Category</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Chemical Information"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[2]]$Attribute</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "free resource"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $Linkout$ObjUrl[[2]]$Provider</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                         Name                     NameAbbr </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> "SIDER Side Effect Resource"                      "SIDER" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                           Id                          Url </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       "9337" "http://sideeffects.embl.de" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
