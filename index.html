@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <meta name="color-scheme" content="light dark">
-  <meta id="metaThemeColor" name="theme-color" content="#f7f8fc">
+  <meta id="metaThemeColor" name="theme-color" content="#0b1220">
   <style>
     /* =====================  MODERN PALETTE  =====================
        Calm, contemporary colors (not shiny); subtle paper background.
@@ -177,11 +177,11 @@ aside {
       top: calc(12px + env(safe-area-inset-top));
       right: calc(12px + env(safe-area-inset-right));
       z-index: 1000;
-      width: clamp(40px, 8vw, 52px);
-      height: clamp(40px, 8vw, 52px);
+      width: clamp(44px, 7vw, 52px);
+      height: clamp(44px, 7vw, 52px);
       border-radius: 999px;
       display: flex; align-items: center; justify-content: center;
-      font-size: clamp(18px, 3.6vw, 22px);
+      color: var(--text);
       border: 1px solid var(--line);
       background: color-mix(in srgb, var(--card) 92%, transparent);
       backdrop-filter: saturate(1.2) blur(6px);
@@ -191,6 +191,8 @@ aside {
       transition: transform .15s ease, border-color .15s ease;
     }
     #themeBtn:hover{ transform: translateY(-1px); border-color: var(--accent); }
+    #themeBtn:active{ transform: translateY(0); }
+    #themeBtn svg{ width: 22px; height: 22px; display:block; color: currentColor; }
 
 
 
@@ -330,8 +332,13 @@ aside {
       .nav{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0 4px; padding-top:8px; }
       .nav a{ text-align:center; padding:10px; }
       .bottom{ margin-top:0; }
-      /* Theme button stays top-right on mobile too */
-      #themeBtn{ top: calc(12px + env(safe-area-inset-top)); right: calc(12px + env(safe-area-inset-right)); }
+      /* Theme button stays top-right on mobile; ensure touch target */
+      #themeBtn{
+        top: calc(10px + env(safe-area-inset-top));
+        right: calc(10px + env(safe-area-inset-right));
+        width: clamp(44px, 9vw, 56px);
+        height: clamp(44px, 9vw, 56px);
+      }
       /* Make the profile section look tidy on mobile */
       .brand{ align-items:center; text-align:center; }
       .avatar{
@@ -358,12 +365,11 @@ aside {
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <script>
-    // Apply saved/system theme ASAP to avoid a flash
+    // Apply saved theme ASAP; default to dark to avoid flash
     (function(){
       try{
         var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var mode = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
+        var mode = (stored === 'dark' || stored === 'light') ? stored : 'dark';
         document.body.classList.add(mode);
         var meta = document.getElementById('metaThemeColor');
         if (meta) meta.setAttribute('content', mode === 'dark' ? '#0b1220' : '#f7f8fc');
@@ -388,7 +394,11 @@ aside {
 
   <!-- Toggle always at the bottom -->
   <div class="bottom">
-    <button class="btn ghost" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+    <button class="btn ghost" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
+      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
   </div>
 </aside>
 
@@ -409,9 +419,9 @@ aside {
         </p>
       </section>
 
-      <!-- SOFTWARE & PROJECTS -->
-      <section id="software" aria-label="Software & Projects">
-        <h2>Software & Projects</h2>
+      <!-- SOFTWARE -->
+      <section id="software" aria-label="Software">
+        <h2>Software</h2>
         <div class="grid-3">
 
           <div class="card">
@@ -713,11 +723,29 @@ aside {
     const themeBtn = document.getElementById('themeBtn');
     const media = window.matchMedia('(prefers-color-scheme: dark)');
 
+    function sunSVG(){
+      return '<svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">\
+        <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8" fill="none"/>\
+        <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>\
+      </svg>';
+    }
+
+    function moonSVG(){
+      // Clean, elegant crescent (Feather-style) that matches currentColor
+      return '<svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">\
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>\
+      </svg>';
+    }
+
+    function setThemeIcon(isDark){
+      themeBtn.innerHTML = isDark ? sunSVG() : moonSVG();
+    }
+
     function applyTheme(mode){
       const isDark = mode === 'dark';
       document.body.classList.remove('dark','light');
       document.body.classList.add(isDark ? 'dark' : 'light');
-      themeBtn.textContent = isDark ? '☀️' : '🌙';
+      setThemeIcon(isDark);
       themeBtn.setAttribute('aria-pressed', String(isDark));
       themeBtn.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
       const meta = document.getElementById('metaThemeColor');
@@ -729,7 +757,8 @@ aside {
       if (stored === 'dark' || stored === 'light') {
         applyTheme(stored);
       } else {
-        applyTheme(media.matches ? 'dark' : 'light');
+        // Default to dark when no preference saved
+        applyTheme('dark');
       }
     }
 
