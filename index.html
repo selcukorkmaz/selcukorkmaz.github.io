@@ -123,6 +123,7 @@
     .wrap{
       display:grid; grid-template-columns:300px minmax(0,1fr); gap:48px;
       max-width:var(--maxw); margin:0 auto; padding:var(--space-3) var(--space-3) 80px;
+      align-items:start;
     }
     main{ display:grid; gap:var(--space-4); max-width:var(--contentw); }
     section{
@@ -142,21 +143,18 @@ aside {
   display: flex;
   flex-direction: column;
   height: auto;               /* let content decide */
-  max-height: calc(100vh - 190px); /* prevent overflow on small screens */
+  max-height: none; /* let content decide on desktop */
   background: var(--card);
   border: 1px solid var(--line);
   border-radius: 18px;
   padding: 20px;
+  padding-bottom: 12px; /* trim trailing space */
   box-shadow: var(--shadow);
 }
 
 
 
-.bottom {
-  margin-top: 20px;     /* just a modest gap */
-  display: flex;
-  justify-content: center; /* center horizontally */
-}
+.bottom { margin-top: 0; height: 0; display: flex; justify-content: center; pointer-events:none }
 
 
     #themeBtn {
@@ -197,7 +195,7 @@ aside {
     .name{ font-weight:800; letter-spacing:.2px; font-size:20px; margin-top:8px; }
     .role{ color:var(--muted); font-size:14px; line-height:1.4; }
 
-    .nav{ margin:16px 0 10px; padding:12px 0 0; border-top:1px dashed var(--line); }
+    .nav{ margin:16px 0 6px; padding:12px 0 0; border-top:1px dashed var(--line); }
     .nav a{
       position:relative; display:block; padding:10px 12px 10px 16px;
       border-radius:12px; color:var(--text); font-weight:500;
@@ -307,7 +305,7 @@ aside {
 
     /* =====================  MOBILE  ===================== */
     @media (max-width: 900px){
-      .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; }
+      .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; align-items:stretch; }
       aside{
         position:relative; top:auto;
         max-height:none; overflow:visible;  /* remove internal scroll on small screens */
@@ -675,12 +673,15 @@ aside {
 
 
   <!-- =====================  FOOTER  ===================== -->
-  <footer>
+  <footer class="site-footer">
     <span>© <span id="year"></span> Selçuk Korkmaz</span>
-    <span class="muted">
-      <a class="top" href="#about" aria-label="Back to top">Back to top</a> · Last updated <span id="updated"></span>
-    </span>
+    <span class="sep">&nbsp;·&nbsp;</span>
+    <a class="top" href="#about" aria-label="Back to top">Back to top</a>
+    <span class="sep">&nbsp;·&nbsp;</span>
+    <span>Last updated&nbsp;<span id="updated"></span></span>
   </footer>
+  
+  
   <span id="live" class="sr-only" role="status" aria-live="polite"></span>
 
   <script>
