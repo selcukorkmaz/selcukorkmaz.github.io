@@ -122,8 +122,17 @@
     a:visited{ color:var(--accent-visited); }
     :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
     .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
-    .skip-link{ position:fixed; left:16px; top:-40px; z-index:1001; background:var(--card); color:var(--text); border:1px solid var(--line); padding:8px 12px; border-radius:10px; box-shadow:var(--shadow); transition:top .2s ease; }
-    .skip-link:focus{ top:16px; }
+    .skip-link{
+      position:fixed;
+      left: calc(12px + env(safe-area-inset-left));
+      top:  calc(12px + env(safe-area-inset-top));
+      z-index:1001; background:var(--card); color:var(--text);
+      border:1px solid var(--line); padding:8px 12px; border-radius:10px;
+      box-shadow:none;               /* avoid off-screen shadow bleed */
+      transform: translateY(-160%);  /* visually off-screen without overflow artifacts */
+      transition: transform .2s ease;
+    }
+    .skip-link:focus{ transform: translateY(0); box-shadow:var(--shadow); }
 
     /* =====================  LAYOUT  ===================== */
     .wrap{
