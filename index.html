@@ -261,11 +261,14 @@ aside {
     /* =====================  HERO  ===================== */
     .hero h1{ margin-bottom:.25rem; }
     .intro{ color:var(--muted); }
-    .intro {text-align: justify;}
-    .intro {
+    /* Desktop/tablet: keep justified with smart wrapping */
+    .intro{
       text-align: justify;
-      text-justify: inter-word;   /* improves spacing between words */
-      line-height: 1.6;           /* better readability */
+      text-justify: inter-word;
+      line-height: 1.6;
+      hyphens: auto; -webkit-hyphens: auto; -ms-hyphens: auto;
+      overflow-wrap: break-word; word-break: normal;
+      text-wrap: pretty;
     }
 
 
@@ -327,6 +330,14 @@ aside {
         position:relative; top:auto;
         max-height:none; overflow:visible;  /* remove internal scroll on small screens */
         padding:16px; border-radius:14px;
+      }
+      /* Improve readability of hero text on small screens */
+      .intro{
+        text-align: start;           /* avoid rivers from justification */
+        text-justify: auto;
+        text-wrap: pretty;           /* nicer line breaks where supported */
+        hyphens: auto; -webkit-hyphens: auto;
+        overflow-wrap: anywhere;     /* prevent overflow from long tokens */
       }
       /* Denser, touch-friendly nav layout */
       .nav{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0 4px; padding-top:8px; }
