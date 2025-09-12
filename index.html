@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Selçuk Korkmaz — Academic Profile</title>
+  <meta name="description" content="Academic profile of Selçuk Korkmaz, Associate Professor of Biostatistics at Trakya University. Research: biostatistics, bioinformatics, machine learning, deep learning, and computer-aided drug design. R ecosystem, open-source software, reproducible workflows." />
+  <!-- Optional: Inter for a polished modern look (safe fallback to system fonts) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* =====================  MODERN PALETTE  =====================
+       Calm, contemporary colors (not shiny); subtle paper background.
+    */
+
+    /* CONTACT: icons, rows, and social pills */
+      .icon-18{ width:18px; height:18px; flex:0 0 18px; color:var(--accent); opacity:.95 }
+      .link-row{ display:flex; align-items:flex-start; gap:12px; margin:10px 0 }
+      .address{ line-height:1.6 }
+
+      .socials{ display:flex; flex-wrap:wrap; gap:10px; margin-top:6px }
+      .social-pill{
+        display:inline-flex; align-items:center; gap:8px;
+        padding:8px 12px; border-radius:999px;
+        border:1px solid var(--line); background:var(--card); color:var(--text);
+        box-shadow:var(--shadow); text-decoration:none;
+        transition:transform .15s ease, border-color .15s ease;
+      }
+      .social-pill:hover{ border-color:var(--accent); text-decoration:none; transform:translateY(-1px) }
+      .social-pill .label{ font-weight:500 }
+
+      .btn.small{ padding:6px 10px; font-size:13px; border-radius:8px }
+
+      /* Optional: tighter layout for the two contact cards */
+      #contact .card{ min-height:auto }
+
+
+    :root{
+      /* Light theme */
+      --bg: #f7f8fc;                  /* soft paper */
+      --bg-accent-1: rgba(47,109,246,.035);
+      --bg-accent-2: rgba(16, 94, 187,.025);
+
+      --card:#ffffff;
+      --text:#0b1220;                 /* near-black */
+      --muted:#667085;                /* modern gray */
+      --line:#e9edf3;                 /* hairline */
+      --shadow:0 8px 24px rgba(16,24,40,.06);
+
+      --accent:#355eea;               /* refined indigo-blue */
+      --accent-ink:#2240b2;
+      --accent-visited:#17307f;
+
+      --radius:16px;
+      --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
+      --maxw:1120px;
+      --contentw:1040px;
+    }
+    @media (prefers-color-scheme: dark){
+      :root{
+        --bg:#0b1220;
+        --bg-accent-1: rgba(53,94,234,.12);
+        --bg-accent-2: rgba(18,61,139,.10);
+
+        --card:#0f172a;
+        --text:#e6eaf2;
+        --muted:#a3adc2;
+        --line:#1f2a44;
+        --shadow:0 16px 36px rgba(0,0,0,.45);
+
+        --accent:#7aa2ff;
+        --accent-ink:#cfe1ff;
+        --accent-visited:#b9d2ff;
+      }
+    }
+    body.dark{
+      /* force dark if user toggles */
+      --bg:#0b1220; --bg-accent-1: rgba(53,94,234,.12); --bg-accent-2: rgba(18,61,139,.10);
+      --card:#0f172a; --text:#e6eaf2; --muted:#a3adc2; --line:#1f2a44; --shadow:0 16px 36px rgba(0,0,0,.45);
+      --accent:#7aa2ff; --accent-ink:#cfe1ff; --accent-visited:#b9d2ff;
+    }
+
+    /* =====================  BASE  ===================== */
+    html{ scroll-behavior:smooth; }
+    @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 110% -20%, var(--bg-accent-1), transparent 60%),
+        radial-gradient(900px 600px at -10% 0%, var(--bg-accent-2), transparent 60%),
+        var(--bg);
+      font: 400 16px/1.65 Inter, ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial;
+      letter-spacing:.1px;
+    }
+    h1,h2,h3{ margin:0; letter-spacing:.1px; }
+    h1{ font-weight:800; letter-spacing:.2px; font-size:clamp(28px,4vw,44px); line-height:1.15; }
+    h2{ font-weight:700; font-size:clamp(20px,2.2vw,26px); margin-bottom:.75rem; position:relative; }
+    h2::after{ content:""; position:absolute; left:0; bottom:-10px; width:56px; height:3px; background:var(--accent); border-radius:2px; }
+    h3{ font-size:18px; margin:.2rem 0 .4rem; font-weight:600; }
+    p{ margin:.6rem 0 1rem; }
+    .muted{ color:var(--muted); }
+    a{ color:var(--accent); text-decoration:none; }
+    a:hover{ text-decoration:underline; text-underline-offset:2px; }
+    a:visited{ color:var(--accent-visited); }
+    :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+
+    /* =====================  LAYOUT  ===================== */
+    .wrap{
+      display:grid; grid-template-columns:300px minmax(0,1fr); gap:48px;
+      max-width:var(--maxw); margin:0 auto; padding:var(--space-3) var(--space-3) 80px;
+    }
+    main{ display:grid; gap:var(--space-4); max-width:var(--contentw); }
+    section{
+      margin-block:var(--space-2);
+      padding:var(--space-3);
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    section p{ max-width:72ch; }
+
+    /* =====================  SIDEBAR  ===================== */
+aside {
+  position: sticky;
+  top: 18px;
+  display: flex;
+  flex-direction: column;
+  height: auto;               /* let content decide */
+  max-height: calc(100vh - 190px); /* prevent overflow on small screens */
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+
+
+
+.bottom {
+  margin-top: 20px;     /* just a modest gap */
+  display: flex;
+  justify-content: center; /* center horizontally */
+}
+
+
+    #themeBtn {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  border: 1px solid var(--line);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+
+
+    .brand{ display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+    .avatar{
+      width:100%;
+      max-width:240px;       /* keep your size */
+      aspect-ratio:1;        /* ensures a square crop */
+      object-fit:cover;      /* fill the circle nicely */
+      object-position:center;
+      border-radius:50%;     /* <- makes it circular */
+      border:2px solid var(--line);
+      box-shadow:var(--shadow);
+      background:#e5eaf4;    /* fallback bg while loading */
+    }
+
+    .name{ font-weight:800; letter-spacing:.2px; font-size:20px; margin-top:8px; }
+    .role{ color:var(--muted); font-size:14px; line-height:1.4; }
+
+    .nav{ margin:16px 0 10px; padding:12px 0 0; border-top:1px dashed var(--line); }
+    .nav a{
+      position:relative; display:block; padding:10px 12px 10px 16px;
+      border-radius:12px; color:var(--text); font-weight:500;
+    }
+    .nav a:hover{ background:color-mix(in srgb, var(--accent) 8%, transparent); }
+    .nav a.active{
+      background:color-mix(in srgb, var(--accent) 12%, transparent);
+    }
+    .nav a.active::before{
+      content:""; position:absolute; left:6px; top:10px; bottom:10px; width:3px;
+      background:var(--accent); border-radius:2px;
+    }
+
+    .contacts{ margin-top:12px; display:grid; gap:8px; }
+    .contacts a{ font-size:14px; word-break:break-word; }
+
+    .cta{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
+    .btn{
+      font-size:14px; padding:8px 12px; border-radius:12px;
+      border:1px solid var(--line); background:#fff; color:var(--text);
+      box-shadow:var(--shadow); cursor:pointer;
+    }
+    .btn:hover{ border-color:var(--accent); }
+    .btn.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
+    .btn.primary:hover{ filter:brightness(.96); }
+    .btn.ghost{ background:#fff; }
+
+    /* =====================  HERO  ===================== */
+    .hero h1{ margin-bottom:.25rem; }
+    .intro{ color:var(--muted); }
+    .intro {text-align: justify;}
+    .intro {
+      text-align: justify;
+      text-justify: inter-word;   /* improves spacing between words */
+      line-height: 1.6;           /* better readability */
+    }
+
+
+    .hero .intro + .intro{ margin-top:10px; }
+
+    /* =====================  GRIDS & CARDS  ===================== */
+    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
+    @media (max-width:900px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
+
+    .card{
+      border:1px solid var(--line); border-radius:var(--radius);
+      padding:var(--space-2); background:var(--card); box-shadow:var(--shadow);
+      min-height:122px; display:flex; flex-direction:column; justify-content:space-between;
+    }
+    .list{ list-style:none; margin:0; padding:0; }
+    .list li{ padding:12px 0; border-bottom:1px solid var(--line); }
+    .list li:last-child{ border-bottom:0; }
+
+    /* =====================  PUBLICATIONS  ===================== */
+    .pub{
+      display:grid; grid-template-columns:auto 1fr; gap:12px;
+      padding:12px 0; border-bottom:1px solid var(--line);
+    }
+    .pub:last-child{ border-bottom:0; }
+    .year{
+      font-variant-numeric: tabular-nums;
+      font-size:12px; padding:2px 8px; border-radius:999px;
+      border:1px solid var(--line); color:var(--muted); align-self:start;
+      background:#fff;
+    }
+    .pub .title{ font-weight:600; }
+    .pub i{ font-style:italic; }
+
+    /* =====================  FOOTER  ===================== */
+    footer{
+      max-width:var(--maxw); margin:36px auto 0; padding:12px var(--space-3) 48px;
+      color:var(--muted); font-size:14px; display:flex; justify-content:space-between;
+      border-top:1px solid var(--line);
+    }
+    footer a.top{ color:var(--muted); text-decoration:underline; text-underline-offset:2px; }
+
+    /* =====================  MOBILE  ===================== */
+    @media (max-width: 900px){
+      .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; }
+      aside{ position:relative; top:auto; }
+      .avatar{ max-width:100%; }
+      main{ max-width:100%; }
+      footer{ padding:12px 16px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- =====================  SIDEBAR  ===================== -->
+    <aside aria-label="Profile & Navigation">
+  <div class="brand">
+    <img class="avatar" src="images/profile.jpg" loading="lazy" alt="Profile photo of Selçuk Korkmaz" />
+    <div class="name">Selçuk Korkmaz, PhD</div>
+    <div class="role">Associate Professor of Biostatistics<br/>Trakya University</div>
+  </div>
+
+  <nav class="nav" id="nav">
+    <a href="#about">About</a>
+    <a href="#software">Software & Projects</a>
+    <a href="#publications">Selected Publications</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- Toggle always at the bottom -->
+  <div class="bottom">
+    <button class="btn ghost" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">🌙</button>
+  </div>
+</aside>
+
+
+
+    <!-- =====================  MAIN  ===================== -->
+    <main>
+      <!-- HERO / ABOUT -->
+      <section class="hero" id="about" aria-label="About">
+        <h1>Biostatistician & R Developer</h1>
+
+        <p class="intro">
+          I build open-source R software and lightweight web tools for reproducible analysis of biomedical data—from cheminformatics and structural bioinformatics to clinical analytics.
+        </p>
+
+        <p class="intro">
+          My publications span R software for statistical modeling and programmatic access to chemical/structural data; interactive tools for survival analysis, biological variation, and virtual screening; and methods studies on deep learning for small-molecule classification and imbalanced datasets in drug discovery. Recent essays examine statistical rigor and reproducibility in the AI era and the promise and limits of AI in healthcare. I’m currently developing <b>fastml</b>, an R package for fast model training and evaluation with streamlined preprocessing, multi-algorithm comparison, hyperparameter tuning, and clear performance visualizations; and <b>StatGuide</b>, an AI-assisted manuscript checker aligned with CONSORT, ARRIVE, STROBE, and related reporting standards. My focus is principled evaluation under class imbalance and limited samples, transparent reporting, and end-to-end, auditable R workflows in close collaboration with clinicians and life scientists.
+        </p>
+      </section>
+
+      <!-- SOFTWARE & PROJECTS -->
+      <section id="software" aria-label="Software & Projects">
+        <h2>Software & Projects</h2>
+        <div class="grid-3">
+
+          <div class="card">
+            <div>
+              <h3>fastml</h3>
+              <p>Machine-learning interface for RNA-Seq analysis.</p>
+            </div>
+            <p class="muted"><a href="https://cran.r-project.org/web/packages/fastml/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/fastml" target="_blank" rel="noopener">Source</a></p>
+          </div>
+
+          <div class="card">
+            <div>
+              <h3>StatGuide</h3>
+              <p>AI-assisted manuscript reporting checker for authors and journals.</p>
+            </div>
+            <p class="muted"><a href="https://statguide.app/checker/landing/" target="_blank" rel="noopener">Website</a></p>
+          </div>
+
+          <div class="card">
+            <div>
+              <h3>MVN</h3>
+              <p>R package for assessing multivariate normality.</p>
+            </div>
+            <p class="muted"><a href="https://cran.r-project.org/web/packages/MVN/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/MVN" target="_blank" rel="noopener">Source</a></p>
+          </div>
+          <div class="card">
+            <div>
+              <h3>rPDBapi</h3>
+              <p>Programmatic access to Protein Data Bank resources in R.</p>
+            </div>
+            <p class="muted"><a href="https://cran.r-project.org/web/packages/rPDBapi/index.html" target="_blank" rel="noopener">Paper</a> · <a href="https://github.com/selcukorkmaz/rPDBapi" target="_blank" rel="noopener">Source</a></p>
+          </div>
+          <div class="card">
+            <div>
+              <h3>PubChemR</h3>
+              <p>Access PubChem programmatically for cheminformatics analysis.</p>
+            </div>
+            <p class="muted"><a href="https://cran.r-project.org/web/packages/PubChemR/index.html" target="_blank" rel="noopener">Paper</a> · <a href="https://github.com/selcukorkmaz/PubChemR" target="_blank" rel="noopener">Source</a></p>
+          </div>
+          
+          <div class="card">
+            <div>
+              <h3>Online shiny tools</h3>
+              <p>Interactive shiny-based web tools.</p>
+            </div>
+            <p class="muted"><a href="http://biosoft.erciyes.edu.tr/html/tools.html" target="_blank" rel="noopener">Apps</a></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SELECTED PUBLICATIONS -->
+      <section id="publications" aria-label="Selected Publications">
+        <h2>Selected Publications</h2>
+
+      <div class="pub">
+        <span class="year">2025</span>
+        <div>
+          <div class="title">
+            <a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2755.pdf" target="_blank" rel="noopener noreferrer">
+              Statistical Rigor and Reproducibility in the AI Era
+            </a>
+          </div>
+            <div class="muted">Korkmaz S. <i>Balkan Medical Journal</i>, 42(5), 386-387.</div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <span class="year">2024</span>
+        <div>
+          <div class="title">
+            <a href="https://journal.r-project.org/articles/RJ-2024-031/" target="_blank" rel="noopener noreferrer">
+              PubChemR: An R Package for Accessing Chemical Data from PubChem
+            </a>
+          </div>
+          <div class="muted">Korkmaz S, Yamasan B. E., Goksuluk D. <i>The R Journal</i>, 16(3), 150-185.</div>
+        </div>
+      </div>
+
+        <div class="pub">
+          <span class="year">2024</span>
+          <div>
+            <div class="title">
+              <a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2576.pdf" target="_blank" rel="noopener noreferrer">
+                Artificial intelligence in healthcare: a revolutionary ally or an ethical dilemma?
+              </a>
+            </div>
+            <div class="muted">Korkmaz S. <i>Balkan Medical Journal</i>, 41(2), 87.</div>
+          </div>
+        </div>
+
+        <div class="pub">
+          <span class="year">2020</span>
+          <div>
+            <div class="title">
+              <a href="https://www.degruyterbrill.com/document/doi/10.1515/tjb-2019-0437/html?lang=en&srsltid=AfmBOoqk98mzjP2LvLooqbss0xLv2ceDeas_VzTt3ARzv6V1QFOTE4YY target="_blank" rel="noopener noreferrer">
+                BioVar: an online biological variation analysis tool
+              </a>
+            </div>
+            <div class="muted">Korkmaz S, Zarasız G, Göksülük D, Senes M, Sönmez C, Yucel D. <i>Turkish Journal of Biochemistry</i>, 45(5), 479–489.</div>
+          </div>
+        </div>
+
+        <div class="pub">
+          <span class="year">2020</span>
+          <div>
+            <div class="title">
+              <a href="https://pubs.acs.org/doi/10.1021/acs.jcim.9b01162" target="_blank" rel="noopener noreferrer">
+                Deep learning-based imbalanced data classification for drug discovery
+              </a>
+            </div>
+            <div class="muted">Korkmaz S. <i>Journal of Chemical Information and Modeling</i>, 60(9), 4180–4190.</div>
+          </div>
+        </div>
+
+
+      <div class="pub">
+        <span class="year">2019</span>
+        <div>
+          <div class="title">
+            <a href="https://www.turkiyeklinikleri.com/article/en-small-drug-molecule-classification-using-deep-neural-networks-85020.html" target="_blank" rel="noopener noreferrer">
+              Small Drug Molecule Classification Using Deep Neural Networks
+            </a>
+          </div>
+          <div class="muted">Korkmaz S. <i>Turkiye Klinikleri Journal of Biostatistics</i>, 11(2), 93–101.</div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <span class="year">2018</span>
+        <div>
+          <div class="title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/29864163/" target="_blank" rel="noopener noreferrer">
+              Investigation of Protein Quaternary Structure via Stoichiometry and Symmetry Information
+            </a>
+          </div>
+          <div class="muted">Korkmaz S, Duarte JM, Prlic A, Goksuluk D, Zararsiz G, Saracbasi O, Burley SK, Rose PW. <i>PLOS ONE</i>, 13(6): e0197176.</div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <span class="year">2017</span>
+        <div>
+          <div class="title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/28889076/" target="_blank" rel="noopener noreferrer">
+              geneSurv: An interactive web-based tool for survival analysis in genomics research
+            </a>
+          </div>
+          <div class="muted">Korkmaz S, Goksuluk D, Zararsiz G, Karahan S. <i>Computers in Biology and Medicine</i>, 89, 487–496.</div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <span class="year">2015</span>
+        <div>
+          <div class="title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/25928885/" target="_blank" rel="noopener noreferrer">
+              MLViS: A Web Tool for Machine Learning-Based Virtual Screening in Early-Phase of Drug Discovery and Development
+            </a>
+          </div>
+          <div class="muted">Korkmaz S, Zararsiz G, Goksuluk D. <i>PLOS ONE</i>, 10(4): e0124600.</div>
+        </div>
+      </div>
+
+
+      <div class="pub">
+        <span class="year">2014</span>
+        <div>
+          <div class="title">
+            <a href="https://journal.r-project.org/archive/2014-2/korkmaz-goksuluk-zararsiz.pdf" target="_blank" rel="noopener noreferrer">
+              MVN: An R Package for Assessing Multivariate Normality
+            </a>
+          </div>
+          <div class="muted">Korkmaz S, Goksuluk D, Zararsiz G. <i>The R Journal</i>, 6(2), 151–162.</div>
+        </div>
+      </div>
+
+      <div class="pub">
+        <span class="year">2014</span>
+        <div>
+          <div class="title">
+            <a href="https://pubmed.ncbi.nlm.nih.gov/25224081/" target="_blank" rel="noopener noreferrer">
+              Drug/Nondrug Classification Using Support Vector Machines with Various Feature Selection Strategies
+            </a>
+          </div>
+          <div class="muted">Korkmaz S, Zararsiz G, Goksuluk D. <i>Computer Methods and Programs in Biomedicine</i>, 117(2), 51–60.</div>
+        </div>
+      </div>
+
+
+        <p class="muted" style="margin-top:10px">Full list on <a href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener">Google Scholar</a>.</p>
+      </section>
+
+      <!-- CONTACT -->
+<!-- CONTACT -->
+<section id="contact" aria-label="Contact">
+  <h2>Contact</h2>
+  <div class="grid-2">
+    <!-- Card: Email & Address -->
+    <div class="card">
+      <div class="link-row">
+        <!-- Email icon -->
+        <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <div>
+          <strong>Email</strong>
+          <p>
+            <a id="emailLink" href="mailto:selcukkorkmaz@trakya.edu.tr">selcukkorkmaz@trakya.edu.tr</a>
+            <button class="btn small ghost" id="copyEmail" aria-label="Copy email">Copy</button>
+          </p>
+        </div>
+      </div>
+
+      <div class="link-row">
+        <!-- Map pin icon -->
+        <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <div>
+          <strong>Address</strong>
+          <p class="address">Department of Biostatistics, Trakya University Faculty of Medicine, 22030 Edirne, Türkiye</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card: Profiles & CV -->
+    <div class="card">
+      <div class="link-row">
+        <!-- Profiles icon (mortarboard) -->
+        <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 4 3 8.5 12 13l9-4.5L12 4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <path d="M21 9v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M12 13v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <div>
+          <strong>Profiles</strong>
+          <div class="socials" role="list">
+            <a class="social-pill" href="https://github.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="GitHub profile">
+              <!-- GitHub icon -->
+              <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.9.86.09-.66.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .85-.28 2.8 1.05a9.4 9.4 0 0 1 5.1 0c1.95-1.33 2.8-1.05 2.8-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.08.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
+              </svg>
+              <span class="label">GitHub</span>
+            </a>
+
+            <a class="social-pill" href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener" role="listitem" aria-label="Google Scholar profile">
+              <!-- Scholar icon (mortarboard) -->
+             <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 3L2 9l10 6 10-6-10-6z" fill="currentColor"/>
+              <path d="M4 10v4c0 3 4 5 8 5s8-2 8-5v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="20" cy="10" r="1.5" fill="currentColor"/>
+            </svg>
+              <span class="label">Scholar</span>
+            </a>
+
+            <a class="social-pill" href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener" role="listitem" aria-label="ORCID profile">
+              <!-- ORCID icon (id-badge style) -->
+                <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+                <text x="9" y="16" font-size="8" font-family="Arial, sans-serif" 
+                      font-weight="bold" fill="currentColor">iD</text>
+              </svg>
+              <span class="label">ORCID</span>
+            </a>
+
+            <a class="social-pill" href="https://x.com/selcukkorkmaz" target="_blank" rel="noopener"
+               role="listitem" aria-label="X (Twitter) profile">
+              <!-- X icon -->
+              <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="label">X</span>
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- =====================  FOOTER  ===================== -->
+  <footer>
+    <span>© <span id="year"></span> Selçuk Korkmaz</span>
+    <span class="muted">
+      <a class="top" href="#about" aria-label="Back to top">Back to top</a> · Last updated <span id="updated"></span>
+    </span>
+  </footer>
+
+  <script>
+    // Theme toggle (icon)
+    const themeBtn = document.getElementById('themeBtn');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark' || (!stored && prefersDark)) {
+      document.body.classList.add('dark');
+      themeBtn.textContent = '☀️';
+    }
+    themeBtn.addEventListener('click', () => {
+      const isDark = document.body.classList.toggle('dark');
+      themeBtn.textContent = isDark ? '☀️' : '🌙';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Year + updated
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('updated').textContent = new Date().toLocaleDateString();
+
+    // Scrollspy
+    const navLinks = Array.from(document.querySelectorAll('#nav a'));
+    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const activate = (id) => { navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id)); };
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => { if (entry.isIntersecting) activate(entry.target.id); });
+    }, { rootMargin: '-50% 0px -40% 0px', threshold: [0,1] });
+    sections.forEach(sec => obs.observe(sec));
+  </script>
+</body>
+</html>
