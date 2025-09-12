@@ -6,7 +6,11 @@
   <title>Selçuk Korkmaz — Academic Profile</title>
   <meta name="description" content="Academic profile of Selçuk Korkmaz, Associate Professor of Biostatistics. Research: biostatistics, bioinformatics, machine learning, deep learning, and computer-aided drug design. R ecosystem, open-source software, reproducible workflows." />
   <!-- Optional: Inter for a polished modern look (safe fallback to system fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="light dark">
+  <meta id="metaThemeColor" name="theme-color" content="#f7f8fc">
   <style>
     /* =====================  MODERN PALETTE  =====================
        Calm, contemporary colors (not shiny); subtle paper background.
@@ -111,6 +115,9 @@
     a:hover{ text-decoration:underline; text-underline-offset:2px; }
     a:visited{ color:var(--accent-visited); }
     :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .skip-link{ position:fixed; left:16px; top:-40px; z-index:1001; background:var(--card); color:var(--text); border:1px solid var(--line); padding:8px 12px; border-radius:10px; box-shadow:var(--shadow); transition:top .2s ease; }
+    .skip-link:focus{ top:16px; }
 
     /* =====================  LAYOUT  ===================== */
     .wrap{
@@ -326,6 +333,7 @@ aside {
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <script>
     // Apply saved/system theme ASAP to avoid a flash
     (function(){
@@ -334,6 +342,8 @@ aside {
         var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         var mode = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
         document.body.classList.add(mode);
+        var meta = document.getElementById('metaThemeColor');
+        if (meta) meta.setAttribute('content', mode === 'dark' ? '#0b1220' : '#f7f8fc');
       }catch(e){}
     })();
   </script>
@@ -362,7 +372,7 @@ aside {
 
 
     <!-- =====================  MAIN  ===================== -->
-    <main>
+    <main id="main">
       <!-- HERO / ABOUT -->
       <section class="hero" id="about" aria-label="About">
         <h1>Biostatistician & R Developer</h1>
@@ -473,7 +483,7 @@ aside {
           <span class="year">2020</span>
           <div>
             <div class="title">
-              <a href="https://www.degruyterbrill.com/document/doi/10.1515/tjb-2019-0437/html?lang=en&srsltid=AfmBOoqk98mzjP2LvLooqbss0xLv2ceDeas_VzTt3ARzv6V1QFOTE4YY target="_blank" rel="noopener noreferrer">
+              <a href="https://www.degruyterbrill.com/document/doi/10.1515/tjb-2019-0437/html?lang=en" target="_blank" rel="noopener noreferrer">
                 BioVar: an online biological variation analysis tool
               </a>
             </div>
@@ -671,6 +681,7 @@ aside {
       <a class="top" href="#about" aria-label="Back to top">Back to top</a> · Last updated <span id="updated"></span>
     </span>
   </footer>
+  <span id="live" class="sr-only" role="status" aria-live="polite"></span>
 
   <script>
     // Theme toggle: robust state + accessibility + system changes
@@ -684,6 +695,8 @@ aside {
       themeBtn.textContent = isDark ? '☀️' : '🌙';
       themeBtn.setAttribute('aria-pressed', String(isDark));
       themeBtn.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
+      const meta = document.getElementById('metaThemeColor');
+      if (meta) meta.setAttribute('content', isDark ? '#0b1220' : '#f7f8fc');
     }
 
     function initTheme(){
@@ -733,6 +746,8 @@ aside {
           const original = btn.textContent;
           btn.textContent = 'Copied';
           btn.classList.add('copied');
+          var live = document.getElementById('live');
+          if (live) live.textContent = 'Email copied to clipboard';
           setTimeout(()=>{ btn.textContent = original; btn.classList.remove('copied'); }, 1200);
         }catch(e){
           // Fallback: select the link text
