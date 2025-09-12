@@ -15,6 +15,11 @@
     /* =====================  MODERN PALETTE  =====================
        Calm, contemporary colors (not shiny); subtle paper background.
     */
+    /* Prevent horizontal scroll and box-model surprises */
+    *,*::before,*::after{ box-sizing:border-box }
+    html, body{ max-width:100%; overflow-x:hidden }
+    img{ max-width:100%; height:auto }
+    svg{ max-width:100% }
 
     /* CONTACT: icons, rows, and social pills */
       .icon-18{ width:18px; height:18px; flex:0 0 18px; color:var(--accent); opacity:.95 }
@@ -103,6 +108,7 @@
         var(--bg);
       font: 400 16px/1.65 Inter, ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial;
       letter-spacing:.1px;
+      -webkit-text-size-adjust:100%;
     }
     h1,h2,h3{ margin:0; letter-spacing:.1px; }
     h1{ font-weight:800; letter-spacing:.2px; font-size:clamp(28px,4vw,44px); line-height:1.15; }
