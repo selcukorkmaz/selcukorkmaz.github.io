@@ -255,7 +255,15 @@ aside {
     @media (max-width: 900px){
       .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; }
       aside{ position:relative; top:auto; }
-      .avatar{ max-width:100%; }
+      /* Make the profile section look tidy on mobile */
+      .brand{ align-items:center; text-align:center; }
+      .avatar{
+        width:140px;            /* prevent oversized image on small screens */
+        max-width:140px;
+        aspect-ratio:1;
+        display:block;          /* allow centering with margin */
+        margin:0 auto;          /* center the avatar */
+      }
       main{ max-width:100%; }
       footer{ padding:12px 16px 40px; }
     }
