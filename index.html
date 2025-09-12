@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <meta name="color-scheme" content="light dark">
-  <meta id="metaThemeColor" name="theme-color" content="#0b1220">
+  <meta id="metaThemeColor" name="theme-color" content="#f7f8fc">
   <style>
     /* =====================  MODERN PALETTE  =====================
        Calm, contemporary colors (not shiny); subtle paper background.
@@ -365,11 +365,12 @@ aside {
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <script>
-    // Apply saved theme ASAP; default to dark to avoid flash
+    // Apply saved/system theme ASAP to avoid a flash
     (function(){
       try{
         var stored = localStorage.getItem('theme');
-        var mode = (stored === 'dark' || stored === 'light') ? stored : 'dark';
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var mode = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
         document.body.classList.add(mode);
         var meta = document.getElementById('metaThemeColor');
         if (meta) meta.setAttribute('content', mode === 'dark' ? '#0b1220' : '#f7f8fc');
@@ -757,8 +758,7 @@ aside {
       if (stored === 'dark' || stored === 'light') {
         applyTheme(stored);
       } else {
-        // Default to dark when no preference saved
-        applyTheme('dark');
+        applyTheme(media.matches ? 'dark' : 'light');
       }
     }
 
