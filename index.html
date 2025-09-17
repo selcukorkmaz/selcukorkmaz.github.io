@@ -153,8 +153,6 @@
 
     /* =====================  SIDEBAR  ===================== */
 aside {
-  position: sticky;
-  top: 18px;
   display: flex;
   flex-direction: column;
   height: auto;               /* let content decide */
@@ -165,6 +163,20 @@ aside {
   padding: 20px;
   padding-bottom: 12px; /* trim trailing space */
   box-shadow: var(--shadow);
+}
+
+@media (min-width: 901px) {
+  aside {
+    position: sticky;
+    top: 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  aside {
+    position: relative;
+    top: auto;
+  }
 }
 
 
