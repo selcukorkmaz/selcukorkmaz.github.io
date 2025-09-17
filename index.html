@@ -166,16 +166,20 @@ aside {
 }
 
 @media (min-width: 901px) {
-  aside {
-    position: sticky;
-    top: 18px;
+  .wrap {
+    display: block;
   }
-}
 
-@media (max-width: 900px) {
   aside {
-    position: relative;
-    top: auto;
+    position: fixed;
+    top: 18px;
+    left: var(--space-3);
+    left: max(var(--space-3), calc((100vw - var(--maxw)) / 2 + var(--space-3)));
+    width: 300px;
+  }
+
+  main {
+    margin-left: calc(300px + 48px);
   }
 }
 
@@ -339,7 +343,10 @@ aside {
     @media (max-width: 900px){
       .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; align-items:stretch; }
       aside{
-        position:relative; top:auto;
+        position:relative;
+        top:auto;
+        left:auto;
+        width:100%;
         max-height:none; overflow:visible;  /* remove internal scroll on small screens */
         padding:16px; border-radius:14px;
       }
@@ -370,7 +377,10 @@ aside {
         display:block;          /* allow centering with margin */
         margin:0 auto;          /* center the avatar */
       }
-      main{ max-width:100%; }
+      main{
+        margin-left:0;
+        max-width:100%;
+      }
       /* Mobile footer: stack items, center, respect safe areas */
       .site-footer{
         width:100%;
