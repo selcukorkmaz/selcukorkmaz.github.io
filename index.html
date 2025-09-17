@@ -512,6 +512,19 @@ aside {
         </div>
       </div>
 
+
+      <div class="pub">
+        <span class="year">2024</span>
+        <div>
+          <div class="title">
+            <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11077922/pdf/BMJ-41-186.pdf" target="_blank" rel="noopener noreferrer">
+              Binding Activity Classification of Anti-SARS-CoV-2 Molecules using Deep Learning across Multiple Assays
+            </a>
+          </div>
+          <div class="muted">Yamasan B. E., Korkmaz S. <i>Balkan Medical Journal</i>, 41(3), 186-192.</div>
+        </div>
+      </div>
+
         <div class="pub">
           <span class="year">2024</span>
           <div>
@@ -680,35 +693,23 @@ aside {
               <span class="label">GitHub</span>
             </a>
 
-            <a class="social-pill" href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener" role="listitem" aria-label="Google Scholar profile">
-              <!-- Scholar icon (mortarboard) -->
-             <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3L2 9l10 6 10-6-10-6z" fill="currentColor"/>
-              <path d="M4 10v4c0 3 4 5 8 5s8-2 8-5v-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              <circle cx="20" cy="10" r="1.5" fill="currentColor"/>
-            </svg>
-              <span class="label">Scholar</span>
-            </a>
+<a class="social-pill" href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" 
+   target="_blank" rel="noopener" role="listitem" aria-label="Google Scholar profile">
+  <img src="images/Google_Scholar_logo.svg" alt="Google Scholar" class="icon-18" />
+  <span class="label">Scholar</span>
+</a>
 
-            <a class="social-pill" href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener" role="listitem" aria-label="ORCID profile">
-              <!-- ORCID icon (id-badge style) -->
-                <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" fill="none"/>
-                <text x="9" y="16" font-size="8" font-family="Arial, sans-serif" 
-                      font-weight="bold" fill="currentColor">iD</text>
-              </svg>
-              <span class="label">ORCID</span>
-            </a>
 
-            <a class="social-pill" href="https://x.com/selcukorkmaz" target="_blank" rel="noopener"
-               role="listitem" aria-label="X (Twitter) profile">
-              <!-- X icon -->
-              <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M4 4l16 16M20 4L4 20" stroke="currentColor" stroke-width="2"
-                      stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span class="label">X</span>
-            </a>
+  <a class="social-pill" href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener" role="listitem" aria-label="ORCID profile">
+  <img src="images/ORCID_iD.svg" alt="ORCID" class="icon-18" />
+  <span class="label">ORCID</span>
+</a>
+
+  <a class="social-pill" href="https://x.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="X profile">
+  <img src="images/X_logo_2023_original.svg" alt="X" class="icon-18" />
+  <span class="label">X</span>
+</a>
+
 
           </div>
         </div>
@@ -788,7 +789,7 @@ aside {
 
     // Year + updated
     document.getElementById('year').textContent = new Date().getFullYear();
-    document.getElementById('updated').textContent = new Date().toLocaleDateString();
+    document.getElementById('updated').textContent = "17.09.2025";
 
     // Scrollspy
     const navLinks = Array.from(document.querySelectorAll('#nav a'));
