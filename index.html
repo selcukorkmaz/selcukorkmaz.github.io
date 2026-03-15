@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <meta name="color-scheme" content="light dark">
-  <meta id="metaThemeColor" name="theme-color" content="#f7f8fc">
+  <meta id="metaThemeColor" name="theme-color" content="#eef1ee">
   <style>
     /* =====================  MODERN PALETTE  =====================
        Calm, contemporary colors (not shiny); subtle paper background.
@@ -62,19 +62,19 @@
 
     :root{
       /* Light theme */
-      --bg: #f7f8fc;                  /* soft paper */
-      --bg-accent-1: rgba(47,109,246,.035);
-      --bg-accent-2: rgba(16, 94, 187,.025);
+      --bg:#eef1ee;                   /* stone paper */
+      --bg-accent-1: rgba(35,58,88,.05);
+      --bg-accent-2: rgba(112,121,130,.04);
 
-      --card:#ffffff;
-      --text:#0b1220;                 /* near-black */
-      --muted:#667085;                /* modern gray */
-      --line:#e9edf3;                 /* hairline */
-      --shadow:0 8px 24px rgba(16,24,40,.06);
+      --card:#fbfcfa;
+      --text:#1e252d;                 /* ink charcoal */
+      --muted:#69727a;                /* cool neutral gray */
+      --line:#d7dde0;                 /* stone line */
+      --shadow:0 12px 30px rgba(26,34,44,.075);
 
-      --accent:#355eea;               /* refined indigo-blue */
-      --accent-ink:#2240b2;
-      --accent-visited:#17307f;
+      --accent:#233a58;               /* ink navy */
+      --accent-ink:#18293f;
+      --accent-visited:#566270;
 
       --radius:16px;
       --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
@@ -83,33 +83,33 @@
     }
     @media (prefers-color-scheme: dark){
       :root{
-        --bg:#0b1220;
-        --bg-accent-1: rgba(53,94,234,.12);
-        --bg-accent-2: rgba(18,61,139,.10);
+        --bg:#12171d;
+        --bg-accent-1: rgba(110,140,173,.12);
+        --bg-accent-2: rgba(112,121,130,.08);
 
-        --card:#0f172a;
-        --text:#e6eaf2;
-        --muted:#a3adc2;
-        --line:#1f2a44;
-        --shadow:0 16px 36px rgba(0,0,0,.45);
+        --card:#1a2027;
+        --text:#eaedf0;
+        --muted:#a9b1b9;
+        --line:#303944;
+        --shadow:0 16px 36px rgba(0,0,0,.42);
 
-        --accent:#7aa2ff;
-        --accent-ink:#cfe1ff;
-        --accent-visited:#b9d2ff;
+        --accent:#9eb6cf;
+        --accent-ink:#dbe6f1;
+        --accent-visited:#b7c3cf;
       }
     }
     /* Explicit theme classes override OS preference */
     body.dark{
       /* force dark if user toggles */
-      --bg:#0b1220; --bg-accent-1: rgba(53,94,234,.12); --bg-accent-2: rgba(18,61,139,.10);
-      --card:#0f172a; --text:#e6eaf2; --muted:#a3adc2; --line:#1f2a44; --shadow:0 16px 36px rgba(0,0,0,.45);
-      --accent:#7aa2ff; --accent-ink:#cfe1ff; --accent-visited:#b9d2ff;
+      --bg:#12171d; --bg-accent-1: rgba(110,140,173,.12); --bg-accent-2: rgba(112,121,130,.08);
+      --card:#1a2027; --text:#eaedf0; --muted:#a9b1b9; --line:#303944; --shadow:0 16px 36px rgba(0,0,0,.42);
+      --accent:#9eb6cf; --accent-ink:#dbe6f1; --accent-visited:#b7c3cf;
     }
     body.light{
       /* force light even if OS prefers dark */
-      --bg: #f7f8fc; --bg-accent-1: rgba(47,109,246,.035); --bg-accent-2: rgba(16, 94, 187,.025);
-      --card:#ffffff; --text:#0b1220; --muted:#667085; --line:#e9edf3; --shadow:0 8px 24px rgba(16,24,40,.06);
-      --accent:#355eea; --accent-ink:#2240b2; --accent-visited:#17307f;
+      --bg:#eef1ee; --bg-accent-1: rgba(35,58,88,.05); --bg-accent-2: rgba(112,121,130,.04);
+      --card:#fbfcfa; --text:#1e252d; --muted:#69727a; --line:#d7dde0; --shadow:0 12px 30px rgba(26,34,44,.075);
+      --accent:#233a58; --accent-ink:#18293f; --accent-visited:#566270;
     }
 
     /* =====================  BASE  ===================== */
@@ -170,11 +170,12 @@
 
     /* =====================  SIDEBAR  ===================== */
 aside {
-  position: sticky;
-  top: 18px;
+  position: relative;
+  top: auto;
   display: flex;
   flex-direction: column;
-  height: auto;               /* let content decide */
+  align-self: start;
+  height: fit-content;
   max-height: none; /* let content decide on desktop */
   background: var(--card);
   border: 1px solid var(--line);
@@ -184,34 +185,12 @@ aside {
   box-shadow: var(--shadow);
 }
 
-
-
-.bottom { margin-top: 0; height: 0; display: flex; justify-content: center; pointer-events:auto }
-
-
-    #themeBtn {
-      position: fixed;
-      top: calc(12px + env(safe-area-inset-top));
-      right: calc(12px + env(safe-area-inset-right));
-      z-index: 1000;
-      width: clamp(44px, 7vw, 52px);
-      height: clamp(44px, 7vw, 52px);
-      border-radius: 999px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text);
-      border: 1px solid var(--line);
-      background: color-mix(in srgb, var(--card) 92%, transparent);
-      backdrop-filter: saturate(1.2) blur(6px);
-      -webkit-backdrop-filter: saturate(1.2) blur(6px);
-      box-shadow: 0 10px 24px rgba(0,0,0,.12);
-      cursor: pointer;
-      transition: transform .15s ease, border-color .15s ease;
-    }
-    #themeBtn:hover{ transform: translateY(-1px); border-color: var(--accent); }
-    #themeBtn:active{ transform: translateY(0); }
-    #themeBtn svg{ width: 22px; height: 22px; display:block; color: currentColor; }
-
-
+@media (min-width: 901px){
+  aside{
+    position: sticky;
+    top: 18px;
+  }
+}
 
     .brand{ display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
     .avatar{
@@ -223,7 +202,7 @@ aside {
       border-radius:50%;     /* <- makes it circular */
       border:2px solid var(--line);
       box-shadow:var(--shadow);
-      background:#e5eaf4;    /* fallback bg while loading */
+      background:#d7dcdf;    /* fallback bg while loading */
     }
 
     .name{ font-weight:800; letter-spacing:.2px; font-size:20px; margin-top:8px; }
@@ -318,7 +297,7 @@ aside {
       font-size:12px; line-height:1; padding:6px 10px; border-radius:999px;
       border:1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
       color: color-mix(in srgb, var(--text) 92%, var(--accent));
-      background: color-mix(in srgb, var(--accent) 10%, #ffffff);
+      background: color-mix(in srgb, var(--accent) 10%, var(--card));
       box-shadow: 0 1px 2px rgba(16,24,40,.08);
       align-self:start;
     }
@@ -362,14 +341,6 @@ aside {
       .nav-profiles{ margin-top:10px; padding-top:10px; }
       .nav-profiles .icon-links{ gap:10px; }
       .nav-profiles .social-pill{ width:38px; height:38px; }
-      .bottom{ margin-top:0; }
-      /* Theme button stays top-right on mobile; ensure touch target */
-      #themeBtn{
-        top: calc(10px + env(safe-area-inset-top));
-        right: calc(10px + env(safe-area-inset-right));
-        width: clamp(44px, 9vw, 56px);
-        height: clamp(44px, 9vw, 56px);
-      }
       /* Make the profile section look tidy on mobile */
       .brand{ align-items:center; text-align:center; }
       .avatar{
@@ -395,19 +366,6 @@ aside {
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-  <script>
-    // Apply saved/system theme ASAP to avoid a flash
-    (function(){
-      try{
-        var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var mode = stored === 'dark' || stored === 'light' ? stored : (prefersDark ? 'dark' : 'light');
-        document.body.classList.add(mode);
-        var meta = document.getElementById('metaThemeColor');
-        if (meta) meta.setAttribute('content', mode === 'dark' ? '#0b1220' : '#f7f8fc');
-      }catch(e){}
-    })();
-  </script>
   <div class="wrap">
     <!-- =====================  SIDEBAR  ===================== -->
     <aside aria-label="Profile & Navigation">
@@ -447,15 +405,6 @@ aside {
         </svg>
       </a>
     </div>
-  </div>
-
-  <!-- Toggle always at the bottom -->
-  <div class="bottom">
-    <button class="btn ghost" id="themeBtn" aria-label="Toggle theme" title="Toggle theme">
-      <svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
   </div>
 </aside>
 
@@ -752,61 +701,6 @@ aside {
   <span id="live" class="sr-only" role="status" aria-live="polite"></span>
 
   <script>
-    // Theme toggle: robust state + accessibility + system changes
-    const themeBtn = document.getElementById('themeBtn');
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
-
-    function sunSVG(){
-      return '<svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">\
-        <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8" fill="none"/>\
-        <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>\
-      </svg>';
-    }
-
-    function moonSVG(){
-      // Clean, elegant crescent (Feather-style) that matches currentColor
-      return '<svg class="theme-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">\
-        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>\
-      </svg>';
-    }
-
-    function setThemeIcon(isDark){
-      themeBtn.innerHTML = isDark ? sunSVG() : moonSVG();
-    }
-
-    function applyTheme(mode){
-      const isDark = mode === 'dark';
-      document.body.classList.remove('dark','light');
-      document.body.classList.add(isDark ? 'dark' : 'light');
-      setThemeIcon(isDark);
-      themeBtn.setAttribute('aria-pressed', String(isDark));
-      themeBtn.setAttribute('aria-label', isDark ? 'Switch to light theme' : 'Switch to dark theme');
-      const meta = document.getElementById('metaThemeColor');
-      if (meta) meta.setAttribute('content', isDark ? '#0b1220' : '#f7f8fc');
-    }
-
-    function initTheme(){
-      const stored = localStorage.getItem('theme');
-      if (stored === 'dark' || stored === 'light') {
-        applyTheme(stored);
-      } else {
-        applyTheme(media.matches ? 'dark' : 'light');
-      }
-    }
-
-    initTheme();
-
-    themeBtn.addEventListener('click', () => {
-      const next = document.body.classList.contains('dark') ? 'light' : 'dark';
-      applyTheme(next);
-      localStorage.setItem('theme', next);
-    });
-
-    // Follow OS theme if user hasn't chosen explicitly
-    media.addEventListener && media.addEventListener('change', (e) => {
-      if (!localStorage.getItem('theme')) applyTheme(e.matches ? 'dark' : 'light');
-    });
-
     // Year + updated
     document.getElementById('year').textContent = new Date().getFullYear();
     document.getElementById('updated').textContent = new Date().toLocaleDateString();

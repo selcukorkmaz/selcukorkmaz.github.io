@@ -1,0 +1,909 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Selçuk Korkmaz — Premium Academic Profile</title>
+  <meta name="description" content="Premium academic profile of Selçuk Korkmaz, Associate Professor of Biostatistics. Research in trustworthy machine learning, reproducible biomedical data science, research software, and statistical rigor." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;overflow-x:hidden;background:#f2ede3;color:#122126;font:400 16px/1.7 "Manrope",system-ui,sans-serif}
+    img{max-width:100%;display:block}
+    a{color:inherit}
+    :focus-visible{outline:2px solid #1b6b63;outline-offset:3px}
+
+    :root{
+      --paper:#f2ede3;
+      --paper-strong:#e8e0d1;
+      --ink:#122126;
+      --muted:#5b6865;
+      --line:rgba(18,33,38,.12);
+      --line-strong:rgba(18,33,38,.2);
+      --card:rgba(255,255,255,.52);
+      --card-strong:rgba(255,255,255,.7);
+      --accent:#1b6b63;
+      --accent-soft:#dcece8;
+      --accent-deep:#0f3d38;
+      --shadow:0 18px 50px rgba(48,43,30,.08);
+      --radius:24px;
+      --maxw:1240px;
+    }
+
+    body::before,
+    body::after{
+      content:"";
+      position:fixed;
+      inset:auto;
+      pointer-events:none;
+      z-index:-2;
+      filter:blur(10px);
+    }
+    body::before{
+      top:-120px;right:-60px;width:420px;height:420px;
+      background:radial-gradient(circle, rgba(27,107,99,.16), transparent 66%);
+    }
+    body::after{
+      left:-120px;bottom:-120px;width:420px;height:420px;
+      background:radial-gradient(circle, rgba(137,92,49,.12), transparent 64%);
+    }
+
+    .texture{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:-1;
+      opacity:.35;
+      background-image:
+        linear-gradient(rgba(255,255,255,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.12) 1px, transparent 1px);
+      background-size:32px 32px;
+      mask-image:radial-gradient(circle at center, black 25%, transparent 78%);
+    }
+
+    .skip-link{
+      position:fixed;left:16px;top:16px;transform:translateY(-180%);
+      background:#fff;border:1px solid var(--line);padding:10px 14px;border-radius:12px;
+      text-decoration:none;color:var(--ink);z-index:20;transition:transform .2s ease;
+    }
+    .skip-link:focus{transform:translateY(0)}
+
+    .page{
+      max-width:var(--maxw);
+      margin:0 auto;
+      padding:28px 22px 56px;
+      display:grid;
+      grid-template-columns:320px minmax(0,1fr);
+      gap:34px;
+      align-items:start;
+    }
+
+    .sidebar{
+      position:sticky;
+      top:24px;
+      padding:24px;
+      border:1px solid var(--line);
+      border-radius:28px;
+      background:linear-gradient(180deg, rgba(20,36,41,.96), rgba(20,36,41,.92));
+      color:#eef2ef;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .sidebar::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at top center, rgba(109,182,171,.16), transparent 36%),
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .sidebar-inner{position:relative;z-index:1}
+
+    .portrait{
+      width:100%;
+      aspect-ratio:1/1;
+      border-radius:999px;
+      overflow:hidden;
+      border:2px solid rgba(131,178,170,.28);
+      box-shadow:0 24px 45px rgba(0,0,0,.3);
+      margin-bottom:22px;
+    }
+    .portrait img{width:100%;height:100%;object-fit:cover}
+
+    .name{
+      font:700 clamp(34px,4.5vw,46px)/.92 "Cormorant Garamond",serif;
+      letter-spacing:-.02em;
+      margin:0;
+    }
+    .role{
+      margin:8px 0 18px;
+      color:rgba(238,242,239,.72);
+      font-size:15px;
+    }
+
+    .sidebar-meta{
+      display:grid;
+      gap:8px;
+      margin:0 0 18px;
+      padding:16px 0 0;
+      border-top:1px solid rgba(255,255,255,.12);
+      color:rgba(238,242,239,.76);
+      font-size:13px;
+    }
+
+    .nav{
+      display:grid;
+      gap:8px;
+      margin:18px 0 0;
+    }
+    .nav a{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 14px;
+      border-radius:14px;
+      text-decoration:none;
+      color:#eef2ef;
+      background:transparent;
+      transition:background .18s ease, transform .18s ease;
+    }
+    .nav a span:first-child{font-weight:600}
+    .nav a .index{color:rgba(238,242,239,.45);font-size:12px}
+    .nav a:hover,
+    .nav a.active{
+      background:rgba(127,170,163,.15);
+      transform:translateX(2px);
+    }
+
+    .sidebar-icons{
+      display:flex;
+      justify-content:center;
+      gap:10px;
+      margin-top:14px;
+      padding-top:14px;
+      border-top:1px solid rgba(255,255,255,.12);
+    }
+    .sidebar-icons a{
+      width:38px;height:38px;border-radius:50%;
+      display:inline-flex;align-items:center;justify-content:center;
+      color:#dcece8;text-decoration:none;
+      border:1px solid rgba(220,236,232,.18);
+      background:rgba(255,255,255,.05);
+      transition:transform .18s ease,border-color .18s ease,background .18s ease;
+    }
+    .sidebar-icons a:hover{
+      transform:translateY(-2px);
+      border-color:rgba(220,236,232,.42);
+      background:rgba(220,236,232,.1);
+    }
+    .sidebar-icons svg{width:16px;height:16px;display:block}
+
+    .content{display:grid;gap:22px}
+
+    .panel{
+      position:relative;
+      border:1px solid var(--line);
+      border-radius:30px;
+      background:linear-gradient(180deg, var(--card-strong), var(--card));
+      backdrop-filter:blur(10px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg, rgba(255,255,255,.36), rgba(255,255,255,0));
+      pointer-events:none;
+    }
+    .panel-inner{position:relative;z-index:1;padding:34px}
+
+    .eyebrow{
+      margin:0 0 14px;
+      text-transform:uppercase;
+      letter-spacing:.18em;
+      font-size:11px;
+      font-weight:800;
+      color:var(--accent);
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.45fr) minmax(280px,.95fr);
+      gap:28px;
+      align-items:end;
+    }
+    .hero-title{
+      margin:0 0 18px;
+      font:700 clamp(48px,7vw,88px)/.92 "Cormorant Garamond",serif;
+      letter-spacing:-.03em;
+      max-width:10ch;
+      color:var(--ink);
+    }
+    .hero-copy{
+      max-width:66ch;
+      color:var(--muted);
+      font-size:17px;
+      margin:0 0 24px;
+    }
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px}
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      min-height:46px;padding:0 18px;border-radius:999px;
+      text-decoration:none;font-weight:700;border:1px solid transparent;
+      transition:transform .18s ease, background .18s ease, border-color .18s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn.primary{background:var(--accent-deep);color:#f6faf8}
+    .btn.secondary{background:transparent;border-color:var(--line-strong);color:var(--ink)}
+
+    .metric-stack{
+      display:grid;
+      gap:12px;
+      align-self:stretch;
+    }
+    .metric{
+      padding:18px 18px 16px;
+      border-radius:20px;
+      background:rgba(255,255,255,.68);
+      border:1px solid rgba(18,33,38,.08);
+    }
+    .metric-value{
+      display:block;
+      margin-bottom:4px;
+      font:700 34px/.95 "Cormorant Garamond",serif;
+      color:var(--accent-deep);
+    }
+    .metric-label{
+      display:block;
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color:var(--muted);
+    }
+    .metric-note{
+      display:block;
+      margin-top:8px;
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .split{
+      display:grid;
+      grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);
+      gap:28px;
+    }
+    .section-title{
+      margin:0 0 8px;
+      font:700 clamp(34px,4.5vw,54px)/.96 "Cormorant Garamond",serif;
+      letter-spacing:-.03em;
+    }
+    .lede{
+      margin:0;
+      color:var(--muted);
+      max-width:66ch;
+    }
+
+    .focus-list{
+      list-style:none;
+      margin:0;
+      padding:0;
+      display:grid;
+      gap:12px;
+    }
+    .focus-list li{
+      padding:16px 18px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.44);
+    }
+    .focus-list strong{display:block;margin-bottom:4px}
+
+    .section-head{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:22px;
+    }
+    .section-head p{margin:0;color:var(--muted);max-width:54ch}
+
+    .feature-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:16px;
+    }
+    .feature{
+      padding:24px;
+      border-radius:24px;
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.46));
+      min-height:260px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+    .feature-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      width:max-content;
+      padding:6px 10px;
+      border-radius:999px;
+      background:var(--accent-soft);
+      color:var(--accent-deep);
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+    }
+    .feature h3{
+      margin:16px 0 10px;
+      font:700 32px/1 "Cormorant Garamond",serif;
+      letter-spacing:-.02em;
+    }
+    .feature p{margin:0;color:var(--muted)}
+    .feature .meta{
+      margin-top:18px;
+      padding-top:16px;
+      border-top:1px solid var(--line);
+      color:var(--muted);
+      font-size:14px;
+    }
+    .feature a{text-decoration:none}
+    .feature a:hover{text-decoration:underline;text-underline-offset:3px}
+
+    .software-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    .software-card{
+      padding:22px;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.55);
+    }
+    .software-card h3{
+      margin:0 0 8px;
+      font:700 30px/1 "Cormorant Garamond",serif;
+      letter-spacing:-.02em;
+    }
+    .software-card p{margin:0 0 12px;color:var(--muted)}
+    .software-links{
+      display:flex;flex-wrap:wrap;gap:10px;
+      font-size:14px;font-weight:700;
+    }
+    .software-links a{
+      padding:8px 12px;border-radius:999px;text-decoration:none;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.72);
+    }
+    .software-links a:hover{border-color:var(--accent)}
+
+    .publication-list{
+      display:grid;
+      gap:0;
+      border-top:1px solid var(--line);
+    }
+    .publication{
+      display:grid;
+      grid-template-columns:92px minmax(0,1fr);
+      gap:18px;
+      padding:18px 0;
+      border-bottom:1px solid var(--line);
+    }
+    .publication-year{
+      font:700 28px/1 "Cormorant Garamond",serif;
+      color:var(--accent-deep);
+      letter-spacing:-.02em;
+    }
+    .publication-title{
+      margin:0 0 4px;
+      font-weight:800;
+      font-size:16px;
+      text-wrap:pretty;
+    }
+    .publication-title a{
+      text-decoration:none;
+      color:var(--ink);
+    }
+    .publication-title a:hover{
+      color:var(--accent-deep);
+      text-decoration:underline;
+      text-underline-offset:3px;
+    }
+    .publication-meta{
+      color:var(--muted);
+      margin:0;
+      font-size:15px;
+    }
+
+    .contact-grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:16px;
+    }
+    .contact-card{
+      padding:22px;
+      border-radius:22px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.56);
+    }
+    .contact-label{
+      display:block;
+      margin-bottom:8px;
+      text-transform:uppercase;
+      letter-spacing:.12em;
+      font-size:11px;
+      font-weight:800;
+      color:var(--accent);
+    }
+    .contact-card strong{
+      display:block;
+      margin-bottom:8px;
+      font:700 30px/1 "Cormorant Garamond",serif;
+      letter-spacing:-.02em;
+    }
+    .contact-card p{margin:0;color:var(--muted)}
+    .contact-card a{
+      text-decoration:none;
+      color:var(--ink);
+      font-weight:700;
+    }
+    .contact-card a:hover{text-decoration:underline;text-underline-offset:3px}
+
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      color:var(--muted);
+      font-size:14px;
+      padding:8px 6px 0;
+    }
+
+    .reveal{
+      opacity:0;
+      transform:translateY(18px);
+      transition:opacity .55s ease, transform .55s ease;
+    }
+    .reveal.is-visible{
+      opacity:1;
+      transform:translateY(0);
+    }
+    @media (prefers-reduced-motion: reduce){
+      html{scroll-behavior:auto}
+      .reveal{opacity:1;transform:none;transition:none}
+      .btn,.nav a,.sidebar-icons a{transition:none}
+    }
+
+    @media (max-width: 1080px){
+      .page{grid-template-columns:1fr;gap:24px}
+      .sidebar{position:relative;top:auto}
+      .hero-grid,.split,.feature-grid,.contact-grid{grid-template-columns:1fr}
+      .software-grid{grid-template-columns:1fr}
+      .hero-title{max-width:none}
+    }
+
+    @media (max-width: 760px){
+      body{font-size:15px}
+      .page{padding:14px 14px 42px}
+      .panel-inner{padding:24px 20px}
+      .sidebar{padding:18px;border-radius:24px}
+      .name{font-size:42px}
+      .nav{grid-template-columns:1fr 1fr}
+      .nav a{padding:11px 12px}
+      .nav a .index{display:none}
+      .sidebar-icons{gap:8px}
+      .sidebar-icons a{width:36px;height:36px}
+      .hero-title{font-size:56px}
+      .hero-actions{flex-direction:column;align-items:flex-start}
+      .btn{width:100%;justify-content:center}
+      .metric-stack{grid-template-columns:1fr 1fr}
+      .feature,.software-card,.contact-card{padding:20px}
+      .publication{
+        grid-template-columns:1fr;
+        gap:8px;
+      }
+      .publication-year{font-size:24px}
+      .footer{
+        flex-direction:column;
+        align-items:flex-start;
+        padding:0 2px;
+      }
+    }
+
+    @media (max-width: 520px){
+      .metric-stack{grid-template-columns:1fr}
+      .nav{grid-template-columns:1fr}
+      .sidebar-icons{justify-content:center}
+    }
+  </style>
+</head>
+<body>
+  <div class="texture" aria-hidden="true"></div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <div class="page">
+    <aside class="sidebar reveal" aria-label="Profile and navigation">
+      <div class="sidebar-inner">
+        <div class="portrait">
+          <img src="images/profile.jpg" alt="Portrait of Selçuk Korkmaz" loading="lazy">
+        </div>
+
+        <h1 class="name">Selçuk Korkmaz</h1>
+        <p class="role">Associate Professor of Biostatistics</p>
+
+        <div class="sidebar-meta">
+          <span>Biomedical data science, trustworthy machine learning, and research software.</span>
+          <span>Department of Biostatistics, Trakya University Faculty of Medicine</span>
+          <span>Edirne, Türkiye</span>
+        </div>
+
+        <nav class="nav" id="nav">
+          <a href="#about"><span>About</span><span class="index">01</span></a>
+          <a href="#featured"><span>Featured</span><span class="index">02</span></a>
+          <a href="#software"><span>Software</span><span class="index">03</span></a>
+          <a href="#publications"><span>Publications</span><span class="index">04</span></a>
+          <a href="#contact"><span>Contact</span><span class="index">05</span></a>
+        </nav>
+
+        <div class="sidebar-icons" aria-label="Social profiles">
+          <a href="https://github.com/selcukorkmaz" target="_blank" rel="noopener" aria-label="GitHub profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.9.86.09-.66.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .85-.28 2.8 1.05a9.4 9.4 0 0 1 5.1 0c1.95-1.33 2.8-1.05 2.8-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.08.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/></svg>
+          </a>
+          <a href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener" aria-label="Google Scholar profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+          </a>
+          <a href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener" aria-label="ORCID profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/></svg>
+          </a>
+          <a href="https://x.com/selcukorkmaz" target="_blank" rel="noopener" aria-label="X profile">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content" id="main">
+      <section class="panel reveal" id="about" aria-label="About">
+        <div class="panel-inner hero-grid">
+          <div>
+            <p class="eyebrow">Academic Profile</p>
+            <h2 class="hero-title">Biostatistics, trustworthy machine learning, and research software for biomedical science.</h2>
+            <p class="hero-copy">I develop open-source R software and methodological work for reproducible biomedical data science. My research focuses on leakage-aware model evaluation, transparent statistical workflows, and the reliability of machine learning in clinical and biological datasets.</p>
+            <div class="hero-actions">
+              <a class="btn primary" href="#publications">Selected Publications</a>
+              <a class="btn secondary" href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener">Google Scholar</a>
+            </div>
+          </div>
+
+          <div class="metric-stack" aria-label="Highlights">
+            <div class="metric">
+              <span class="metric-value">5</span>
+              <span class="metric-label">CRAN Packages</span>
+              <span class="metric-note">Research software built for reproducible biomedical analysis.</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">12</span>
+              <span class="metric-label">Selected Papers</span>
+              <span class="metric-note">Featured here across statistical methodology and biomedical machine learning.</span>
+            </div>
+            <div class="metric">
+              <span class="metric-value">R + ML</span>
+              <span class="metric-label">Core Practice</span>
+              <span class="metric-note">Methodology, software interfaces, auditability, and applied biomedical modeling.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel reveal" aria-label="Research approach">
+        <div class="panel-inner split">
+          <div>
+            <p class="eyebrow">Research Position</p>
+            <h2 class="section-title">A methodological and software-led academic practice.</h2>
+            <p class="lede">My work sits at the intersection of biostatistics, biomedical machine learning, and open-source scientific software. I am especially interested in how evaluation pipelines, data leakage, class imbalance, and reporting quality shape the credibility of computational findings.</p>
+          </div>
+
+          <ul class="focus-list" aria-label="Research focus areas">
+            <li>
+              <strong>Trustworthy machine learning</strong>
+              Principled evaluation under limited, imbalanced, or clinically complex datasets.
+            </li>
+            <li>
+              <strong>Research software</strong>
+              Reusable R tools for data access, model auditing, and transparent workflows.
+            </li>
+            <li>
+              <strong>Reproducibility and rigor</strong>
+              Clear reporting, defensible methodology, and auditable end-to-end analysis.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel reveal" id="featured" aria-label="Featured work">
+        <div class="panel-inner">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Featured Work</p>
+              <h2 class="section-title">Three pieces that define the current profile.</h2>
+            </div>
+            <p>Rather than presenting everything at the same visual weight, this version foregrounds the work that best represents methodology, software, and research judgment.</p>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature">
+              <div>
+                <span class="feature-tag">Software Interface</span>
+                <h3><a href="https://journal.r-project.org/articles/RJ-2025-016/RJ-2025-016.pdf" target="_blank" rel="noopener">rPDBapi</a></h3>
+                <p>A comprehensive R interface to the Protein Data Bank, designed to make structural bioinformatics workflows more accessible, programmable, and reproducible.</p>
+              </div>
+              <div class="meta">The R Journal, 2025</div>
+            </article>
+
+            <article class="feature">
+              <div>
+                <span class="feature-tag">Methodology</span>
+                <h3><a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2755.pdf" target="_blank" rel="noopener">Statistical Rigor and Reproducibility in the AI Era</a></h3>
+                <p>A concise statement of the broader methodological position behind the site: that technical sophistication without rigor, transparency, and evaluation discipline is not enough.</p>
+              </div>
+              <div class="meta">Balkan Medical Journal, 2025</div>
+            </article>
+
+            <article class="feature">
+              <div>
+                <span class="feature-tag">Data Infrastructure</span>
+                <h3><a href="https://journal.r-project.org/articles/RJ-2024-031/" target="_blank" rel="noopener">PubChemR</a></h3>
+                <p>An R package for structured access to chemical data from PubChem, supporting cheminformatics workflows and reproducible computational research.</p>
+              </div>
+              <div class="meta">The R Journal, 2024</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel reveal" id="software" aria-label="Software">
+        <div class="panel-inner">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Software</p>
+              <h2 class="section-title">Open-source tools for reproducible analysis.</h2>
+            </div>
+            <p>Software here is treated as scholarly output rather than an accessory: tools that encode workflow discipline, data access, and methodological safeguards.</p>
+          </div>
+
+          <div class="software-grid">
+            <article class="software-card">
+              <h3>bioLeak</h3>
+              <p>Leakage-safe modeling and auditing workflows for genomic and clinical data.</p>
+              <div class="software-links">
+                <a href="https://cran.r-project.org/web/packages/bioLeak/index.html" target="_blank" rel="noopener">CRAN</a>
+                <a href="https://github.com/selcukorkmaz/bioLeak" target="_blank" rel="noopener">Source</a>
+              </div>
+            </article>
+            <article class="software-card">
+              <h3>fastml</h3>
+              <p>Guarded resampling workflows for safer and more automated machine learning in R.</p>
+              <div class="software-links">
+                <a href="https://cran.r-project.org/web/packages/fastml/index.html" target="_blank" rel="noopener">CRAN</a>
+                <a href="https://github.com/selcukorkmaz/fastml" target="_blank" rel="noopener">Source</a>
+              </div>
+            </article>
+            <article class="software-card">
+              <h3>StatGuide</h3>
+              <p>AI-assisted manuscript reporting checker for authors and journals.</p>
+              <div class="software-links">
+                <a href="https://statguide.app/checker/landing/" target="_blank" rel="noopener">Website</a>
+              </div>
+            </article>
+            <article class="software-card">
+              <h3>MVN</h3>
+              <p>R package for assessing multivariate normality in applied statistical workflows.</p>
+              <div class="software-links">
+                <a href="https://cran.r-project.org/web/packages/MVN/index.html" target="_blank" rel="noopener">CRAN</a>
+                <a href="https://github.com/selcukorkmaz/MVN" target="_blank" rel="noopener">Source</a>
+              </div>
+            </article>
+            <article class="software-card">
+              <h3>rPDBapi</h3>
+              <p>Programmatic access to Protein Data Bank resources directly from R.</p>
+              <div class="software-links">
+                <a href="https://cran.r-project.org/web/packages/rPDBapi/index.html" target="_blank" rel="noopener">CRAN</a>
+                <a href="https://github.com/selcukorkmaz/rPDBapi" target="_blank" rel="noopener">Source</a>
+              </div>
+            </article>
+            <article class="software-card">
+              <h3>PubChemR</h3>
+              <p>Programmatic access to PubChem for cheminformatics and compound-centered analysis.</p>
+              <div class="software-links">
+                <a href="https://cran.r-project.org/web/packages/PubChemR/index.html" target="_blank" rel="noopener">CRAN</a>
+                <a href="https://github.com/selcukorkmaz/PubChemR" target="_blank" rel="noopener">Source</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel reveal" id="publications" aria-label="Selected publications">
+        <div class="panel-inner">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Selected Publications</p>
+              <h2 class="section-title">Methodology, software, and applied biomedical ML.</h2>
+            </div>
+            <p>Selected works span software interfaces, reproducibility, deep learning in biomedical settings, and statistical tooling for real-world research workflows.</p>
+          </div>
+
+          <div class="publication-list">
+            <article class="publication">
+              <div class="publication-year">2025</div>
+              <div>
+                <h3 class="publication-title"><a href="https://journal.r-project.org/articles/RJ-2025-016/RJ-2025-016.pdf" target="_blank" rel="noopener">rPDBapi: A Comprehensive R Package Interface for Accessing the Protein Data Bank</a></h3>
+                <p class="publication-meta">Korkmaz S, Yamasan B. E. <i>The R Journal</i>, 17(2), 109-145.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2025</div>
+              <div>
+                <h3 class="publication-title"><a href="https://www.tandfonline.com/doi/abs/10.1080/00015385.2025.2577015" target="_blank" rel="noopener">Unveiling miRNA biomarkers for hypertrophic cardiomyopathy through integrated bioinformatics and machine learning analysis</a></h3>
+                <p class="publication-meta">Yamasan B. E, Korkmaz S. <i>Acta Cardiologica</i>, 80(10), 1149-1162.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2025</div>
+              <div>
+                <h3 class="publication-title"><a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2755.pdf" target="_blank" rel="noopener">Statistical Rigor and Reproducibility in the AI Era</a></h3>
+                <p class="publication-meta">Korkmaz S. <i>Balkan Medical Journal</i>, 42(5), 386-387.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2024</div>
+              <div>
+                <h3 class="publication-title"><a href="https://journal.r-project.org/articles/RJ-2024-031/" target="_blank" rel="noopener">PubChemR: An R Package for Accessing Chemical Data from PubChem</a></h3>
+                <p class="publication-meta">Korkmaz S, Yamasan B. E., Goksuluk D. <i>The R Journal</i>, 16(3), 150-185.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2024</div>
+              <div>
+                <h3 class="publication-title"><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11077922/pdf/BMJ-41-186.pdf" target="_blank" rel="noopener">Binding Activity Classification of Anti-SARS-CoV-2 Molecules using Deep Learning Across Multiple Assays</a></h3>
+                <p class="publication-meta">Yamasan B. E, Korkmaz S. <i>Balkan Medical Journal</i>, 41(3), 186-192.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2024</div>
+              <div>
+                <h3 class="publication-title"><a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2576.pdf" target="_blank" rel="noopener">Artificial intelligence in healthcare: a revolutionary ally or an ethical dilemma?</a></h3>
+                <p class="publication-meta">Korkmaz S. <i>Balkan Medical Journal</i>, 41(2), 87-88.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2020</div>
+              <div>
+                <h3 class="publication-title"><a href="https://www.degruyterbrill.com/document/doi/10.1515/tjb-2019-0437/html?lang=en" target="_blank" rel="noopener">BioVar: an online biological variation analysis tool</a></h3>
+                <p class="publication-meta">Korkmaz S, Zarasız G, Göksülük D, Senes M, Sönmez C, Yucel D. <i>Turkish Journal of Biochemistry</i>, 45(5), 479-489.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2020</div>
+              <div>
+                <h3 class="publication-title"><a href="https://pubs.acs.org/doi/10.1021/acs.jcim.9b01162" target="_blank" rel="noopener">Deep learning-based imbalanced data classification for drug discovery</a></h3>
+                <p class="publication-meta">Korkmaz S. <i>Journal of Chemical Information and Modeling</i>, 60(9), 4180-4190.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2019</div>
+              <div>
+                <h3 class="publication-title"><a href="https://www.turkiyeklinikleri.com/article/en-small-drug-molecule-classification-using-deep-neural-networks-85020.html" target="_blank" rel="noopener">Small Drug Molecule Classification Using Deep Neural Networks</a></h3>
+                <p class="publication-meta">Korkmaz S. <i>Turkiye Klinikleri Journal of Biostatistics</i>, 11(2), 93-101.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2018</div>
+              <div>
+                <h3 class="publication-title"><a href="https://pubmed.ncbi.nlm.nih.gov/29864163/" target="_blank" rel="noopener">Investigation of Protein Quaternary Structure via Stoichiometry and Symmetry Information</a></h3>
+                <p class="publication-meta">Korkmaz S, Duarte JM, Prlic A, Goksuluk D, Zararsiz G, Saracbasi O, Burley SK, Rose PW. <i>PLOS ONE</i>, 13(6): e0197176.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2017</div>
+              <div>
+                <h3 class="publication-title"><a href="https://pubmed.ncbi.nlm.nih.gov/28889076/" target="_blank" rel="noopener">geneSurv: An interactive web-based tool for survival analysis in genomics research</a></h3>
+                <p class="publication-meta">Korkmaz S, Goksuluk D, Zararsiz G, Karahan S. <i>Computers in Biology and Medicine</i>, 89, 487-496.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2015</div>
+              <div>
+                <h3 class="publication-title"><a href="https://pubmed.ncbi.nlm.nih.gov/25928885/" target="_blank" rel="noopener">MLViS: A Web Tool for Machine Learning-Based Virtual Screening in Early-Phase of Drug Discovery and Development</a></h3>
+                <p class="publication-meta">Korkmaz S, Zararsiz G, Goksuluk D. <i>PLOS ONE</i>, 10(4): e0124600.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2014</div>
+              <div>
+                <h3 class="publication-title"><a href="https://journal.r-project.org/archive/2014-2/korkmaz-goksuluk-zararsiz.pdf" target="_blank" rel="noopener">MVN: An R Package for Assessing Multivariate Normality</a></h3>
+                <p class="publication-meta">Korkmaz S, Goksuluk D, Zararsiz G. <i>The R Journal</i>, 6(2), 151-162.</p>
+              </div>
+            </article>
+            <article class="publication">
+              <div class="publication-year">2014</div>
+              <div>
+                <h3 class="publication-title"><a href="https://pubmed.ncbi.nlm.nih.gov/25224081/" target="_blank" rel="noopener">Drug/Nondrug Classification Using Support Vector Machines with Various Feature Selection Strategies</a></h3>
+                <p class="publication-meta">Korkmaz S, Zararsiz G, Goksuluk D. <i>Computer Methods and Programs in Biomedicine</i>, 117(2), 51-60.</p>
+              </div>
+            </article>
+          </div>
+
+          <p class="lede" style="margin-top:22px">For the broader publication record, see <a href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener">Google Scholar</a>.</p>
+        </div>
+      </section>
+
+      <section class="panel reveal" id="contact" aria-label="Contact">
+        <div class="panel-inner">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Contact</p>
+              <h2 class="section-title">Academic correspondence and institutional address.</h2>
+            </div>
+            <p>For research communication, software questions, collaboration, or academic correspondence.</p>
+          </div>
+
+          <div class="contact-grid">
+            <article class="contact-card">
+              <span class="contact-label">Email</span>
+              <strong>Correspondence</strong>
+              <p><a href="mailto:selcukkorkmaz@trakya.edu.tr">selcukkorkmaz@trakya.edu.tr</a></p>
+            </article>
+            <article class="contact-card">
+              <span class="contact-label">Address</span>
+              <strong>Institution</strong>
+              <p>Department of Biostatistics, Trakya University Faculty of Medicine, 22030 Edirne, Türkiye</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <span>© <span id="year"></span> Selçuk Korkmaz</span>
+        <span>Premium alternate design in a separate file</span>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const sections = Array.from(document.querySelectorAll("main section[id]"));
+    const navLinks = Array.from(document.querySelectorAll("#nav a"));
+    const map = new Map(navLinks.map((link) => [link.getAttribute("href").slice(1), link]));
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach((link) => link.classList.remove("active"));
+        const current = map.get(entry.target.id);
+        if (current) current.classList.add("active");
+      });
+    }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
+
+    sections.forEach((section) => navObserver.observe(section));
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll(".reveal").forEach((node) => revealObserver.observe(node));
+  </script>
+</body>
+</html>
