@@ -376,8 +376,7 @@
         display:flex; align-items:center; gap:10px;
         position:sticky; top:0; z-index:950;
         padding:8px 12px calc(8px);
-        background: color-mix(in srgb, var(--bg) 88%, transparent);
-        backdrop-filter:saturate(1.4) blur(10px); -webkit-backdrop-filter:saturate(1.4) blur(10px);
+        background: var(--bg);
         border-bottom:1px solid var(--line);
       }
       .mobile-bar .mb-nav{
@@ -395,6 +394,13 @@
       }
       .mobile-bar .theme-toggle{ flex:0 0 auto; padding:7px 10px }
       .mobile-bar .theme-toggle .tt-label{ display:none }
+
+      /* The two radial gradients paint across the full document height (~7000px
+         on a phone); a flat colour is visually near-identical there and far cheaper. */
+      body{ background-image:none }
+      /* 36px-blur shadows on ~22 elements are costly to rasterise while scrolling.
+         The borders already separate the cards on a small screen. */
+      section, .card, aside, .social-pill, .btn, .mobile-bar{ box-shadow:none }
 
       .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; align-items:stretch }
       aside{ position:relative; top:auto; padding:18px; border-radius:14px }
@@ -937,8 +943,13 @@
         if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
       });
       var active = document.querySelector('#mbNav a.active');
-      if (active && active.scrollIntoView) {
-        active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      var strip = document.getElementById('mbNav');
+      if (active && strip) {
+        var pad = 12;
+        var left = active.offsetLeft - pad;
+        var right = active.offsetLeft + active.offsetWidth + pad;
+        if (left < strip.scrollLeft) strip.scrollLeft = left;
+        else if (right > strip.scrollLeft + strip.clientWidth) strip.scrollLeft = right - strip.clientWidth;
       }
     }
     if ('IntersectionObserver' in window) {
