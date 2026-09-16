@@ -3,118 +3,113 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Selçuk Korkmaz — Academic Profile</title>
-  <meta name="description" content="Academic profile of Selçuk Korkmaz, Associate Professor of Biostatistics. Research: biostatistics, bioinformatics, machine learning, deep learning, and computer-aided drug design. R ecosystem, open-source software, reproducible workflows." />
-  <!-- Optional: Inter for a polished modern look (safe fallback to system fonts) -->
+  <title>Selçuk Korkmaz — Biostatistics, Machine Learning & Research Software</title>
+  <meta name="description" content="Selçuk Korkmaz, PhD — Professor of Biostatistics at Trakya University. Open-source R software, leakage-aware machine learning evaluation, and reproducible biomedical data science." />
+  <link rel="canonical" href="https://selcukorkmaz.github.io/" />
+
+  <!-- Social preview -->
+  <meta property="og:type" content="profile" />
+  <meta property="og:title" content="Selçuk Korkmaz — Biostatistics, Machine Learning & Research Software" />
+  <meta property="og:description" content="Open-source R software, leakage-aware machine learning evaluation, and reproducible biomedical data science." />
+  <meta property="og:url" content="https://selcukorkmaz.github.io/" />
+  <meta property="og:image" content="https://selcukorkmaz.github.io/images/profile-v2.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@selcukorkmaz" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <meta name="color-scheme" content="light dark">
   <meta id="metaThemeColor" name="theme-color" content="#eef1ee">
+
+  <!-- Structured data for search engines / scholarly indexes -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Selçuk Korkmaz",
+    "givenName": "Selçuk",
+    "familyName": "Korkmaz",
+    "jobTitle": "Professor of Biostatistics",
+    "email": "mailto:selcukkorkmaz@trakya.edu.tr",
+    "url": "https://selcukorkmaz.github.io/",
+    "image": "https://selcukorkmaz.github.io/images/profile-v2.jpg",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Trakya University Faculty of Medicine, Department of Biostatistics",
+      "address": "22030 Edirne, Türkiye"
+    },
+    "knowsAbout": ["Biostatistics","Machine Learning","Bioinformatics","Reproducible Research","R programming","Computer-aided drug design"],
+    "sameAs": [
+      "https://github.com/selcukorkmaz",
+      "https://scholar.google.com/citations?user=TKOcnUwAAAAJ",
+      "https://orcid.org/0000-0003-4632-6850",
+      "https://x.com/selcukorkmaz"
+    ]
+  }
+  </script>
+
   <style>
-    /* =====================  MODERN PALETTE  =====================
-       Calm, contemporary colors (not shiny); subtle paper background.
-    */
-    /* Prevent horizontal scroll and box-model surprises */
+    /* =====================  TOKENS  ===================== */
     *,*::before,*::after{ box-sizing:border-box }
-    html, body{ max-width:100%; overflow-x:hidden }
+    /* `clip` (not `hidden`) — `hidden` creates a scroll container and breaks position:sticky. */
+    html, body{ max-width:100%; overflow-x:clip }
     img{ max-width:100%; height:auto }
     svg{ max-width:100% }
 
-    /* CONTACT: icons, rows, and social pills */
-      .icon-18{ width:18px; height:18px; flex:0 0 18px; color:var(--accent); opacity:.95 }
-      .link-row{ display:flex; align-items:flex-start; gap:12px; margin:10px 0 }
-      .address{ line-height:1.6 }
-
-      .socials{ display:flex; flex-wrap:wrap; gap:10px; margin-top:6px }
-      .social-pill{
-        display:inline-flex; align-items:center; gap:8px;
-        padding:8px 12px; border-radius:999px;
-        border:1px solid var(--line); background:var(--card); color:var(--text);
-        box-shadow:var(--shadow); text-decoration:none;
-        transition:transform .15s ease, border-color .15s ease;
-      }
-      .social-pill:hover{ border-color:var(--accent); text-decoration:none; transform:translateY(-1px) }
-      .social-pill .label{ font-weight:500 }
-      .icon-links{ display:flex; flex-wrap:wrap; gap:12px; margin-top:6px }
-      .icon-links .social-pill{
-        width:40px; height:40px; padding:0; border-radius:50%;
-        justify-content:center;
-      }
-      .nav-profiles{
-        margin-top:12px;
-        padding-top:12px;
-        border-top:1px dashed var(--line);
-      }
-      .nav-profiles .icon-links{
-        justify-content:center;
-        margin-top:0;
-      }
-      .nav-profiles .icon-18{
-        width:16px; height:16px; flex:0 0 16px;
-      }
-
-      .btn.small{ padding:6px 10px; font-size:13px; border-radius:8px }
-
-      /* Optional: tighter layout for the two contact cards */
-      #contact .card{ min-height:auto }
-
-
     :root{
-      /* Light theme */
-      --bg:#eef1ee;                   /* stone paper */
+      --maxw:1200px; --contentw:860px; --radius:16px;
+      --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
+
+      --bg:#eef1ee;
       --bg-accent-1: rgba(35,58,88,.05);
       --bg-accent-2: rgba(112,121,130,.04);
-
       --card:#fbfcfa;
-      --text:#1e252d;                 /* ink charcoal */
-      --muted:#69727a;                /* cool neutral gray */
-      --line:#d7dde0;                 /* stone line */
+      --text:#1e252d;
+      --muted:#5f686f;
+      --line:#d7dde0;
       --shadow:0 12px 30px rgba(26,34,44,.075);
-
-      --accent:#233a58;               /* ink navy */
+      --accent:#233a58;
       --accent-ink:#18293f;
       --accent-visited:#566270;
-
-      --radius:16px;
-      --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
-      --maxw:1120px;
-      --contentw:1040px;
+      --header-h:0px;
     }
+
     @media (prefers-color-scheme: dark){
-      :root{
+      :root:not(.light){
         --bg:#12171d;
         --bg-accent-1: rgba(110,140,173,.12);
         --bg-accent-2: rgba(112,121,130,.08);
-
         --card:#1a2027;
         --text:#eaedf0;
         --muted:#a9b1b9;
         --line:#303944;
         --shadow:0 16px 36px rgba(0,0,0,.42);
-
         --accent:#9eb6cf;
         --accent-ink:#dbe6f1;
         --accent-visited:#b7c3cf;
       }
     }
-    /* Explicit theme classes override OS preference */
-    body.dark{
-      /* force dark if user toggles */
+    /* Explicit user choice wins over OS preference */
+    html.dark{
       --bg:#12171d; --bg-accent-1: rgba(110,140,173,.12); --bg-accent-2: rgba(112,121,130,.08);
-      --card:#1a2027; --text:#eaedf0; --muted:#a9b1b9; --line:#303944; --shadow:0 16px 36px rgba(0,0,0,.42);
+      --card:#1a2027; --text:#eaedf0; --muted:#a9b1b9; --line:#303944;
+      --shadow:0 16px 36px rgba(0,0,0,.42);
       --accent:#9eb6cf; --accent-ink:#dbe6f1; --accent-visited:#b7c3cf;
     }
-    body.light{
-      /* force light even if OS prefers dark */
+    html.light{
       --bg:#eef1ee; --bg-accent-1: rgba(35,58,88,.05); --bg-accent-2: rgba(112,121,130,.04);
-      --card:#fbfcfa; --text:#1e252d; --muted:#69727a; --line:#d7dde0; --shadow:0 12px 30px rgba(26,34,44,.075);
+      --card:#fbfcfa; --text:#1e252d; --muted:#5f686f; --line:#d7dde0;
+      --shadow:0 12px 30px rgba(26,34,44,.075);
       --accent:#233a58; --accent-ink:#18293f; --accent-visited:#566270;
     }
 
     /* =====================  BASE  ===================== */
-    html{ scroll-behavior:smooth; }
-    @media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+    html{ scroll-behavior:smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto }
+      *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important }
+    }
 
     body{
       margin:0;
@@ -127,29 +122,27 @@
       letter-spacing:.1px;
       -webkit-text-size-adjust:100%;
     }
-    h1,h2,h3{ margin:0; letter-spacing:.1px; }
-    h1{ font-weight:800; letter-spacing:.2px; font-size:clamp(28px,4vw,44px); line-height:1.15; }
-    h2{ font-weight:700; font-size:clamp(20px,2.2vw,26px); margin-bottom:.75rem; position:relative; }
-    h2::after{ content:""; position:absolute; left:0; bottom:-10px; width:56px; height:3px; background:var(--accent); border-radius:2px; }
-    h3{ font-size:18px; margin:.2rem 0 .4rem; font-weight:600; }
-    p{ margin:.6rem 0 1rem; }
-    .muted{ color:var(--muted); }
-    a{ color:var(--accent); text-decoration:none; }
-    a:hover{ text-decoration:underline; text-underline-offset:2px; }
-    a:visited{ color:var(--accent-visited); }
-    :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; }
-    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    h1,h2,h3{ margin:0; letter-spacing:.1px }
+    h1{ font-weight:800; letter-spacing:.2px; font-size:clamp(26px,3.6vw,40px); line-height:1.18; text-wrap:balance }
+    h2{ font-weight:700; font-size:clamp(20px,2.2vw,26px); margin-bottom:.75rem; position:relative }
+    h2::after{ content:""; position:absolute; left:0; bottom:-10px; width:56px; height:3px; background:var(--accent); border-radius:2px }
+    h3{ font-size:17px; margin:.2rem 0 .4rem; font-weight:600 }
+    p{ margin:.6rem 0 1rem }
+    .muted{ color:var(--muted) }
+    a{ color:var(--accent); text-decoration:none }
+    a:hover{ text-decoration:underline; text-underline-offset:2px }
+    a:visited{ color:var(--accent-visited) }
+    :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:6px }
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0 }
     .skip-link{
       position:fixed;
       left: calc(12px + env(safe-area-inset-left));
       top:  calc(12px + env(safe-area-inset-top));
       z-index:1001; background:var(--card); color:var(--text);
       border:1px solid var(--line); padding:8px 12px; border-radius:10px;
-      box-shadow:none;               /* avoid off-screen shadow bleed */
-      transform: translateY(-160%);  /* visually off-screen without overflow artifacts */
-      transition: transform .2s ease;
+      box-shadow:none; transform: translateY(-160%); transition: transform .2s ease;
     }
-    .skip-link:focus{ transform: translateY(0); box-shadow:var(--shadow); }
+    .skip-link:focus{ transform: translateY(0); box-shadow:var(--shadow) }
 
     /* =====================  LAYOUT  ===================== */
     .wrap{
@@ -157,7 +150,7 @@
       max-width:var(--maxw); margin:0 auto; padding:var(--space-3) var(--space-3) 80px;
       align-items:start;
     }
-    main{ display:grid; gap:var(--space-4); max-width:var(--contentw); }
+    main{ display:grid; gap:var(--space-4); max-width:var(--contentw); min-width:0 }
     section{
       margin-block:var(--space-2);
       padding:var(--space-3);
@@ -165,581 +158,970 @@
       border:1px solid var(--line);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
+      scroll-margin-top: calc(var(--header-h) + 16px);
     }
-    section p{ max-width:72ch; }
+    section p{ max-width:72ch }
 
     /* =====================  SIDEBAR  ===================== */
-aside {
-  position: relative;
-  top: auto;
-  display: flex;
-  flex-direction: column;
-  align-self: start;
-  height: fit-content;
-  max-height: none; /* let content decide on desktop */
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 18px;
-  padding: 20px;
-  padding-bottom: 12px; /* trim trailing space */
-  box-shadow: var(--shadow);
-}
+    aside{
+      position:relative; display:flex; flex-direction:column; align-self:start;
+      height:fit-content; background:var(--card); border:1px solid var(--line);
+      border-radius:18px; padding:20px 20px 12px; box-shadow:var(--shadow);
+    }
+    @media (min-width: 901px){ aside{ position:sticky; top:18px } }
 
-@media (min-width: 901px){
-  aside{
-    position: sticky;
-    top: 18px;
-  }
-}
-
-    .brand{ display:flex; flex-direction:column; gap:10px; margin-bottom:12px; }
+    .brand{ display:flex; flex-direction:column; gap:10px; margin-bottom:12px }
     .avatar{
-      width:100%;
-      max-width:240px;       /* keep your size */
-      aspect-ratio:1;        /* ensures a square crop */
-      object-fit:cover;      /* fill the circle nicely */
-      object-position:center;
-      border-radius:50%;     /* <- makes it circular */
-      border:2px solid var(--line);
-      box-shadow:var(--shadow);
-      background:#d7dcdf;    /* fallback bg while loading */
+      width:100%; max-width:240px; aspect-ratio:1; object-fit:cover; object-position:center;
+      border-radius:50%; border:2px solid var(--line); box-shadow:var(--shadow); background:#d7dcdf;
     }
+    .name{ font-weight:800; letter-spacing:.2px; font-size:20px; margin-top:8px }
+    .role{ color:var(--muted); font-size:14px; line-height:1.4 }
+    .affil{ color:var(--muted); font-size:13px; line-height:1.45; margin-top:2px }
 
-    .name{ font-weight:800; letter-spacing:.2px; font-size:20px; margin-top:8px; }
-    .role{ color:var(--muted); font-size:14px; line-height:1.4; }
-
-    .nav{ margin:16px 0 6px; padding:12px 0 0; border-top:1px dashed var(--line); }
+    .nav{ margin:16px 0 6px; padding:12px 0 0; border-top:1px dashed var(--line) }
     .nav a{
-      position:relative; display:block; padding:10px 12px 10px 16px;
-      border-radius:12px; color:var(--text); font-weight:500;
+      position:relative; display:block;
+      padding:10px 12px 10px 16px; border-radius:12px; color:var(--text); font-weight:500;
     }
-    .nav a:hover{ background:color-mix(in srgb, var(--accent) 8%, transparent); }
-    .nav a.active{
-      background:color-mix(in srgb, var(--accent) 12%, transparent);
-    }
+    .nav a:hover{ background:color-mix(in srgb, var(--accent) 8%, transparent); text-decoration:none }
+    .nav a.active{ background:color-mix(in srgb, var(--accent) 12%, transparent) }
     .nav a.active::before{
       content:""; position:absolute; left:6px; top:10px; bottom:10px; width:3px;
       background:var(--accent); border-radius:2px;
     }
 
-    .contacts{ margin-top:12px; display:grid; gap:8px; }
-    .contacts a{ font-size:14px; word-break:break-word; }
-
-    .cta{ display:flex; gap:10px; margin-top:12px; flex-wrap:wrap; }
-    .btn{
-      font-size:14px; padding:8px 12px; border-radius:12px;
+    /* Social pills */
+    .icon-18{ width:18px; height:18px; flex:0 0 18px; color:var(--accent); opacity:.95 }
+    .nav-profiles{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--line) }
+    .icon-links{ display:flex; flex-wrap:wrap; gap:10px }
+    .social-pill{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      width:40px; height:40px; border-radius:999px;
       border:1px solid var(--line); background:var(--card); color:var(--text);
-      box-shadow:var(--shadow); cursor:pointer;
+      box-shadow:var(--shadow); text-decoration:none;
+      transition:transform .15s ease, border-color .15s ease;
     }
-    .btn:hover{ border-color:var(--accent); }
-    .btn.primary{ background:var(--accent); color:#fff; border-color:var(--accent); }
-    .btn.primary:hover{ filter:brightness(.96); }
-    .btn.ghost{ background: color-mix(in srgb, var(--card) 94%, transparent); }
-
-    /* Contact section refinements */
-    #contact .card{ backdrop-filter:saturate(1.05); -webkit-backdrop-filter:saturate(1.05); }
-    #contact .link-row strong{ font-size:18px; }
-    #contact #emailLink{ font-weight:600; }
-    #copyEmail{ margin-left:10px; }
-    #copyEmail.copied{ border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 35%, transparent); }
-
-    /* Social pills tone for dark theme */
-    body.dark .social-pill{
+    .social-pill:hover{ transform:translateY(-1px); border-color:var(--accent); text-decoration:none }
+    html.dark .social-pill{
       background: color-mix(in srgb, var(--accent) 10%, var(--card));
       border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
-      color: color-mix(in srgb, var(--text) 92%, var(--accent));
     }
-    body.dark .social-pill:hover{
-      background: color-mix(in srgb, var(--accent) 16%, var(--card));
-      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+
+    /* Theme toggle */
+    .sidebar-tools{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line) }
+    .theme-toggle{
+      display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:500;
+      padding:7px 12px; border-radius:999px; cursor:pointer;
+      border:1px solid var(--line); background:var(--card); color:var(--text);
     }
+    .theme-toggle:hover{ border-color:var(--accent) }
+    .theme-toggle .icon-18{ color:currentColor }
+    html:not(.dark) .i-moon{ display:none }
+    html.dark .i-sun{ display:none }
+    @media (prefers-color-scheme: dark){
+      html:not(.light):not(.dark) .i-sun{ display:none }
+      html:not(.light):not(.dark) .i-moon{ display:inline }
+    }
+
+    /* =====================  BUTTONS  ===================== */
+    .btn{
+      display:inline-flex; align-items:center; gap:7px;
+      font-size:13px; font-weight:500; padding:7px 12px; border-radius:10px;
+      border:1px solid var(--line); background:var(--card); color:var(--text);
+      cursor:pointer; text-decoration:none; transition:border-color .15s ease, transform .15s ease;
+    }
+    .btn:hover{ border-color:var(--accent); text-decoration:none; transform:translateY(-1px) }
+    .btn:visited{ color:var(--text) }
+    .btn.primary{ background:var(--accent); color:var(--card); border-color:var(--accent) }
+    .btn.primary:visited{ color:var(--card) }
+    .btn.primary:hover{ filter:brightness(1.08) }
+    .btn.copied{ border-color:var(--accent); box-shadow:0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent) }
 
     /* =====================  HERO  ===================== */
-    .hero h1{ margin-bottom:.25rem; }
-    .intro{ color:var(--muted); }
-    /* Desktop/tablet: keep justified with smart wrapping */
-    .intro{
-      text-align: justify;
-      text-justify: inter-word;
-      line-height: 1.6;
-      hyphens: auto; -webkit-hyphens: auto; -ms-hyphens: auto;
-      overflow-wrap: break-word; word-break: normal;
-      text-wrap: pretty;
+    .hero h1{ margin-bottom:.5rem }
+    .intro{ color:var(--muted); line-height:1.7; text-wrap:pretty; max-width:70ch }
+
+    .focus-tags{ display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 0 }
+    .tag{
+      font-size:12.5px; font-weight:500; padding:5px 11px; border-radius:999px;
+      border:1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+      background: color-mix(in srgb, var(--accent) 8%, var(--card));
+      color: color-mix(in srgb, var(--text) 88%, var(--accent));
     }
 
-
-    .hero .intro + .intro{ margin-top:10px; }
-
     /* =====================  GRIDS & CARDS  ===================== */
-    .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-    .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; }
-    @media (max-width:900px){ .grid-2,.grid-3{ grid-template-columns:1fr; } }
+    .grid-3{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:16px }
 
     .card{
       border:1px solid var(--line); border-radius:var(--radius);
       padding:var(--space-2); background:var(--card); box-shadow:var(--shadow);
-      min-height:122px; display:flex; flex-direction:column; justify-content:space-between;
+      display:flex; flex-direction:column; gap:10px;
+      transition:border-color .15s ease, transform .15s ease;
     }
-    .list{ list-style:none; margin:0; padding:0; }
-    .list li{ padding:12px 0; border-bottom:1px solid var(--line); }
-    .list li:last-child{ border-bottom:0; }
+    .pkg:hover{ border-color:color-mix(in srgb, var(--accent) 45%, var(--line)); transform:translateY(-2px) }
+    .pkg h3{ display:flex; align-items:center; gap:8px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:16px }
+    .pkg h3.app{ font-family:inherit; font-size:17px; font-weight:700 }
+    .pkg p{ margin:0; font-size:14px; color:var(--muted); line-height:1.55; flex:1 }
+    .pkg-links{ display:flex; gap:8px; flex-wrap:wrap; margin-top:2px }
+    .pkg-links .btn{ font-size:12.5px; padding:5px 10px }
 
     /* =====================  PUBLICATIONS  ===================== */
-    .pub{
-      display:grid; grid-template-columns:auto 1fr; gap:12px;
-      padding:12px 0; border-bottom:1px solid var(--line);
+    .toolbar{ display:flex; flex-direction:column; gap:12px; margin:18px 0 6px }
+    /* Controls that do nothing without scripting: show them only once JS confirms it ran. */
+    html:not(.js) .toolbar,
+    html:not(.js) [data-theme-toggle],
+    html:not(.js) .to-top{ display:none }
+    .search-wrap{ position:relative; display:flex; align-items:center }
+    .search-wrap .icon-18{ position:absolute; left:12px; pointer-events:none; color:var(--muted) }
+    #pubSearch{
+      width:100%; font:inherit; font-size:14.5px; color:var(--text);
+      padding:11px 84px 11px 40px; border-radius:12px;
+      border:1px solid var(--line); background:var(--card);
     }
-    .pub:last-child{ border-bottom:0; }
+    #pubSearch::placeholder{ color:var(--muted) }
+    /* Hide the browser's native clear affordance; we render our own. */
+    #pubSearch::-webkit-search-cancel-button,
+    #pubSearch::-webkit-search-decoration{ -webkit-appearance:none; appearance:none }
+    #pubSearch:focus{ outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 16%, transparent) }
+    .kbd{
+      position:absolute; right:12px; font-size:11px; color:var(--muted);
+      border:1px solid var(--line); border-bottom-width:2px; border-radius:6px;
+      padding:2px 6px; background:var(--bg); pointer-events:none;
+    }
+    #pubSearch:not(:placeholder-shown) ~ .kbd{ display:none }
+    .clear-btn{
+      position:absolute; right:10px; border:0; background:transparent; color:var(--muted);
+      cursor:pointer; font-size:18px; line-height:1; padding:6px 8px; border-radius:8px; display:none;
+    }
+    #pubSearch:not(:placeholder-shown) ~ .clear-btn{ display:block }
+    .clear-btn:hover{ color:var(--text); background:color-mix(in srgb, var(--accent) 10%, transparent) }
+
+    .filters{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+    .chip{
+      font-size:13px; font-weight:500; padding:6px 12px; border-radius:999px; cursor:pointer;
+      border:1px solid var(--line); background:var(--card); color:var(--muted);
+      transition:border-color .15s ease, color .15s ease, background .15s ease;
+    }
+    .chip:hover{ border-color:var(--accent); color:var(--text) }
+    .chip[aria-pressed="true"]{
+      background: color-mix(in srgb, var(--accent) 14%, var(--card));
+      border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+      color: var(--text);
+    }
+    .result-line{ font-size:13px; color:var(--muted); margin:4px 0 0; display:flex; gap:10px; align-items:center; flex-wrap:wrap }
+
+    .pub{
+      display:grid; grid-template-columns:auto 1fr; gap:14px;
+      padding:14px 0; border-bottom:1px solid var(--line);
+    }
+    .pub:last-of-type{ border-bottom:0 }
+    .pub[hidden]{ display:none }
     .year{
       display:inline-flex; align-items:center; justify-content:center;
-      font-variant-numeric: tabular-nums;
-      font-weight:600; letter-spacing:.2px;
+      font-variant-numeric:tabular-nums; font-weight:600; letter-spacing:.2px;
       font-size:12px; line-height:1; padding:6px 10px; border-radius:999px;
       border:1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
       color: color-mix(in srgb, var(--text) 92%, var(--accent));
       background: color-mix(in srgb, var(--accent) 10%, var(--card));
-      box-shadow: 0 1px 2px rgba(16,24,40,.08);
-      align-self:start;
+      align-self:start; white-space:nowrap;
     }
-    .pub:hover .year{ border-color: var(--accent); transform: translateY(-1px); transition: transform .15s ease, border-color .15s ease; }
-    body.dark .year{
+    html.dark .year{
       background: color-mix(in srgb, var(--accent) 18%, var(--card));
       border-color: color-mix(in srgb, var(--accent) 30%, var(--line));
-      color: color-mix(in srgb, var(--text) 95%, var(--accent));
-      box-shadow: inset 0 -1px 0 rgba(255,255,255,.04), 0 2px 10px rgba(0,0,0,.25);
     }
-    .pub .title{ font-weight:600; }
-    .pub i{ font-style:italic; }
+    .pub .title{ font-weight:600; line-height:1.45; text-wrap:pretty }
+    .pub .meta{ color:var(--muted); font-size:14px; margin-top:3px; line-height:1.55 }
+    .pub .meta b{ color:var(--text); font-weight:600 }
+    .pub i{ font-style:italic }
+    mark{ background: color-mix(in srgb, var(--accent) 26%, transparent); color:inherit; border-radius:3px; padding:0 2px }
+
+    .empty{ padding:28px 4px; color:var(--muted); font-size:14.5px; text-align:center }
+    .empty[hidden]{ display:none }
+
+    /* =====================  CONTACT  ===================== */
+    .link-row{ display:flex; align-items:flex-start; gap:12px; margin:10px 0 }
+    .link-row strong{ font-size:16px }
+    .link-row p{ margin:.15rem 0 0 }
+    .address{ line-height:1.6 }
+    .contact-actions{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:6px }
+
+    /* =====================  BACK TO TOP  ===================== */
+    .to-top{
+      position:fixed; right:20px; bottom:calc(20px + env(safe-area-inset-bottom)); z-index:900;
+      width:42px; height:42px; border-radius:50%; display:grid; place-items:center;
+      border:1px solid var(--line); background:var(--card); color:var(--text);
+      box-shadow:var(--shadow); cursor:pointer;
+      opacity:0; visibility:hidden; transform:translateY(8px);
+      transition:opacity .2s ease, transform .2s ease, visibility .2s;
+    }
+    .to-top.show{ opacity:1; visibility:visible; transform:translateY(0) }
+    .to-top:hover{ border-color:var(--accent) }
 
     /* =====================  FOOTER  ===================== */
-    footer{
-      max-width:var(--maxw); margin:36px auto 0; padding:12px var(--space-3) 48px;
-      color:var(--muted); font-size:14px; display:flex; justify-content:space-between;
-      border-top:1px solid var(--line);
+    .site-footer{
+      max-width:var(--maxw); margin:36px auto 0; padding:14px var(--space-3) 48px;
+      color:var(--muted); font-size:13.5px; display:flex; justify-content:space-between;
+      flex-wrap:wrap; gap:8px; border-top:1px solid var(--line);
     }
-    footer a.top{ color:var(--muted); text-decoration:underline; text-underline-offset:2px; }
+    .site-footer a{ color:var(--muted); text-decoration:underline; text-underline-offset:2px }
 
     /* =====================  MOBILE  ===================== */
+    .mobile-bar{ display:none }
+
     @media (max-width: 900px){
-      .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; align-items:stretch; }
-      aside{
-        position:relative; top:auto;
-        max-height:none; overflow:visible;  /* remove internal scroll on small screens */
-        padding:16px; border-radius:14px;
+      :root{ --header-h:56px }
+
+      .mobile-bar{
+        display:flex; align-items:center; gap:10px;
+        position:sticky; top:0; z-index:950;
+        padding:8px 12px calc(8px);
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter:saturate(1.4) blur(10px); -webkit-backdrop-filter:saturate(1.4) blur(10px);
+        border-bottom:1px solid var(--line);
       }
-      /* Improve readability of hero text on small screens */
-      .intro{
-        text-align: start;           /* avoid rivers from justification */
-        text-justify: auto;
-        text-wrap: pretty;           /* nicer line breaks where supported */
-        hyphens: auto; -webkit-hyphens: auto;
-        overflow-wrap: anywhere;     /* prevent overflow from long tokens */
+      .mobile-bar .mb-nav{
+        display:flex; gap:8px; overflow-x:auto; flex:1; scrollbar-width:none;
+        -webkit-overflow-scrolling:touch;
       }
-      /* Denser, touch-friendly nav layout */
-      .nav{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:12px 0 4px; padding-top:8px; }
-      .nav a{ text-align:center; padding:10px; }
-      .nav-profiles{ margin-top:10px; padding-top:10px; }
-      .nav-profiles .icon-links{ gap:10px; }
-      .nav-profiles .social-pill{ width:38px; height:38px; }
-      /* Make the profile section look tidy on mobile */
-      .brand{ align-items:center; text-align:center; }
-      .avatar{
-        width:140px; max-width:140px;      /* prevent oversized image on small screens */
-        aspect-ratio:1;
-        display:block;          /* allow centering with margin */
-        margin:0 auto;          /* center the avatar */
+      .mobile-bar .mb-nav::-webkit-scrollbar{ display:none }
+      .mobile-bar .mb-nav a{
+        flex:0 0 auto; font-size:13.5px; font-weight:500; padding:7px 13px;
+        border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted);
       }
-      main{ max-width:100%; }
-      /* Mobile footer: stack items, center, respect safe areas */
-      .site-footer{
-        width:100%;
-        margin-top:24px;
-        padding:14px 16px calc(16px + env(safe-area-inset-bottom));
-        flex-direction:column;
-        align-items:center;
-        text-align:center;
-        gap:6px;
+      .mobile-bar .mb-nav a.active{
+        color:var(--text); border-color:color-mix(in srgb, var(--accent) 42%, var(--line));
+        background: color-mix(in srgb, var(--accent) 14%, var(--card));
       }
-      .site-footer .sep{ display:none; }
+      .mobile-bar .theme-toggle{ flex:0 0 auto; padding:7px 10px }
+      .mobile-bar .theme-toggle .tt-label{ display:none }
+
+      .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; align-items:stretch }
+      aside{ position:relative; top:auto; padding:18px; border-radius:14px }
+      .brand{ flex-direction:row; align-items:center; gap:14px; text-align:left }
+      .avatar{ width:82px; max-width:82px; flex:0 0 82px; margin:0 }
+      .name{ margin-top:0; font-size:19px }
+      /* Sidebar nav + toggle are redundant with the sticky bar on mobile */
+      aside .nav, aside .sidebar-tools{ display:none }
+      .nav-profiles{ margin-top:14px; padding-top:14px }
+      main{ max-width:100% }
+      section{ padding:20px 18px }
+      .pub{ grid-template-columns:1fr; gap:8px }
+      .year{ justify-self:start }
+      .to-top{ right:14px; bottom:calc(14px + env(safe-area-inset-bottom)) }
+      .site-footer{ flex-direction:column; align-items:center; text-align:center; padding-bottom:calc(24px + env(safe-area-inset-bottom)) }
+    }
+
+    @media print{
+      aside, .mobile-bar, .toolbar, .to-top, .skip-link{ display:none !important }
+      .wrap{ display:block; padding:0 }
+      section{ box-shadow:none; border:0; padding:0 0 18px; break-inside:avoid }
+      body{ background:#fff; color:#000 }
+      a{ color:#000 }
+      .pub{ break-inside:avoid }
     }
   </style>
+  <script>
+    /* Apply the saved theme before first paint to avoid a flash of the wrong palette. */
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') document.documentElement.classList.add(t);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- =====================  MOBILE STICKY BAR  ===================== -->
+  <div class="mobile-bar">
+    <nav class="mb-nav" id="mbNav" aria-label="Section navigation">
+      <a href="#about">About</a>
+      <a href="#software">Software</a>
+      <a href="#publications">Publications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
+      <svg class="icon-18 i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="icon-18 i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
   <div class="wrap">
     <!-- =====================  SIDEBAR  ===================== -->
-    <aside aria-label="Profile & Navigation">
-  <div class="brand">
-    <img class="avatar" src="images/profile.jpg" loading="lazy" alt="Profile photo of Selçuk Korkmaz" />
-    <div class="name">Selçuk Korkmaz, PhD</div>
-    <div class="role">Associate Professor of Biostatistics</div>
-  </div>
+    <aside aria-label="Profile and navigation">
+      <div class="brand">
+        <img class="avatar" src="images/profile-v2.jpg" alt="Selçuk Korkmaz" width="480" height="480" decoding="async" />
+        <div>
+          <div class="name">Selçuk Korkmaz, PhD</div>
+          <div class="role">Professor of Biostatistics</div>
+          <div class="affil">Trakya University Faculty of Medicine</div>
+        </div>
+      </div>
 
-  <nav class="nav" id="nav">
-    <a href="#about">About</a>
-    <a href="#software">Software</a>
-    <a href="#publications">Publications</a>
-    <a href="#contact">Contact</a>
-  </nav>
+      <nav class="nav" id="nav" aria-label="Section navigation">
+        <a href="#about">About</a>
+        <a href="#software">Software</a>
+        <a href="#publications">Publications</a>
+        <a href="#contact">Contact</a>
+      </nav>
 
-  <div class="nav-profiles">
-    <div class="icon-links" role="list" aria-label="Social profiles">
-      <a class="social-pill" href="https://github.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="GitHub profile">
-        <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.9.86.09-.66.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .85-.28 2.8 1.05a9.4 9.4 0 0 1 5.1 0c1.95-1.33 2.8-1.05 2.8-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.08.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
-        </svg>
-      </a>
-      <a class="social-pill" href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener" role="listitem" aria-label="Google Scholar profile">
-        <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
-        </svg>
-      </a>
-      <a class="social-pill" href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener" role="listitem" aria-label="ORCID profile">
-        <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/>
-        </svg>
-      </a>
-      <a class="social-pill" href="https://x.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="X (Twitter) profile">
-        <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="currentColor" d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-</aside>
+      <div class="nav-profiles">
+        <div class="icon-links" role="list" aria-label="Profiles elsewhere">
+          <a class="social-pill" href="https://github.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="GitHub profile" title="GitHub">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.9.86.09-.66.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .85-.28 2.8 1.05a9.4 9.4 0 0 1 5.1 0c1.95-1.33 2.8-1.05 2.8-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.08.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
+            </svg>
+          </a>
+          <a class="social-pill" href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener" role="listitem" aria-label="Google Scholar profile" title="Google Scholar">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
+            </svg>
+          </a>
+          <a class="social-pill" href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener" role="listitem" aria-label="ORCID profile" title="ORCID">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/>
+            </svg>
+          </a>
+          <a class="social-pill" href="https://x.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="X (Twitter) profile" title="X">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
 
-
+      <div class="sidebar-tools">
+        <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
+          <svg class="icon-18 i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <svg class="icon-18 i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span class="tt-label">Theme</span>
+        </button>
+        <a class="btn" href="mailto:selcukkorkmaz@trakya.edu.tr">
+          <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Email
+        </a>
+      </div>
+    </aside>
 
     <!-- =====================  MAIN  ===================== -->
     <main id="main">
-      <!-- HERO / ABOUT -->
-      <section class="hero" id="about" aria-label="About">
-        <h1>Biostatistician | Machine Learning Methodology & Research Software</h1>
+      <!-- ABOUT -->
+      <section class="hero" id="about" aria-labelledby="about-h">
+        <h1 id="about-h">Biostatistician building trustworthy machine learning for biomedical research</h1>
 
         <p class="intro">
-          I develop open-source R software for reproducible biomedical data science. My work focuses on trustworthy machine learning, leakage-aware model evaluation, and transparent statistical workflows for biomedical research. Through methodological studies and software tools, I aim to improve the reliability and reproducibility of computational analyses in clinical and biological datasets.
+          I develop open-source R software for reproducible biomedical data science. My work focuses on
+          trustworthy machine learning, leakage-aware model evaluation, and transparent statistical workflows.
+          Through methodological studies and software tools, I aim to improve the reliability and
+          reproducibility of computational analyses in clinical and biological datasets.
         </p>
+
+        <div class="focus-tags" aria-label="Research areas">
+          <span class="tag">Leakage-aware evaluation</span>
+          <span class="tag">Reproducible workflows</span>
+          <span class="tag">Bioinformatics</span>
+          <span class="tag">Computer-aided drug design</span>
+          <span class="tag">R package development</span>
+        </div>
       </section>
 
       <!-- SOFTWARE -->
-      <section id="software" aria-label="Software">
-        <h2>Software</h2>
+      <section id="software" aria-labelledby="software-h">
+        <h2 id="software-h">Software</h2>
+        <p class="muted" style="margin-bottom:18px">
+          Six R packages on CRAN, three open-source web tools, and a biostatistics teaching app.
+        </p>
+
         <div class="grid-3">
-
-          <div class="card">
-            <div>
-              <h3>splitGraph</h3>
-              <p>Dataset Dependency Graphs for Leakage-Aware Evaluation.</p>
+          <article class="card pkg">
+            <h3 class="app">BiostatQuest</h3>
+            <p>Biostatistics learning app: 50+ case-based challenges and 1,000+ board-style questions.</p>
+            <div class="pkg-links">
+              <a class="btn primary" href="https://www.biostatquest.com/" target="_blank" rel="noopener">Open app</a>
             </div>
-            <p class="muted"><a href="https://cran.r-project.org/web/packages/splitGraph/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/splitGraph" target="_blank" rel="noopener">Source</a></p>
-          </div>
+          </article>
 
-          <div class="card">
-            <div>
-              <h3>bioLeak</h3>
-              <p>Leakage-Safe Modeling and Auditing for Genomic and Clinical Data.</p>
+          <article class="card pkg">
+            <h3>splitGraph</h3>
+            <p>Dataset dependency graphs for leakage-aware evaluation.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://cran.r-project.org/web/packages/splitGraph/index.html" target="_blank" rel="noopener">CRAN</a>
+              <a class="btn" href="https://github.com/selcukorkmaz/splitGraph" target="_blank" rel="noopener">Source</a>
             </div>
-            <p class="muted"><a href="https://cran.r-project.org/web/packages/bioLeak/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/bioLeak" target="_blank" rel="noopener">Source</a></p>
-          </div>
+          </article>
 
+          <article class="card pkg">
+            <h3>bioLeak</h3>
+            <p>Leakage-safe modeling and auditing for genomic and clinical data.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://cran.r-project.org/web/packages/bioLeak/index.html" target="_blank" rel="noopener">CRAN</a>
+              <a class="btn" href="https://github.com/selcukorkmaz/bioLeak" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://arxiv.org/abs/2604.10965" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </article>
 
-          <div class="card">
-            <div>
-              <h3>fastml</h3>
-              <p>Guarded Resampling Workflows for Safe and Automated Machine Learning in R.</p>
+          <article class="card pkg">
+            <h3>fastml</h3>
+            <p>Guarded resampling workflows for leakage-aware machine learning in R.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://cran.r-project.org/web/packages/fastml/index.html" target="_blank" rel="noopener">CRAN</a>
+              <a class="btn" href="https://github.com/selcukorkmaz/fastml" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://arxiv.org/abs/2604.05225" target="_blank" rel="noopener">Paper</a>
             </div>
-            <p class="muted"><a href="https://cran.r-project.org/web/packages/fastml/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/fastml" target="_blank" rel="noopener">Source</a></p>
-          </div>
+          </article>
 
-          <div class="card">
-            <div>
-              <h3>MVN</h3>
-              <p>R package for assessing multivariate normality.</p>
+          <article class="card pkg">
+            <h3>MVN</h3>
+            <p>Multivariate normality testing with six statistical tests, diagnostics, and outlier detection.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://cran.r-project.org/web/packages/MVN/index.html" target="_blank" rel="noopener">CRAN</a>
+              <a class="btn" href="https://github.com/selcukorkmaz/MVN" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://journal.r-project.org/articles/RJ-2014-031/" target="_blank" rel="noopener">Paper</a>
             </div>
-            <p class="muted"><a href="https://cran.r-project.org/web/packages/MVN/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/MVN" target="_blank" rel="noopener">Source</a></p>
-          </div>
-          <div class="card">
-            <div>
-              <h3>rPDBapi</h3>
-              <p>Programmatic access to Protein Data Bank resources in R.</p>
-            </div>
-            <p class="muted"><a href="https://cran.r-project.org/web/packages/rPDBapi/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/rPDBapi" target="_blank" rel="noopener">Source</a></p>
-          </div>
-          <div class="card">
-            <div>
-              <h3>PubChemR</h3>
-              <p>Access PubChem programmatically for cheminformatics analysis.</p>
-            </div>
-            <p class="muted"><a href="https://cran.r-project.org/web/packages/PubChemR/index.html" target="_blank" rel="noopener">CRAN</a> · <a href="https://github.com/selcukorkmaz/PubChemR" target="_blank" rel="noopener">Source</a></p>
-          </div>
+          </article>
 
+          <article class="card pkg">
+            <h3>rPDBapi</h3>
+            <p>A comprehensive interface for accessing the Protein Data Bank.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://cran.r-project.org/web/packages/rPDBapi/index.html" target="_blank" rel="noopener">CRAN</a>
+              <a class="btn" href="https://github.com/selcukorkmaz/rPDBapi" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://journal.r-project.org/articles/RJ-2025-016/RJ-2025-016.pdf" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </article>
+
+          <article class="card pkg">
+            <h3>PubChemR</h3>
+            <p>Access PubChem programmatically for cheminformatics analysis.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://cran.r-project.org/web/packages/PubChemR/index.html" target="_blank" rel="noopener">CRAN</a>
+              <a class="btn" href="https://github.com/selcukorkmaz/PubChemR" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://journal.r-project.org/articles/RJ-2024-031/" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </article>
+
+          <article class="card pkg">
+            <h3>BioVar</h3>
+            <p>Online biological variation analysis for clinical laboratory data.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://github.com/selcukorkmaz/BioVar" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://www.degruyterbrill.com/document/doi/10.1515/tjb-2019-0437/html?lang=en" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </article>
+
+          <article class="card pkg">
+            <h3>geneSurv</h3>
+            <p>Interactive web tool for survival analysis in genomics research.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://github.com/selcukorkmaz/geneSurv" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://pubmed.ncbi.nlm.nih.gov/28889076/" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </article>
+
+          <article class="card pkg">
+            <h3>MLViS</h3>
+            <p>Machine learning-based virtual screening for early-phase drug discovery.</p>
+            <div class="pkg-links">
+              <a class="btn" href="https://github.com/selcukorkmaz/MLViS" target="_blank" rel="noopener">Source</a>
+              <a class="btn" href="https://pubmed.ncbi.nlm.nih.gov/25928885/" target="_blank" rel="noopener">Paper</a>
+            </div>
+          </article>
         </div>
       </section>
 
-      <!-- SELECTED PUBLICATIONS -->
-      <section id="publications" aria-label="Selected Publications">
-        <h2>Selected Publications</h2>
+      <!-- PUBLICATIONS -->
+      <section id="publications" aria-labelledby="publications-h">
+        <h2 id="publications-h">Selected publications</h2>
 
-      <div class="pub">
-        <span class="year">2025</span>
-        <div>
-          <div class="title">
-            <a href="https://journal.r-project.org/articles/RJ-2025-016/RJ-2025-016.pdf" target="_blank" rel="noopener noreferrer">
-              rPDBapi: A Comprehensive R Package Interface for Accessing the Protein Data Bank
-            </a>
+        <div class="toolbar">
+          <div class="search-wrap">
+            <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.7"/>
+              <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+            <label class="sr-only" for="pubSearch">Search publications by title, journal, year or co-author</label>
+            <input id="pubSearch" type="search" placeholder="Search by title, journal, year or co-author…" autocomplete="off" />
+            <kbd class="kbd">/</kbd>
+            <button class="clear-btn" id="pubClear" type="button" aria-label="Clear search">&times;</button>
           </div>
-            <div class="muted">Korkmaz S, Yamasan B. E. <i>The R Journal</i>, 17(2), 109-145.</div>
-        </div>
-      </div>
 
-      <div class="pub">
-        <span class="year">2025</span>
-        <div>
-          <div class="title">
-            <a href="https://www.tandfonline.com/doi/abs/10.1080/00015385.2025.2577015" target="_blank" rel="noopener noreferrer">
-              Unveiling miRNA biomarkers for hypertrophic cardiomyopathy through integrated bioinformatics and machine learning analysis
-            </a>
+          <div class="filters" role="group" aria-label="Filter publications by topic">
+            <button class="chip" type="button" data-topic="all" aria-pressed="true">All</button>
+            <button class="chip" type="button" data-topic="software" aria-pressed="false">Software &amp; tools</button>
+            <button class="chip" type="button" data-topic="ml" aria-pressed="false">Machine learning</button>
+            <button class="chip" type="button" data-topic="bioinfo" aria-pressed="false">Bioinformatics</button>
+            <button class="chip" type="button" data-topic="commentary" aria-pressed="false">Commentary</button>
           </div>
-            <div class="muted">Yamasan B. E, Korkmaz S. <i>Acta Cardiologica</i>, 80(10), 1149-1162.</div>
-        </div>
-      </div>
 
-      <div class="pub">
-        <span class="year">2025</span>
-        <div>
-          <div class="title">
-            <a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2755.pdf" target="_blank" rel="noopener noreferrer">
-              Statistical Rigor and Reproducibility in the AI Era
-            </a>
-          </div>
-            <div class="muted">Korkmaz S. <i>Balkan Medical Journal</i>, 42(5), 386-387.</div>
+          <p class="result-line">
+            <span id="pubCount" role="status" aria-live="polite">Showing all 17 publications</span>
+            <button class="chip" id="pubReset" type="button" hidden>Reset</button>
+          </p>
         </div>
-      </div>
 
-      <div class="pub">
-        <span class="year">2024</span>
-        <div>
-          <div class="title">
-            <a href="https://journal.r-project.org/articles/RJ-2024-031/" target="_blank" rel="noopener noreferrer">
-              PubChemR: An R Package for Accessing Chemical Data from PubChem
-            </a>
-          </div>
-          <div class="muted">Korkmaz S, Yamasan B. E., Goksuluk D. <i>The R Journal</i>, 16(3), 150-185.</div>
-        </div>
-      </div>
+        <div id="pubList">
 
-        <div class="pub">
-          <span class="year">2024</span>
-          <div>
-            <div class="title">
-              <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11077922/pdf/BMJ-41-186.pdf" target="_blank" rel="noopener noreferrer">
-                Binding Activity Classification of Anti-SARS-CoV-2 Molecules using Deep Learning Across Multiple Assays
-              </a>
+          <div class="pub" data-year="2026" data-topic="commentary">
+            <span class="year">2026</span>
+            <div>
+              <div class="title">
+                <a href="https://balkanmedicaljournal.org/article.php?id=2861" target="_blank" rel="noopener noreferrer">The Strong Get Stronger: The Matthew Effect in Academic Publishing</a>
+              </div>
+              <div class="meta"><b>Korkmaz S.</b> <i>Balkan Medical Journal</i>, 43(6), 294–296.</div>
             </div>
-            <div class="muted">Yamasan B. E, Korkmaz S. <i>Balkan Medical Journal</i>, 41(3), 186-192.</div>
           </div>
-        </div>
 
-
-        <div class="pub">
-          <span class="year">2024</span>
-          <div>
-            <div class="title">
-              <a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2576.pdf" target="_blank" rel="noopener noreferrer">
-                Artificial intelligence in healthcare: a revolutionary ally or an ethical dilemma?
-              </a>
+          <div class="pub" data-year="2026" data-topic="software ml">
+            <span class="year">2026</span>
+            <div>
+              <div class="title">
+                <a href="https://arxiv.org/abs/2604.10965" target="_blank" rel="noopener noreferrer">bioLeak: Leakage-Aware Modeling and Diagnostics for Machine Learning in R</a>
+              </div>
+              <div class="meta"><b>Korkmaz S.</b> <i>arXiv preprint</i> arXiv:2604.10965.</div>
             </div>
-            <div class="muted">Korkmaz S. <i>Balkan Medical Journal</i>, 41(2), 87-88.</div>
           </div>
-        </div>
 
-        <div class="pub">
-          <span class="year">2020</span>
-          <div>
-            <div class="title">
-              <a href="https://www.degruyterbrill.com/document/doi/10.1515/tjb-2019-0437/html?lang=en" target="_blank" rel="noopener noreferrer">
-                BioVar: an online biological variation analysis tool
-              </a>
+          <div class="pub" data-year="2026" data-topic="software ml">
+            <span class="year">2026</span>
+            <div>
+              <div class="title">
+                <a href="https://arxiv.org/abs/2604.05225" target="_blank" rel="noopener noreferrer">fastml: Guarded Resampling Workflows for Safer Automated Machine Learning in R</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Goksuluk D, Karaismailoglu E. <i>arXiv preprint</i> arXiv:2604.05225.</div>
             </div>
-            <div class="muted">Korkmaz S, Zarasız G, Göksülük D, Senes M, Sönmez C, Yucel D. <i>Turkish Journal of Biochemistry</i>, 45(5), 479–489.</div>
           </div>
-        </div>
 
-        <div class="pub">
-          <span class="year">2020</span>
-          <div>
-            <div class="title">
-              <a href="https://pubs.acs.org/doi/10.1021/acs.jcim.9b01162" target="_blank" rel="noopener noreferrer">
-                Deep learning-based imbalanced data classification for drug discovery
-              </a>
+          <div class="pub" data-year="2025" data-topic="software">
+            <span class="year">2025</span>
+            <div>
+              <div class="title">
+                <a href="https://journal.r-project.org/articles/RJ-2025-016/RJ-2025-016.pdf" target="_blank" rel="noopener noreferrer">rPDBapi: A Comprehensive R Package Interface for Accessing the Protein Data Bank</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Yamasan B. E. <i>The R Journal</i>, 17(2), 109–145.</div>
             </div>
-            <div class="muted">Korkmaz S. <i>Journal of Chemical Information and Modeling</i>, 60(9), 4180–4190.</div>
           </div>
+
+          <div class="pub" data-year="2025" data-topic="ml bioinfo">
+            <span class="year">2025</span>
+            <div>
+              <div class="title">
+                <a href="https://www.tandfonline.com/doi/abs/10.1080/00015385.2025.2577015" target="_blank" rel="noopener noreferrer">Unveiling miRNA biomarkers for hypertrophic cardiomyopathy through integrated bioinformatics and machine learning analysis</a>
+              </div>
+              <div class="meta">Yamasan B. E, <b>Korkmaz S.</b> <i>Acta Cardiologica</i>, 80(10), 1149–1162.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2025" data-topic="commentary">
+            <span class="year">2025</span>
+            <div>
+              <div class="title">
+                <a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2755.pdf" target="_blank" rel="noopener noreferrer">Statistical Rigor and Reproducibility in the AI Era</a>
+              </div>
+              <div class="meta"><b>Korkmaz S.</b> <i>Balkan Medical Journal</i>, 42(5), 386–387.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2024" data-topic="software">
+            <span class="year">2024</span>
+            <div>
+              <div class="title">
+                <a href="https://journal.r-project.org/articles/RJ-2024-031/" target="_blank" rel="noopener noreferrer">PubChemR: An R Package for Accessing Chemical Data from PubChem</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Yamasan B. E., Goksuluk D. <i>The R Journal</i>, 16(3), 150–185.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2024" data-topic="ml">
+            <span class="year">2024</span>
+            <div>
+              <div class="title">
+                <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11077922/pdf/BMJ-41-186.pdf" target="_blank" rel="noopener noreferrer">Binding Activity Classification of Anti-SARS-CoV-2 Molecules using Deep Learning Across Multiple Assays</a>
+              </div>
+              <div class="meta">Yamasan B. E, <b>Korkmaz S.</b> <i>Balkan Medical Journal</i>, 41(3), 186–192.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2024" data-topic="commentary">
+            <span class="year">2024</span>
+            <div>
+              <div class="title">
+                <a href="https://balkanmedicaljournal.org/uploads/pdf/pdf_BMJ_2576.pdf" target="_blank" rel="noopener noreferrer">Artificial intelligence in healthcare: a revolutionary ally or an ethical dilemma?</a>
+              </div>
+              <div class="meta"><b>Korkmaz S.</b> <i>Balkan Medical Journal</i>, 41(2), 87–88.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2020" data-topic="software">
+            <span class="year">2020</span>
+            <div>
+              <div class="title">
+                <a href="https://www.degruyterbrill.com/document/doi/10.1515/tjb-2019-0437/html?lang=en" target="_blank" rel="noopener noreferrer">BioVar: an online biological variation analysis tool</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Zarasız G, Göksülük D, Senes M, Sönmez C, Yucel D. <i>Turkish Journal of Biochemistry</i>, 45(5), 479–489.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2020" data-topic="ml">
+            <span class="year">2020</span>
+            <div>
+              <div class="title">
+                <a href="https://pubs.acs.org/doi/10.1021/acs.jcim.9b01162" target="_blank" rel="noopener noreferrer">Deep learning-based imbalanced data classification for drug discovery</a>
+              </div>
+              <div class="meta"><b>Korkmaz S.</b> <i>Journal of Chemical Information and Modeling</i>, 60(9), 4180–4190.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2019" data-topic="ml">
+            <span class="year">2019</span>
+            <div>
+              <div class="title">
+                <a href="https://www.turkiyeklinikleri.com/article/en-small-drug-molecule-classification-using-deep-neural-networks-85020.html" target="_blank" rel="noopener noreferrer">Small Drug Molecule Classification Using Deep Neural Networks</a>
+              </div>
+              <div class="meta"><b>Korkmaz S.</b> <i>Turkiye Klinikleri Journal of Biostatistics</i>, 11(2), 93–101.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2018" data-topic="bioinfo">
+            <span class="year">2018</span>
+            <div>
+              <div class="title">
+                <a href="https://pubmed.ncbi.nlm.nih.gov/29864163/" target="_blank" rel="noopener noreferrer">Investigation of Protein Quaternary Structure via Stoichiometry and Symmetry Information</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Duarte JM, Prlic A, Goksuluk D, Zararsiz G, Saracbasi O, Burley SK, Rose PW. <i>PLOS ONE</i>, 13(6): e0197176.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2017" data-topic="software bioinfo">
+            <span class="year">2017</span>
+            <div>
+              <div class="title">
+                <a href="https://pubmed.ncbi.nlm.nih.gov/28889076/" target="_blank" rel="noopener noreferrer">geneSurv: An interactive web-based tool for survival analysis in genomics research</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Goksuluk D, Zararsiz G, Karahan S. <i>Computers in Biology and Medicine</i>, 89, 487–496.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2015" data-topic="software ml">
+            <span class="year">2015</span>
+            <div>
+              <div class="title">
+                <a href="https://pubmed.ncbi.nlm.nih.gov/25928885/" target="_blank" rel="noopener noreferrer">MLViS: A Web Tool for Machine Learning-Based Virtual Screening in Early-Phase of Drug Discovery and Development</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Zararsiz G, Goksuluk D. <i>PLOS ONE</i>, 10(4): e0124600.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2014" data-topic="software">
+            <span class="year">2014</span>
+            <div>
+              <div class="title">
+                <a href="https://journal.r-project.org/articles/RJ-2014-031/" target="_blank" rel="noopener noreferrer">MVN: An R Package for Assessing Multivariate Normality</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Goksuluk D, Zararsiz G. <i>The R Journal</i>, 6(2), 151–162.</div>
+            </div>
+          </div>
+
+          <div class="pub" data-year="2014" data-topic="ml">
+            <span class="year">2014</span>
+            <div>
+              <div class="title">
+                <a href="https://pubmed.ncbi.nlm.nih.gov/25224081/" target="_blank" rel="noopener noreferrer">Drug/Nondrug Classification Using Support Vector Machines with Various Feature Selection Strategies</a>
+              </div>
+              <div class="meta"><b>Korkmaz S</b>, Zararsiz G, Goksuluk D. <i>Computer Methods and Programs in Biomedicine</i>, 117(2), 51–60.</div>
+            </div>
+          </div>
+
         </div>
 
+        <p class="empty" id="pubEmpty" hidden>No publications match that search. <button class="chip" type="button" data-reset>Clear filters</button></p>
 
-      <div class="pub">
-        <span class="year">2019</span>
-        <div>
-          <div class="title">
-            <a href="https://www.turkiyeklinikleri.com/article/en-small-drug-molecule-classification-using-deep-neural-networks-85020.html" target="_blank" rel="noopener noreferrer">
-              Small Drug Molecule Classification Using Deep Neural Networks
-            </a>
-          </div>
-          <div class="muted">Korkmaz S. <i>Turkiye Klinikleri Journal of Biostatistics</i>, 11(2), 93–101.</div>
-        </div>
-      </div>
-
-      <div class="pub">
-        <span class="year">2018</span>
-        <div>
-          <div class="title">
-            <a href="https://pubmed.ncbi.nlm.nih.gov/29864163/" target="_blank" rel="noopener noreferrer">
-              Investigation of Protein Quaternary Structure via Stoichiometry and Symmetry Information
-            </a>
-          </div>
-          <div class="muted">Korkmaz S, Duarte JM, Prlic A, Goksuluk D, Zararsiz G, Saracbasi O, Burley SK, Rose PW. <i>PLOS ONE</i>, 13(6): e0197176.</div>
-        </div>
-      </div>
-
-      <div class="pub">
-        <span class="year">2017</span>
-        <div>
-          <div class="title">
-            <a href="https://pubmed.ncbi.nlm.nih.gov/28889076/" target="_blank" rel="noopener noreferrer">
-              geneSurv: An interactive web-based tool for survival analysis in genomics research
-            </a>
-          </div>
-          <div class="muted">Korkmaz S, Goksuluk D, Zararsiz G, Karahan S. <i>Computers in Biology and Medicine</i>, 89, 487–496.</div>
-        </div>
-      </div>
-
-      <div class="pub">
-        <span class="year">2015</span>
-        <div>
-          <div class="title">
-            <a href="https://pubmed.ncbi.nlm.nih.gov/25928885/" target="_blank" rel="noopener noreferrer">
-              MLViS: A Web Tool for Machine Learning-Based Virtual Screening in Early-Phase of Drug Discovery and Development
-            </a>
-          </div>
-          <div class="muted">Korkmaz S, Zararsiz G, Goksuluk D. <i>PLOS ONE</i>, 10(4): e0124600.</div>
-        </div>
-      </div>
-
-
-      <div class="pub">
-        <span class="year">2014</span>
-        <div>
-          <div class="title">
-            <a href="https://journal.r-project.org/archive/2014-2/korkmaz-goksuluk-zararsiz.pdf" target="_blank" rel="noopener noreferrer">
-              MVN: An R Package for Assessing Multivariate Normality
-            </a>
-          </div>
-          <div class="muted">Korkmaz S, Goksuluk D, Zararsiz G. <i>The R Journal</i>, 6(2), 151–162.</div>
-        </div>
-      </div>
-
-      <div class="pub">
-        <span class="year">2014</span>
-        <div>
-          <div class="title">
-            <a href="https://pubmed.ncbi.nlm.nih.gov/25224081/" target="_blank" rel="noopener noreferrer">
-              Drug/Nondrug Classification Using Support Vector Machines with Various Feature Selection Strategies
-            </a>
-          </div>
-          <div class="muted">Korkmaz S, Zararsiz G, Goksuluk D. <i>Computer Methods and Programs in Biomedicine</i>, 117(2), 51–60.</div>
-        </div>
-      </div>
-
-
-        <p class="muted" style="margin-top:10px">Full list on <a href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener">Google Scholar</a>.</p>
+        <p class="muted" style="margin-top:16px">
+          Full list on <a href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener">Google Scholar</a>
+          and <a href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener">ORCID</a>.
+        </p>
       </section>
 
       <!-- CONTACT -->
-<!-- CONTACT -->
-<section id="contact" aria-label="Contact">
-  <h2>Contact</h2>
-  <div class="card">
-    <div class="link-row">
-      <!-- Email icon -->
-      <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <div>
-        <strong>Email</strong>
-        <p>
-          <a id="emailLink" href="mailto:selcukkorkmaz@trakya.edu.tr">selcukkorkmaz@trakya.edu.tr</a>
-        </p>
-      </div>
-    </div>
+      <section id="contact" aria-labelledby="contact-h">
+        <h2 id="contact-h">Contact</h2>
 
-    <div class="link-row">
-      <!-- Map pin icon -->
-      <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z" stroke="currentColor" stroke-width="1.5"/>
-        <circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="1.5"/>
-      </svg>
-      <div>
-        <strong>Address</strong>
-        <p class="address">Department of Biostatistics, Trakya University Faculty of Medicine, 22030 Edirne, Türkiye</p>
-      </div>
-    </div>
+        <div class="card">
+          <div class="link-row">
+            <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <strong>Email</strong>
+              <p><a id="emailLink" href="mailto:selcukkorkmaz@trakya.edu.tr">selcukkorkmaz@trakya.edu.tr</a></p>
+              <div class="contact-actions">
+                <button class="btn" id="copyEmail" type="button">
+                  <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                  Copy address
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="link-row">
+            <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21s-6-5.3-6-10a6 6 0 1 1 12 0c0 4.7-6 10-6 10z" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="12" cy="11" r="2.5" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+            <div>
+              <strong>Address</strong>
+              <p class="address">Department of Biostatistics<br />Trakya University Faculty of Medicine<br />22030 Edirne, Türkiye</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-</section>
 
-  <!-- =====================  FOOTER  ===================== -->
+  <button class="to-top" id="toTop" type="button" aria-label="Back to top">
+    <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
   <footer class="site-footer">
-    <span>© <span id="year"></span> Selçuk Korkmaz</span>
-    <span class="sep">&nbsp;·&nbsp;</span>
-    <a class="top" href="#about" aria-label="Back to top">Back to top</a>
-    <span class="sep">&nbsp;·&nbsp;</span>
-    <span>Last updated&nbsp;<span id="updated"></span></span>
+    <span>© <span id="year">2026</span> Selçuk Korkmaz</span>
+    <span>Last updated <time id="updated" datetime="2026-09-17">17 September 2026</time></span>
   </footer>
-  
-  
+
   <span id="live" class="sr-only" role="status" aria-live="polite"></span>
 
   <script>
-    // Year + updated
+  (function () {
+    'use strict';
+
+    /* ---------- Footer year ---------- */
     document.getElementById('year').textContent = new Date().getFullYear();
-    document.getElementById('updated').textContent = new Date().toLocaleDateString();
 
-    // Scrollspy
-    const navLinks = Array.from(document.querySelectorAll('#nav a'));
-    const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
-    const activate = (id) => { navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + id)); };
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(entry => { if (entry.isIntersecting) activate(entry.target.id); });
-    }, { rootMargin: '-50% 0px -40% 0px', threshold: [0,1] });
-    sections.forEach(sec => obs.observe(sec));
+    /* ---------- Theme toggle (persisted) ---------- */
+    var root = document.documentElement;
+    var meta = document.getElementById('metaThemeColor');
+    var THEME_COLORS = { light: '#eef1ee', dark: '#12171d' };
 
-    // Copy email to clipboard with feedback
-    (function(){
-      const btn = document.getElementById('copyEmail');
-      const link = document.getElementById('emailLink');
+    function currentTheme() {
+      if (root.classList.contains('dark')) return 'dark';
+      if (root.classList.contains('light')) return 'light';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function applyTheme(theme) {
+      root.classList.remove('light', 'dark');
+      root.classList.add(theme);
+      if (meta) meta.setAttribute('content', THEME_COLORS[theme]);
+      try { localStorage.setItem('theme', theme); } catch (e) {}
+      document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+        b.setAttribute('title', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      });
+    }
+    if (meta) meta.setAttribute('content', THEME_COLORS[currentTheme()]);
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+      });
+    });
+
+    /* ---------- Scrollspy across both nav bars ---------- */
+    var navLinks = Array.prototype.slice.call(document.querySelectorAll('#nav a, #mbNav a'));
+    var ids = ['about', 'software', 'publications', 'contact'];
+    var sections = ids.map(function (id) { return document.getElementById(id); }).filter(Boolean);
+
+    function activate(id) {
+      navLinks.forEach(function (a) {
+        var on = a.getAttribute('href') === '#' + id;
+        a.classList.toggle('active', on);
+        if (on) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current');
+      });
+      var active = document.querySelector('#mbNav a.active');
+      if (active && active.scrollIntoView) {
+        active.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      }
+    }
+    if ('IntersectionObserver' in window) {
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) { if (entry.isIntersecting) activate(entry.target.id); });
+      }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+      sections.forEach(function (s) { obs.observe(s); });
+    }
+
+    /* ---------- Publication search + topic filter ---------- */
+    var input   = document.getElementById('pubSearch');
+    var clearEl = document.getElementById('pubClear');
+    var chips   = Array.prototype.slice.call(document.querySelectorAll('.chip[data-topic]'));
+    var countEl = document.getElementById('pubCount');
+    var emptyEl = document.getElementById('pubEmpty');
+    var resetEl = document.getElementById('pubReset');
+
+    var pubs = Array.prototype.slice.call(document.querySelectorAll('#pubList .pub')).map(function (el) {
+      var title = el.querySelector('.title');
+      var metaRow = el.querySelector('.meta');
+      return {
+        el: el,
+        topics: (el.getAttribute('data-topic') || '').split(/\s+/),
+        year: el.getAttribute('data-year') || '',
+        text: (el.textContent || '').toLowerCase().replace(/\s+/g, ' '),
+        nodes: [title, metaRow].filter(Boolean),
+        original: [title, metaRow].filter(Boolean).map(function (n) { return n.innerHTML; })
+      };
+    });
+    var TOTAL = pubs.length;
+    var activeTopic = 'all';
+
+    function escapeRe(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+
+    function clearMarks(p) {
+      p.nodes.forEach(function (n, i) { n.innerHTML = p.original[i]; });
+    }
+
+    function highlight(p, query) {
+      if (!query) return;
+      var re = new RegExp(escapeRe(query), 'gi');
+      p.nodes.forEach(function (node) {
+        var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT, null);
+        var targets = [], n;
+        while ((n = walker.nextNode())) { if (re.test(n.nodeValue)) { re.lastIndex = 0; targets.push(n); } }
+        targets.forEach(function (textNode) {
+          var frag = document.createDocumentFragment();
+          var value = textNode.nodeValue, last = 0, m;
+          re.lastIndex = 0;
+          while ((m = re.exec(value)) !== null) {
+            if (m.index > last) frag.appendChild(document.createTextNode(value.slice(last, m.index)));
+            var mark = document.createElement('mark');
+            mark.textContent = m[0];
+            frag.appendChild(mark);
+            last = m.index + m[0].length;
+            if (m[0].length === 0) re.lastIndex++;
+          }
+          if (last < value.length) frag.appendChild(document.createTextNode(value.slice(last)));
+          textNode.parentNode.replaceChild(frag, textNode);
+        });
+      });
+    }
+
+    function label(shown, query, topic) {
+      if (shown === TOTAL && !query && topic === 'all') return 'Showing all ' + TOTAL + ' publications';
+      if (shown === 0) return 'No matches';
+      var chipLabel = topic === 'all' ? '' : ' in ' + (chips.filter(function (c) { return c.dataset.topic === topic; })[0].textContent.trim().toLowerCase());
+      return 'Showing ' + shown + ' of ' + TOTAL + ' publications' + chipLabel + (query ? ' matching “' + query + '”' : '');
+    }
+
+    function render() {
+      var query = (input.value || '').trim();
+      var q = query.toLowerCase();
+      var shown = 0;
+
+      pubs.forEach(function (p) {
+        var topicOk = activeTopic === 'all' || p.topics.indexOf(activeTopic) !== -1;
+        var textOk = !q || p.text.indexOf(q) !== -1;
+        var visible = topicOk && textOk;
+        p.el.hidden = !visible;
+        clearMarks(p);
+        if (visible) { shown++; if (q) highlight(p, query); }
+      });
+
+      countEl.textContent = label(shown, query, activeTopic);
+      emptyEl.hidden = shown !== 0;
+      var filtered = !!q || activeTopic !== 'all';
+      resetEl.hidden = !filtered;
+    }
+
+    function resetAll() {
+      input.value = '';
+      activeTopic = 'all';
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c.dataset.topic === 'all')); });
+      render();
+      input.focus();
+    }
+
+    var debounce;
+    input.addEventListener('input', function () {
+      clearTimeout(debounce);
+      debounce = setTimeout(render, 110);
+    });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { input.value = ''; render(); }
+    });
+    clearEl.addEventListener('click', function () { input.value = ''; render(); input.focus(); });
+    resetEl.addEventListener('click', resetAll);
+    emptyEl.querySelector('[data-reset]').addEventListener('click', resetAll);
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        activeTopic = chip.dataset.topic;
+        chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+        render();
+      });
+    });
+
+    // "/" focuses search from anywhere
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+      e.preventDefault();
+      input.focus();
+      input.select();
+    });
+
+    /* ---------- Copy email ---------- */
+    (function () {
+      var btn = document.getElementById('copyEmail');
+      var link = document.getElementById('emailLink');
+      var live = document.getElementById('live');
       if (!btn || !link) return;
-      const email = (link.getAttribute('href') || '').replace(/^mailto:/,'') || link.textContent.trim();
-      btn.addEventListener('click', async () => {
-        try{
-          await navigator.clipboard.writeText(email);
-          const original = btn.textContent;
-          btn.textContent = 'Copied';
+      var email = (link.getAttribute('href') || '').replace(/^mailto:/, '') || link.textContent.trim();
+      var labelEl = btn.lastChild;
+
+      btn.addEventListener('click', function () {
+        var done = function () {
+          labelEl.nodeValue = ' Copied';
           btn.classList.add('copied');
-          var live = document.getElementById('live');
-          if (live) live.textContent = 'Email copied to clipboard';
-          setTimeout(()=>{ btn.textContent = original; btn.classList.remove('copied'); }, 1200);
-        }catch(e){
-          // Fallback: select the link text
-          const range = document.createRange();
-          range.selectNodeContents(link);
-          const sel = window.getSelection();
-          sel.removeAllRanges(); sel.addRange(range);
-          btn.textContent = 'Select';
-          setTimeout(()=>{ sel.removeAllRanges(); btn.textContent = 'Copy'; }, 1000);
+          if (live) live.textContent = 'Email address copied to clipboard';
+          setTimeout(function () { labelEl.nodeValue = ' Copy address'; btn.classList.remove('copied'); }, 1400);
+        };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(email).then(done, fallback);
+        } else { fallback(); }
+
+        function fallback() {
+          var ta = document.createElement('textarea');
+          ta.value = email;
+          ta.setAttribute('readonly', '');
+          ta.style.cssText = 'position:absolute;left:-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); done(); } catch (e) {
+            labelEl.nodeValue = ' Press ⌘C';
+          }
+          document.body.removeChild(ta);
         }
       });
     })();
+
+    /* ---------- Back to top ---------- */
+    var toTop = document.getElementById('toTop');
+    var ticking = false;
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        toTop.classList.toggle('show', window.scrollY > 600);
+        ticking = false;
+      });
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    toTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      document.querySelector('.skip-link').focus({ preventScroll: true });
+    });
+
+    render();
+  })();
   </script>
 </body>
 </html>
