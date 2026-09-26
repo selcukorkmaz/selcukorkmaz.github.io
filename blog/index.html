@@ -244,6 +244,21 @@
     .post p{ margin:0; font-size:14.5px; color:var(--muted); line-height:1.6; max-width:none; text-wrap:pretty }
     .post .focus-tags{ margin:4px 0 0 }
     .post-more{ font-size:13.5px; font-weight:600; color:var(--accent) }
+    .post-foot{ display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap }
+    /* Share sits above the card-wide title link so it stays clickable. */
+    .post-share, .share-panel{ position:relative; z-index:1 }
+    .post-share{
+      font:inherit; font-size:13px; font-weight:500; color:var(--muted); background:none; border:0;
+      padding:4px 2px; cursor:pointer; text-decoration:underline; text-underline-offset:3px;
+    }
+    .post-share:hover, .post-share[aria-expanded="true"]{ color:var(--text) }
+    .share-panel{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding-top:12px; border-top:1px dashed var(--line) }
+    .share-panel[hidden]{ display:none }
+    .share-panel .btn{ font-size:12.5px; padding:5px 10px }
+    .share-panel .sep{ width:1px; align-self:stretch; background:var(--line); margin:0 2px }
+    .share-status{ flex-basis:100%; margin:0; font-size:13px; color:var(--muted); max-width:none }
+    .share-status:empty{ display:none }
+    .share-ta{ position:absolute; left:-9999px; top:0; width:1px; height:1px; opacity:0 }
 
     /* =====================  FOOTER  ===================== */
     .site-footer{
@@ -296,6 +311,7 @@
       main{ max-width:100% }
       section{ padding:20px 18px }
       .post{ padding:16px }
+      .share-panel .sep{ flex-basis:100%; width:auto; height:0; margin:0 }
       .site-footer{ flex-direction:column; align-items:center; text-align:center; padding-bottom:calc(24px + env(safe-area-inset-bottom)) }
     }
 
@@ -400,8 +416,8 @@
       <section class="hero" aria-labelledby="blog-h">
         <h1 id="blog-h">Blog</h1>
         <p class="intro">
-          Longer write-ups of my papers: the methods, the R software behind them, and the numbers,
-          in a form that is easier to read than a PDF.
+          Longer write-ups of my papers: the methods, the R software behind them, and the numbers
+          behind the conclusions.
         </p>
       </section>
 
@@ -418,7 +434,8 @@
           3. In the copy, change: the href (to "<slug>/", with the trailing slash), the title,
              the <time> element (datetime="YYYY-MM-DD" plus the readable date), the reading time,
              the one- or two-sentence summary, and the tags (one <span class="tag"> each).
-          Nothing else needs to change: no build step, no list to register the post in.
+          Nothing else needs to change: no build step, no list to register the post in. The
+          "Share" menu builds its links and citations from the title, href and <time> above.
         -->
         <div class="post-list">
 
@@ -426,7 +443,7 @@
             <p class="post-meta">
               <time datetime="2026-09-26">26 September 2026</time>
               <span class="dot" aria-hidden="true">·</span>
-              <span>32 min read</span>
+              <span>43 min read</span>
             </p>
             <h3><a href="leakage-defence-in-layers/">Leakage defence in layers: how splitGraph, fastml and bioLeak divide the work of honest performance estimation</a></h3>
             <p>Leakage in cross-validation comes from study structure, from procedure, and from artefacts only the data reveal. This methods note shows how three R packages take one source each, how they compose into one pipeline with a feedback loop, and what each layer buys in a 30-replicate simulation.</p>
@@ -435,7 +452,11 @@
               <span class="tag">cross-validation</span>
               <span class="tag">R packages</span>
             </div>
-            <span class="post-more" aria-hidden="true">Read the post →</span>
+            <div class="post-foot">
+              <span class="post-more" aria-hidden="true">Read the post →</span>
+              <button class="post-share" type="button" aria-expanded="false" hidden>Share</button>
+            </div>
+            <div class="share-panel" hidden></div>
           </article>
 
         </div>
@@ -487,6 +508,91 @@
     if (active && active.offsetLeft + active.offsetWidth > strip.clientWidth) {
       strip.scrollLeft = active.offsetLeft + active.offsetWidth + 12 - strip.clientWidth;
     }
+
+    /* ---------- Share / cite menu on each post card ---------- */
+    // Everything comes from the card itself: the title link, its href and the <time> element.
+    var BASE = 'https://selcukorkmaz.github.io/blog/';
+    var AUTHOR = { family: 'Korkmaz', given: 'Selçuk', bib: 'Korkmaz, Sel{\\c{c}}uk', initials: 'S.' };
+    var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var enc = encodeURIComponent;
+
+    function citations(title, url, iso) {
+      var d = iso.split('-'), y = d[0], m = +d[1], day = +d[2];
+      var slug = url.replace(/\/$/, '').split('/').pop();
+      var key = 'korkmaz' + y + (slug.split('-')[0] || 'post');
+      var apaTitle = title.replace(/: (\w)/, function (_, c) { return ': ' + c.toUpperCase(); });
+      return {
+        bibtex: '@misc{' + key + ',\n  author       = {' + AUTHOR.bib + '},\n  title        = {' + title +
+          '},\n  year         = {' + y + '},\n  month        = ' + MONTHS[m - 1].slice(0, 3).toLowerCase() +
+          ',\n  date         = {' + iso + '},\n  howpublished = {\\url{' + url + '}},\n  url          = {' + url +
+          '},\n  note         = {Blog post}\n}',
+        apa: AUTHOR.family + ', ' + AUTHOR.initials + ' (' + y + ', ' + MONTHS[m - 1] + ' ' + day + '). ' +
+          apaTitle + ' [Blog post]. ' + url
+      };
+    }
+    function copyText(text, panel, what) {
+      var st = panel.querySelector('.share-status');
+      var say = function (msg) { st.textContent = msg; clearTimeout(st._t); st._t = setTimeout(function () { st.textContent = ''; }, 3000); };
+      var fallback = function () {
+        var ta = document.createElement('textarea');
+        ta.className = 'share-ta'; ta.value = text; ta.setAttribute('readonly', '');
+        panel.appendChild(ta); ta.select();
+        var ok = false; try { ok = document.execCommand('copy'); } catch (e) {}
+        panel.removeChild(ta);
+        say(ok ? what + ' copied' : 'Copy failed. Select and copy by hand: ' + text);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(function () { say(what + ' copied'); }, fallback);
+      } else { fallback(); }
+    }
+    Array.prototype.slice.call(document.querySelectorAll('article.post')).forEach(function (card, i) {
+      var link = card.querySelector('h3 a'), time = card.querySelector('time');
+      var btn = card.querySelector('.post-share'), panel = card.querySelector('.share-panel');
+      if (!link || !time || !btn || !panel) return;
+      var title = link.textContent.replace(/\s+/g, ' ').trim();
+      var url = new URL(link.getAttribute('href'), BASE).href;
+      var cite = citations(title, url, time.getAttribute('datetime'));
+      panel.id = 'share-' + (i + 1);
+      btn.setAttribute('aria-controls', panel.id);
+      btn.setAttribute('aria-label', 'Share or cite: ' + title);
+      btn.hidden = false;
+
+      function el(tag, cls, text, attrs) {
+        var e = document.createElement(tag); e.className = cls; e.textContent = text;
+        for (var k in attrs || {}) e.setAttribute(k, attrs[k]);
+        panel.appendChild(e); return e;
+      }
+      function build() {
+        el('button', 'btn', 'Copy link', { type: 'button' }).addEventListener('click', function () { copyText(url, panel, 'Link'); });
+        if (navigator.share) {
+          el('button', 'btn', 'Share…', { type: 'button' }).addEventListener('click', function () {
+            navigator.share({ title: title, url: url }).catch(function () {});
+          });
+        }
+        [['X', 'https://x.com/intent/post?url=' + enc(url) + '&text=' + enc(title)],
+         ['LinkedIn', 'https://www.linkedin.com/sharing/share-offsite/?url=' + enc(url)],
+         ['Bluesky', 'https://bsky.app/intent/compose?text=' + enc(title + ' ' + url)],
+         ['Email', 'mailto:?subject=' + enc(title) + '&body=' + enc(url)]].forEach(function (s) {
+          var a = el('a', 'btn', s[0], { href: s[1] });
+          if (s[0] !== 'Email') { a.target = '_blank'; a.rel = 'noopener'; }
+        });
+        el('span', 'sep', '', { 'aria-hidden': 'true' });
+        el('button', 'btn', 'Copy BibTeX', { type: 'button' }).addEventListener('click', function () { copyText(cite.bibtex, panel, 'BibTeX'); });
+        el('button', 'btn', 'Copy APA', { type: 'button' }).addEventListener('click', function () { copyText(cite.apa, panel, 'APA citation'); });
+        el('p', 'share-status', '', { role: 'status', 'aria-live': 'polite' });
+      }
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        if (!open && !panel.childNodes.length) build();
+        btn.setAttribute('aria-expanded', String(!open));
+        panel.hidden = open;
+      });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+          btn.setAttribute('aria-expanded', 'false'); panel.hidden = true; btn.focus();
+        }
+      });
+    });
 
     /* ---------- Links to other pages when opened from disk ---------- */
     // On file:// a folder link such as "../" shows a directory listing; point it at index.html.
