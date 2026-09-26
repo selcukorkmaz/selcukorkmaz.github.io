@@ -7,7 +7,7 @@ Methods note · R software for biomedical machine learning
 > Source: https://selcukorkmaz.github.io/blog/leakage-defence-in-layers/ · 26 September 2026
 
 Selçuk Korkmaz\
-Department of Biostatistics, Trakya University, Edirne, Türkiye · September 2026
+26 September 2026
 
 `splitGraph 0.4.0` · `fastml 0.7.10` · `bioLeak 0.3.8`
 
