@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog — Selçuk Korkmaz</title>
+  <meta name="description" content="Write-ups of Selçuk Korkmaz's papers on leakage-aware machine learning evaluation, biostatistics and open-source R software." />
+  <link rel="canonical" href="https://selcukorkmaz.github.io/blog/" />
+
+  <!-- Social preview -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Blog — Selçuk Korkmaz" />
+  <meta property="og:description" content="Write-ups of papers on leakage-aware machine learning evaluation, biostatistics and open-source R software." />
+  <meta property="og:url" content="https://selcukorkmaz.github.io/blog/" />
+  <meta property="og:image" content="https://selcukorkmaz.github.io/images/profile-v2.jpg" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:creator" content="@selcukorkmaz" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="light dark">
+  <meta id="metaThemeColor" name="theme-color" content="#eef1ee">
+
+  <style>
+    /* Tokens and components copied from ../index.html so the two pages match. */
+    /* =====================  TOKENS  ===================== */
+    *,*::before,*::after{ box-sizing:border-box }
+    html, body{ max-width:100%; overflow-x:clip }
+    img{ max-width:100%; height:auto }
+    svg{ max-width:100% }
+
+    :root{
+      --maxw:1200px; --contentw:860px; --radius:16px;
+      --space-1:8px; --space-2:16px; --space-3:24px; --space-4:32px;
+
+      --bg:#eef1ee;
+      --bg-accent-1: rgba(35,58,88,.05);
+      --bg-accent-2: rgba(112,121,130,.04);
+      --card:#fbfcfa;
+      --text:#1e252d;
+      --muted:#5f686f;
+      --line:#d7dde0;
+      --shadow:0 12px 30px rgba(26,34,44,.075);
+      --accent:#233a58;
+      --accent-ink:#18293f;
+      --accent-visited:#566270;
+      --header-h:0px;
+    }
+
+    @media (prefers-color-scheme: dark){
+      :root:not(.light){
+        --bg:#12171d;
+        --bg-accent-1: rgba(110,140,173,.12);
+        --bg-accent-2: rgba(112,121,130,.08);
+        --card:#1a2027;
+        --text:#eaedf0;
+        --muted:#a9b1b9;
+        --line:#303944;
+        --shadow:0 16px 36px rgba(0,0,0,.42);
+        --accent:#9eb6cf;
+        --accent-ink:#dbe6f1;
+        --accent-visited:#b7c3cf;
+      }
+    }
+    /* Explicit user choice wins over OS preference */
+    html.dark{
+      --bg:#12171d; --bg-accent-1: rgba(110,140,173,.12); --bg-accent-2: rgba(112,121,130,.08);
+      --card:#1a2027; --text:#eaedf0; --muted:#a9b1b9; --line:#303944;
+      --shadow:0 16px 36px rgba(0,0,0,.42);
+      --accent:#9eb6cf; --accent-ink:#dbe6f1; --accent-visited:#b7c3cf;
+    }
+    html.light{
+      --bg:#eef1ee; --bg-accent-1: rgba(35,58,88,.05); --bg-accent-2: rgba(112,121,130,.04);
+      --card:#fbfcfa; --text:#1e252d; --muted:#5f686f; --line:#d7dde0;
+      --shadow:0 12px 30px rgba(26,34,44,.075);
+      --accent:#233a58; --accent-ink:#18293f; --accent-visited:#566270;
+    }
+
+    /* =====================  BASE  ===================== */
+    html{ scroll-behavior:smooth; scroll-padding-top: calc(var(--header-h) + 16px); }
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto }
+      *,*::before,*::after{ animation-duration:.01ms !important; transition-duration:.01ms !important }
+    }
+
+    body{
+      margin:0;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 110% -20%, var(--bg-accent-1), transparent 60%),
+        radial-gradient(900px 600px at -10% 0%, var(--bg-accent-2), transparent 60%),
+        var(--bg);
+      font: 400 16px/1.65 Inter, ui-sans-serif, -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial;
+      letter-spacing:.1px;
+      -webkit-text-size-adjust:100%;
+    }
+    h1,h2,h3{ margin:0; letter-spacing:.1px }
+    h1{ font-weight:800; letter-spacing:.2px; font-size:clamp(26px,3.6vw,40px); line-height:1.18; text-wrap:balance }
+    h2{ font-weight:700; font-size:clamp(20px,2.2vw,26px); margin-bottom:.75rem; position:relative }
+    h2::after{ content:""; position:absolute; left:0; bottom:-10px; width:56px; height:3px; background:var(--accent); border-radius:2px }
+    h3{ font-size:17px; margin:.2rem 0 .4rem; font-weight:600 }
+    p{ margin:.6rem 0 1rem }
+    .muted{ color:var(--muted) }
+    a{ color:var(--accent); text-decoration:none }
+    a:hover{ text-decoration:underline; text-underline-offset:2px }
+    a:visited{ color:var(--accent-visited) }
+    :focus-visible{ outline:2px solid var(--accent); outline-offset:3px; border-radius:6px }
+    .skip-link{
+      position:fixed;
+      left: calc(12px + env(safe-area-inset-left));
+      top:  calc(12px + env(safe-area-inset-top));
+      z-index:1001; background:var(--card); color:var(--text);
+      border:1px solid var(--line); padding:8px 12px; border-radius:10px;
+      box-shadow:none; transform: translateY(-160%); transition: transform .2s ease;
+    }
+    .skip-link:focus{ transform: translateY(0); box-shadow:var(--shadow) }
+
+    /* =====================  LAYOUT  ===================== */
+    .wrap{
+      display:grid; grid-template-columns:300px minmax(0,1fr); gap:48px;
+      max-width:var(--maxw); margin:0 auto; padding:var(--space-3) var(--space-3) 80px;
+      align-items:start;
+    }
+    main{ display:grid; gap:var(--space-4); max-width:var(--contentw); min-width:0 }
+    section{
+      margin-block:var(--space-2);
+      padding:var(--space-3);
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      scroll-margin-top: calc(var(--header-h) + 16px);
+    }
+    section p{ max-width:72ch }
+
+    /* =====================  SIDEBAR  ===================== */
+    aside{
+      position:relative; display:flex; flex-direction:column; align-self:start;
+      height:fit-content; background:var(--card); border:1px solid var(--line);
+      border-radius:18px; padding:20px 20px 12px; box-shadow:var(--shadow);
+    }
+    @media (min-width: 901px){ aside{ position:sticky; top:18px } }
+
+    .brand{ display:flex; flex-direction:column; gap:10px; margin-bottom:12px }
+    .avatar{
+      width:100%; max-width:240px; aspect-ratio:1; object-fit:cover; object-position:center;
+      border-radius:50%; border:2px solid var(--line); box-shadow:var(--shadow); background:#d7dcdf;
+    }
+    .name{ font-weight:800; letter-spacing:.2px; font-size:20px; margin-top:8px }
+    .role{ color:var(--muted); font-size:14px; line-height:1.4 }
+    .affil{ color:var(--muted); font-size:13px; line-height:1.45; margin-top:2px }
+
+    .nav{ margin:16px 0 6px; padding:12px 0 0; border-top:1px dashed var(--line) }
+    .nav a{
+      position:relative; display:block;
+      padding:10px 12px 10px 16px; border-radius:12px; color:var(--text); font-weight:500;
+    }
+    .nav a:hover{ background:color-mix(in srgb, var(--accent) 8%, transparent); text-decoration:none }
+    .nav a.active{ background:color-mix(in srgb, var(--accent) 12%, transparent) }
+    .nav a.active::before{
+      content:""; position:absolute; left:6px; top:10px; bottom:10px; width:3px;
+      background:var(--accent); border-radius:2px;
+    }
+
+    /* Social pills */
+    .icon-18{ width:18px; height:18px; flex:0 0 18px; color:var(--accent); opacity:.95 }
+    .nav-profiles{ margin-top:12px; padding-top:12px; border-top:1px dashed var(--line) }
+    .icon-links{ display:flex; flex-wrap:wrap; gap:10px }
+    .social-pill{
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      width:40px; height:40px; border-radius:999px;
+      border:1px solid var(--line); background:var(--card); color:var(--text);
+      box-shadow:var(--shadow); text-decoration:none;
+      transition:transform .15s ease, border-color .15s ease;
+    }
+    .social-pill:hover{ transform:translateY(-1px); border-color:var(--accent); text-decoration:none }
+    html.dark .social-pill{
+      background: color-mix(in srgb, var(--accent) 10%, var(--card));
+      border-color: color-mix(in srgb, var(--accent) 20%, var(--line));
+    }
+
+    /* Theme toggle */
+    .sidebar-tools{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px; padding-top:12px; border-top:1px dashed var(--line) }
+    .theme-toggle{
+      display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:500;
+      padding:7px 12px; border-radius:999px; cursor:pointer;
+      border:1px solid var(--line); background:var(--card); color:var(--text);
+    }
+    .theme-toggle:hover{ border-color:var(--accent) }
+    .theme-toggle .icon-18{ color:currentColor }
+    html:not(.dark) .i-moon{ display:none }
+    html.dark .i-sun{ display:none }
+    @media (prefers-color-scheme: dark){
+      html:not(.light):not(.dark) .i-sun{ display:none }
+      html:not(.light):not(.dark) .i-moon{ display:inline }
+    }
+    /* Controls that do nothing without scripting: show them only once JS confirms it ran. */
+    html:not(.js) [data-theme-toggle]{ display:none }
+
+    /* =====================  BUTTONS  ===================== */
+    .btn{
+      display:inline-flex; align-items:center; gap:7px;
+      font-size:13px; font-weight:500; padding:7px 12px; border-radius:10px;
+      border:1px solid var(--line); background:var(--card); color:var(--text);
+      cursor:pointer; text-decoration:none; transition:border-color .15s ease, transform .15s ease;
+    }
+    .btn:hover{ border-color:var(--accent); text-decoration:none; transform:translateY(-1px) }
+    .btn:visited{ color:var(--text) }
+
+    /* =====================  HERO  ===================== */
+    .hero h1{ margin-bottom:.5rem }
+    .intro{ color:var(--muted); line-height:1.7; text-wrap:pretty; max-width:70ch }
+
+    .focus-tags{ display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 0 }
+    .tag{
+      font-size:12.5px; font-weight:500; padding:5px 11px; border-radius:999px;
+      border:1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+      background: color-mix(in srgb, var(--accent) 8%, var(--card));
+      color: color-mix(in srgb, var(--text) 88%, var(--accent));
+    }
+
+    /* =====================  CARDS  ===================== */
+    .card{
+      border:1px solid var(--line); border-radius:var(--radius);
+      padding:var(--space-2); background:var(--card); box-shadow:var(--shadow);
+      display:flex; flex-direction:column; gap:10px;
+      transition:border-color .15s ease, transform .15s ease;
+    }
+
+    /* =====================  POST LIST (blog only)  ===================== */
+    .post-list{ display:grid; gap:16px; margin-top:26px }
+    .post{ position:relative; padding:20px }
+    .post:hover, .post:focus-within{ border-color:color-mix(in srgb, var(--accent) 45%, var(--line)) }
+    .post:hover{ transform:translateY(-2px) }
+    .post .post-meta{ display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; margin:0; font-size:13px; color:var(--muted) }
+    .post-meta .dot{ opacity:.6 }
+    .post h3{ margin:0; font-size:18.5px; font-weight:700; line-height:1.38; text-wrap:pretty }
+    .post h3 a, .post h3 a:visited{ color:var(--text) }
+    /* The title link covers the whole card, so the card is one keyboard stop. */
+    .post h3 a::after{ content:""; position:absolute; inset:0; border-radius:var(--radius) }
+    .post h3 a:hover{ text-decoration:none }
+    .post:hover h3 a{ color:var(--accent) }
+    .post p{ margin:0; font-size:14.5px; color:var(--muted); line-height:1.6; max-width:none; text-wrap:pretty }
+    .post .focus-tags{ margin:4px 0 0 }
+    .post-more{ font-size:13.5px; font-weight:600; color:var(--accent) }
+
+    /* =====================  FOOTER  ===================== */
+    .site-footer{
+      max-width:var(--maxw); margin:36px auto 0; padding:14px var(--space-3) 48px;
+      color:var(--muted); font-size:13.5px; display:flex; justify-content:space-between;
+      flex-wrap:wrap; gap:8px; border-top:1px solid var(--line);
+    }
+    .site-footer a{ color:var(--muted); text-decoration:underline; text-underline-offset:2px }
+
+    /* =====================  MOBILE  ===================== */
+    .mobile-bar{ display:none }
+
+    @media (max-width: 900px){
+      :root{ --header-h:56px }
+
+      .mobile-bar{
+        display:flex; align-items:center; gap:10px;
+        position:sticky; top:0; z-index:950;
+        padding:8px 12px calc(8px);
+        background: var(--bg);
+        border-bottom:1px solid var(--line);
+      }
+      .mobile-bar .mb-nav{
+        display:flex; gap:8px; overflow-x:auto; flex:1; scrollbar-width:none;
+        -webkit-overflow-scrolling:touch;
+      }
+      .mobile-bar .mb-nav::-webkit-scrollbar{ display:none }
+      .mobile-bar .mb-nav a{
+        flex:0 0 auto; font-size:13.5px; font-weight:500; padding:7px 13px;
+        border-radius:999px; border:1px solid var(--line); background:var(--card); color:var(--muted);
+      }
+      .mobile-bar .mb-nav a.active{
+        color:var(--text); border-color:color-mix(in srgb, var(--accent) 42%, var(--line));
+        background: color-mix(in srgb, var(--accent) 14%, var(--card));
+      }
+      .mobile-bar .theme-toggle{ flex:0 0 auto; padding:7px 10px }
+      .mobile-bar .theme-toggle .tt-label{ display:none }
+
+      body{ background-image:none }
+      section, .card, aside, .social-pill, .btn, .mobile-bar{ box-shadow:none }
+
+      .wrap{ grid-template-columns:1fr; gap:20px; padding:16px 16px 56px; align-items:stretch }
+      aside{ position:relative; top:auto; padding:18px; border-radius:14px }
+      .brand{ flex-direction:row; align-items:center; gap:14px; text-align:left }
+      .avatar{ width:82px; max-width:82px; flex:0 0 82px; margin:0 }
+      .name{ margin-top:0; font-size:19px }
+      /* Sidebar nav + toggle are redundant with the sticky bar on mobile */
+      aside .nav, aside .sidebar-tools{ display:none }
+      .nav-profiles{ margin-top:14px; padding-top:14px }
+      main{ max-width:100% }
+      section{ padding:20px 18px }
+      .post{ padding:16px }
+      .site-footer{ flex-direction:column; align-items:center; text-align:center; padding-bottom:calc(24px + env(safe-area-inset-bottom)) }
+    }
+
+    @media print{
+      aside, .mobile-bar, .skip-link{ display:none !important }
+      .wrap{ display:block; padding:0 }
+      section{ box-shadow:none; border:0; padding:0 0 18px; break-inside:avoid }
+      body{ background:#fff; color:#000 }
+      a{ color:#000 }
+      .post{ break-inside:avoid }
+    }
+  </style>
+  <script>
+    /* Apply the saved theme before first paint (same key and classes as ../index.html). */
+    (function () {
+      document.documentElement.classList.add('js');
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'dark' || t === 'light') document.documentElement.classList.add(t);
+      } catch (e) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- =====================  MOBILE STICKY BAR  ===================== -->
+  <div class="mobile-bar">
+    <nav class="mb-nav" id="mbNav" aria-label="Site navigation">
+      <a href="../#about">About</a>
+      <a href="../#software">Software</a>
+      <a href="../#publications">Publications</a>
+      <a href="../#contact">Contact</a>
+      <a href="./" class="active" aria-current="page">Blog</a>
+    </nav>
+    <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
+      <svg class="icon-18 i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="icon-18 i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <div class="wrap">
+    <!-- =====================  SIDEBAR  ===================== -->
+    <aside aria-label="Profile and navigation">
+      <div class="brand">
+        <img class="avatar" src="../images/profile-v2.jpg" alt="Selçuk Korkmaz" width="480" height="480" decoding="async" />
+        <div>
+          <div class="name">Selçuk Korkmaz, PhD</div>
+          <div class="role">Professor of Biostatistics</div>
+          <div class="affil">Trakya University Faculty of Medicine</div>
+        </div>
+      </div>
+
+      <nav class="nav" id="nav" aria-label="Site navigation">
+        <a href="../#about">About</a>
+        <a href="../#software">Software</a>
+        <a href="../#publications">Publications</a>
+        <a href="../#contact">Contact</a>
+        <a href="./" class="active" aria-current="page">Blog</a>
+      </nav>
+
+      <div class="nav-profiles">
+        <div class="icon-links" role="list" aria-label="Profiles elsewhere">
+          <a class="social-pill" href="https://github.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="GitHub profile" title="GitHub">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 2C6.48 2 2 6.58 2 12.26c0 4.52 2.87 8.35 6.84 9.7.5.09.68-.22.68-.49 0-.24-.01-.87-.01-1.7-2.78.62-3.37-1.37-3.37-1.37-.45-1.18-1.11-1.5-1.11-1.5-.9-.63.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.57 2.34 1.12 2.9.86.09-.66.35-1.12.63-1.38-2.22-.26-4.55-1.14-4.55-5.08 0-1.12.39-2.04 1.03-2.76-.1-.26-.45-1.31.1-2.73 0 0 .85-.28 2.8 1.05a9.4 9.4 0 0 1 5.1 0c1.95-1.33 2.8-1.05 2.8-1.05.55 1.42.2 2.47.1 2.73.64.72 1.03 1.64 1.03 2.76 0 3.95-2.34 4.82-4.57 5.08.36.32.68.95.68 1.92 0 1.39-.01 2.51-.01 2.85 0 .27.18.59.69.49A10.02 10.02 0 0 0 22 12.26C22 6.58 17.52 2 12 2z"/>
+            </svg>
+          </a>
+          <a class="social-pill" href="https://scholar.google.com/citations?user=TKOcnUwAAAAJ&hl=tr&oi=ao" target="_blank" rel="noopener" role="listitem" aria-label="Google Scholar profile" title="Google Scholar">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
+            </svg>
+          </a>
+          <a class="social-pill" href="https://orcid.org/0000-0003-4632-6850" target="_blank" rel="noopener" role="listitem" aria-label="ORCID profile" title="ORCID">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z"/>
+            </svg>
+          </a>
+          <a class="social-pill" href="https://x.com/selcukorkmaz" target="_blank" rel="noopener" role="listitem" aria-label="X (Twitter) profile" title="X">
+            <svg class="icon-18" viewBox="0 0 24 24" aria-hidden="true">
+              <path fill="currentColor" d="M14.234 10.162 22.977 0h-2.072l-7.591 8.824L7.251 0H.258l9.168 13.343L.258 24H2.33l8.016-9.318L16.749 24h6.993zm-2.837 3.299-.929-1.329L3.076 1.56h3.182l5.965 8.532.929 1.329 7.754 11.09h-3.182z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="sidebar-tools">
+        <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
+          <svg class="icon-18 i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <svg class="icon-18 i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <span class="tt-label">Theme</span>
+        </button>
+        <a class="btn" href="mailto:selcukkorkmaz@trakya.edu.tr">
+          <svg class="icon-18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 7l9 6 9-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Email
+        </a>
+      </div>
+    </aside>
+
+    <!-- =====================  MAIN  ===================== -->
+    <main id="main">
+      <section class="hero" aria-labelledby="blog-h">
+        <h1 id="blog-h">Blog</h1>
+        <p class="intro">
+          Longer write-ups of my papers: the methods, the R software behind them, and the numbers,
+          in a form that is easier to read than a PDF.
+        </p>
+      </section>
+
+      <section id="posts" aria-labelledby="posts-h">
+        <h2 id="posts-h">Posts</h2>
+
+        <!--
+          HOW TO ADD A POST
+          1. Put the post in its own folder: blog/<slug>/index.html (lower-case, hyphens,
+             e.g. blog/my-new-paper/index.html). Link to the home page as "../../" and to
+             this list as "../" from inside it.
+          2. Copy one whole <article class="card post"> ... </article> block below and paste it
+             at the TOP of the list, so the newest post comes first.
+          3. In the copy, change: the href (to "<slug>/", with the trailing slash), the title,
+             the <time> element (datetime="YYYY-MM-DD" plus the readable date), the reading time,
+             the one- or two-sentence summary, and the tags (one <span class="tag"> each).
+          Nothing else needs to change: no build step, no list to register the post in.
+        -->
+        <div class="post-list">
+
+          <article class="card post">
+            <p class="post-meta">
+              <time datetime="2026-09-26">26 September 2026</time>
+              <span class="dot" aria-hidden="true">·</span>
+              <span>32 min read</span>
+            </p>
+            <h3><a href="leakage-defence-in-layers/">Leakage defence in layers: how splitGraph, fastml and bioLeak divide the work of honest performance estimation</a></h3>
+            <p>Leakage in cross-validation comes from study structure, from procedure, and from artefacts only the data reveal. This methods note shows how three R packages take one source each, how they compose into one pipeline with a feedback loop, and what each layer buys in a 30-replicate simulation.</p>
+            <div class="focus-tags" aria-label="Tags">
+              <span class="tag">data leakage</span>
+              <span class="tag">cross-validation</span>
+              <span class="tag">R packages</span>
+            </div>
+            <span class="post-more" aria-hidden="true">Read the post →</span>
+          </article>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <span>© <span id="year">2026</span> Selçuk Korkmaz</span>
+    <span>Last updated <time id="updated" datetime="2026-09-26">26 September 2026</time></span>
+  </footer>
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ---------- Footer year ---------- */
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* ---------- Theme toggle (persisted; same mechanism as ../index.html) ---------- */
+    var root = document.documentElement;
+    var meta = document.getElementById('metaThemeColor');
+    var THEME_COLORS = { light: '#eef1ee', dark: '#12171d' };
+
+    function currentTheme() {
+      if (root.classList.contains('dark')) return 'dark';
+      if (root.classList.contains('light')) return 'light';
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function applyTheme(theme) {
+      root.classList.remove('light', 'dark');
+      root.classList.add(theme);
+      if (meta) meta.setAttribute('content', THEME_COLORS[theme]);
+      try { localStorage.setItem('theme', theme); } catch (e) {}
+      document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+        b.setAttribute('title', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+      });
+    }
+    if (meta) meta.setAttribute('content', THEME_COLORS[currentTheme()]);
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+      });
+    });
+
+    /* ---------- Keep the current page visible in the mobile strip ---------- */
+    var strip = document.getElementById('mbNav');
+    var active = strip && strip.querySelector('a.active');
+    if (active && active.offsetLeft + active.offsetWidth > strip.clientWidth) {
+      strip.scrollLeft = active.offsetLeft + active.offsetWidth + 12 - strip.clientWidth;
+    }
+
+    /* ---------- Links to other pages when opened from disk ---------- */
+    // On file:// a folder link such as "../" shows a directory listing; point it at index.html.
+    if (location.protocol === 'file:') {
+      document.querySelectorAll('a[href]').forEach(function (a) {
+        var h = a.getAttribute('href'), m = h.match(/^([^#?]*)(.*)$/);
+        if (!/^[a-z][a-z0-9+.-]*:|^\/|^#/i.test(h) && m[1].slice(-1) === '/') a.setAttribute('href', m[1] + 'index.html' + m[2]);
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

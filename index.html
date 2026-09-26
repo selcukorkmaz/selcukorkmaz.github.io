@@ -448,6 +448,7 @@
       <a href="#software">Software</a>
       <a href="#publications">Publications</a>
       <a href="#contact">Contact</a>
+      <a href="blog/">Blog</a>
     </nav>
     <button class="theme-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
       <svg class="icon-18 i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -472,6 +473,7 @@
         <a href="#software">Software</a>
         <a href="#publications">Publications</a>
         <a href="#contact">Contact</a>
+        <a href="blog/">Blog</a>
       </nav>
 
       <div class="nav-profiles">
@@ -1130,6 +1132,12 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
       document.querySelector('.skip-link').focus({ preventScroll: true });
     });
+
+    /* ---------- Links to other pages when opened from disk ---------- */
+    // On file:// a folder link such as "blog/" shows a directory listing; point it at index.html.
+    if (location.protocol === 'file:') {
+      document.querySelectorAll('a[href="blog/"]').forEach(function (a) { a.setAttribute('href', 'blog/index.html'); });
+    }
 
     render();
   })();
