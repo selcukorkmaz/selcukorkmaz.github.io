@@ -43,6 +43,32 @@ headless Chrome to build `index.md`, and prints the PDF. Running it twice gives 
 files. It prints the reading time; update the post's card in `blog/index.html` if that
 changes.
 
+### Hand-written posts
+
+`blog/sd-or-se/` is written by hand: `index.html` is the source, and you edit it directly.
+Its companion files (`index.md`, `fig*.svg`, `sd-or-se.pdf`) are derived from it by
+`tools/export_post.py`. After editing the page, re-run:
+
+```sh
+python3 tools/export_post.py sd-or-se      # needs Google Chrome and pandoc
+```
+
+The script renders the page in headless Chrome, saves each `<svg id="figN">` as drawn by
+the page's scripts as a standalone `figN.svg`, converts the text between `<!--md-body-->`
+and `<!--/md-body-->` to `index.md` with pandoc (leaving out `<!--md-skip-->` regions and
+turning each `<!--md-fig figN-->` figure into an image with its caption), copies the
+Markdown into the page's `<textarea id="pt-md">` for offline "Copy as Markdown", and prints
+the PDF. Running it twice gives the same files. It prints the reading time; update the
+post's card in `blog/index.html` if that changes.
+
+The same markers work for a new hand-written post if it follows this post's page structure:
+the paper-style tokens on `:root` (the figure SVGs take their light-theme colours from every
+top-level `:root{…}` rule), an `<h1>` with an optional `<span>` subtitle, and optionally a
+`<div class="kicker">` and a `<div class="byline">Author<small>date</small></div>`. Headless
+Chrome does not wait for the Google Fonts, so the PDF is set in the fallback fonts (Georgia,
+Helvetica Neue), as the other post's PDF is. The PDF is rewritten only when its content
+changes; Chrome's timestamps and internal structure-node numbers are ignored.
+
 ### Comments (giscus)
 
 Posts can show comments through [giscus](https://giscus.app), which stores them in
