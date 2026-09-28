@@ -222,11 +222,29 @@ main p.readout{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(
 .check li::before{content:"";position:absolute;left:2px;top:.45em;width:14px;height:14px;border:1.5px solid var(--accent);border-radius:3px}
 .abstract h2{margin:0 0 8px}
 .nw{white-space:nowrap}
+/* √: neither Literata nor IBM Plex Sans has the glyph, so a font-drawn √ came from whatever fallback
+   the system had, and it had no bar over the radicand. Draw the sign (a mask, so it takes the text colour)
+   and the bar with CSS instead; the box's line-height puts the bar about .88em above the baseline in both
+   fonts. The visually hidden "√[ … ]" keeps the notation for screen readers, copying and index.md. */
+.rad{display:inline-block;position:relative;padding:0 .04em 0 .58em;margin-left:.03em;line-height:.89;vertical-align:baseline}
+.rad::before{content:"";position:absolute;left:0;top:0;bottom:-.14em;width:.58em;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%}
+.rad::after{content:"";position:absolute;left:.52em;right:0;top:0;border-top:.06em solid currentColor}
+table .rad, figcaption .rad, .readout .rad{line-height:1.01}
+.rad.tall{padding-top:.22em}  /* radicands with superscripts: lift the bar clear of them */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* x̄: the combining macron sits badly on italic x in Literata, and an overline follows the tall line box.
+   Draw the bar as a zero-height box anchored on the baseline and lifted just above the x-height
+   (about 0.5em in Literata, IBM Plex Sans, Georgia and Helvetica), shifted right for the italic slant. */
+.xbar::after{content:""; display:inline-block; vertical-align:baseline; position:relative; top:-.62em;
+  width:.4em; height:0; margin-left:-.41em; border-top:.065em solid currentColor}
 /* Light-theme muted text darkened slightly so small text meets WCAG AA (4.5:1) on the page, panels and soft fills. */
 :root{ --muted:#626d7b }
 .fig img{display:block;width:100%;height:auto;min-width:560px}
 html:not(.js) .fig svg, html:not(.js) p.readout{display:none}
-.eq span{display:inline-block;margin:0 1.2em;white-space:nowrap}
+.eq > span{display:inline-block;margin:0 1.2em;white-space:nowrap}
+/* Room for the drawn radicals, which reach slightly above and below the text; never scroll vertically. */
+.eq{padding:.3em 0;overflow-y:hidden}
 </style>
 <style>
 /* ======== site bar, post tools, comments and print (same as the other posts) ======== */
@@ -434,21 +452,21 @@ main p.cm-note{ color:var(--muted); font-family:var(--sans); font-size:15px; mar
 <!--md-body-->
 <section class="abstract" aria-label="Summary">
   <h2>In short</h2>
-  <p>The standard deviation (SD) and the standard error (SE) look alike, share most of a formula, and are swapped for each other in published papers all the time. They answer different questions. The SD describes the <em>data</em>: how far individual observations typically fall from their mean. The SE describes an <em>estimate</em>: how far that mean, or a difference, a proportion or a regression coefficient, would typically move if the study were repeated with new participants. As a sample grows, the SD settles near the population value, while the SE keeps shrinking in proportion to <span class="nw">1/√<i>n</i></span>.</p>
+  <p>The standard deviation (SD) and the standard error (SE) look alike, share most of a formula, and are swapped for each other in published papers all the time. They answer different questions. The SD describes the <em>data</em>: how far individual observations typically fall from their mean. The SE describes an <em>estimate</em>: how far that mean, or a difference, a proportion or a regression coefficient, would typically move if the study were repeated with new participants. As a sample grows, the SD settles near the population value, while the SE keeps shrinking in proportion to <span class="nw">1/<span class="rad"><span class="vh">√</span><i>n</i></span>.</span></p>
   <p>The rule for papers follows from that. Use the SD, or the median and interquartile range for skewed data, when you describe your sample. Use a 95% confidence interval when you report what you estimated. The SE is mainly a building block for intervals and tests. On its own, and above all as an error bar, it tends to mislead. Two interactive figures below show why, and Table 3 maps common situations in a manuscript to what to report.</p>
   <div class="kw">Keywords: standard deviation · standard error · confidence intervals · error bars · statistical reporting · SAMPL</div>
 </section>
 
 <h2 id="problem"><span class="n">1</span>A familiar line in a results table</h2>
-<p>Suppose a table describing 120 patients reports <span class="m">Age, years: 54.2 ± 1.1</span>. What does the 1.1 mean? If it is an SD, the cohort is remarkably uniform: assuming roughly normal ages, about two thirds of the patients are between 53.1 and 55.3 years old. If it is an SE, the SD is 1.1 × √120 ≈ 12.0 years, and the patients span several decades. These are two very different cohorts, and the line alone does not say which one the study enrolled.</p>
+<p>Suppose a table describing 120 patients reports <span class="m">Age, years: 54.2 ± 1.1</span>. What does the 1.1 mean? If it is an SD, the cohort is remarkably uniform: assuming roughly normal ages, about two thirds of the patients are between 53.1 and 55.3 years old. If it is an SE, the SD is 1.1&nbsp;×&nbsp;<span class="nw"><span class="rad"><span class="vh">√</span>120</span></span> ≈ 12.0 years, and the patients span several decades. These are two very different cohorts, and the line alone does not say which one the study enrolled.</p>
 <p>The ambiguity is common. In a review of 860 articles published in four anaesthesia journals in 2001, 198 (23%) used the standard error of the mean where the variability of the sample should have been described <sup class="cite">[<a href="#ref-nagele">1</a>]</sup>. The confusion extends to figures. When 473 authors of articles in psychology, behavioural neuroscience and medicine were shown two means with error bars and asked to move one of them until the difference was just statistically significant, many showed serious misconceptions about how SE bars and confidence-interval bars relate to significance <sup class="cite">[<a href="#ref-belia">2</a>]</sup>.</p>
 <p>The misuse persists for a simple reason. For any sample with more than one observation, the SE is smaller than the SD, so it makes data look tidier and differences look more convincing. That is the reason it misleads readers about the variability of the sample when it is used to describe data <sup class="cite">[<a href="#ref-nagele">1</a>]</sup>.</p>
 
 <h2 id="two"><span class="n">2</span>Two quantities, two questions</h2>
-<p>Both quantities start from the same sample of <i>n</i> observations <i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub> with mean <i>x̄</i>.</p>
-<div class="eq"><span>SD = <i>s</i> = √[ Σ (<i>x</i><sub><i>i</i></sub> − <i>x̄</i>)<sup>2</sup> / (<i>n</i> − 1) ]</span><span>SE(<i>x̄</i>) = <i>s</i> / √<i>n</i></span></div>
+<p>Both quantities start from the same sample of <i>n</i> observations <i>x</i><sub>1</sub>, …, <i>x</i><sub><i>n</i></sub> with mean <i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i>.</p>
+<div class="eq"><span>SD = <i>s</i> = <span class="nw"><span class="rad tall"><span class="vh">√[</span>Σ (<i>x</i><sub><i>i</i></sub> − <i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i>)<sup>2</sup> / (<i>n</i> − 1)<span class="vh">]</span></span></span></span><span>SE(<i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i>) = <i>s</i> / <span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span></span></span></div>
 <p><b>The standard deviation</b> answers the question <em>how different are the individuals?</em> It is the typical distance of an observation from the mean, and it estimates σ, the SD of the population being sampled. It is a property of that population, together with any measurement error. For roughly normal data, about 68% of observations lie within one SD of the mean and about 95% within 1.96 SD. That is why mean ± 2 SD serves as a rough reference range for individuals.</p>
-<p><b>The standard error</b> answers the question <em>how precisely do we know the mean?</em> Imagine running the same study many times, each time drawing <i>n</i> new participants and computing their mean. The means would scatter around the population mean μ, and the SD of that scatter would be σ/√<i>n</i>. The SE estimates this quantity from the one sample actually collected. It is a property of the estimate and of the design, not of the participants <sup class="cite">[<a href="#ref-altman2005">3</a>]</sup>.</p>
+<p><b>The standard error</b> answers the question <em>how precisely do we know the mean?</em> Imagine running the same study many times, each time drawing <i>n</i> new participants and computing their mean. The means would scatter around the population mean μ, and the SD of that scatter would be <span class="nw">σ/<span class="rad"><span class="vh">√</span><i>n</i></span>.</span> The SE estimates this quantity from the one sample actually collected. It is a property of the estimate and of the design, not of the participants <sup class="cite">[<a href="#ref-altman2005">3</a>]</sup>.</p>
 <div class="box"><b>The key sentence.</b> The standard error <em>is</em> a standard deviation: the standard deviation of an estimate across hypothetical repeats of the study, not of the data within one study. Most of the confusion comes from the shared name, and most of it goes away once that sentence is clear.</div>
 <p>Every estimate has its own SE, not only the mean (Table 1). A 95% confidence interval (CI) is built from the SE and a multiplier from the <i>t</i> or normal distribution. The CI is what readers can actually interpret: under the model's assumptions, it gives the range of population values compatible with the data at the 95% level.</p>
 
@@ -456,10 +474,10 @@ main p.cm-note{ color:var(--muted); font-family:var(--sans); font-size:15px; mar
   <caption><b>Table 1.</b> Standard errors of common estimates and the 95% confidence interval built from them. <i>s</i>, sample SD; <i>p</i>, sample proportion; <i>t</i><sub>0.975, <i>n</i>−1</sub>, the 97.5th percentile of the <i>t</i> distribution with <i>n</i> − 1 degrees of freedom.</caption>
   <thead><tr><th>Estimate</th><th>Standard error</th><th>Notes</th></tr></thead>
   <tbody>
-    <tr><td>Mean <i>x̄</i></td><td><i>s</i> / √<i>n</i></td><td>95% CI: <i>x̄</i> ± <i>t</i><sub>0.975, <i>n</i>−1</sub> × SE</td></tr>
-    <tr><td>Proportion <i>p</i></td><td>√[<i>p</i>(1 − <i>p</i>) / <i>n</i>]</td><td>Wald form; prefer Wilson or exact intervals for small <i>n</i> or <i>p</i> near 0 or 1</td></tr>
-    <tr><td>Difference of two independent means</td><td>√(<i>s</i><sub>1</sub><sup>2</sup>/<i>n</i><sub>1</sub> + <i>s</i><sub>2</sub><sup>2</sup>/<i>n</i><sub>2</sub>)</td><td>Welch form; the CI uses Welch–Satterthwaite degrees of freedom</td></tr>
-    <tr><td>Mean of paired differences</td><td><i>s</i><sub><i>d</i></sub> / √<i>n</i></td><td><i>s</i><sub><i>d</i></sub> is the SD of the within-pair differences, not of either measurement</td></tr>
+    <tr><td>Mean <i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i></td><td><i>s</i> / <span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span></span></td><td>95% CI: <i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i> ± <i>t</i><sub>0.975, <i>n</i>−1</sub> × SE</td></tr>
+    <tr><td>Proportion <i>p</i></td><td><span class="nw"><span class="rad"><span class="vh">√[</span><i>p</i>(1 − <i>p</i>) / <i>n</i><span class="vh">]</span></span></span></td><td>Wald form; prefer Wilson or exact intervals for small <i>n</i> or <i>p</i> near 0 or 1</td></tr>
+    <tr><td>Difference of two independent means</td><td><span class="nw"><span class="rad tall"><span class="vh">√[</span><i>s</i><sub>1</sub><sup>2</sup>/<i>n</i><sub>1</sub> + <i>s</i><sub>2</sub><sup>2</sup>/<i>n</i><sub>2</sub><span class="vh">]</span></span></span></td><td>Welch form; the CI uses Welch–Satterthwaite degrees of freedom</td></tr>
+    <tr><td>Mean of paired differences</td><td><i>s</i><sub><i>d</i></sub> / <span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span></span></td><td><i>s</i><sub><i>d</i></sub> is the SD of the within-pair differences, not of either measurement</td></tr>
     <tr><td>Regression coefficient</td><td>From the model's variance–covariance matrix</td><td>Printed by the software next to each coefficient</td></tr>
   </tbody>
 </table></div>
@@ -480,16 +498,16 @@ main p.cm-note{ color:var(--muted); font-family:var(--sans); font-size:15px; mar
 <!--/md-fig-->
 
 <h2 id="shrink"><span class="n">3</span>Why one shrinks and the other does not</h2>
-<p>A larger sample gives a more precise estimate of σ, but the sample SD does not get smaller on average; it settles near σ. In very small samples it runs slightly low: its expected value is about 94% of σ at <i>n</i> = 5 and about 99% at <i>n</i> = 25. The SE, in contrast, is divided by √<i>n</i>, so quadrupling the sample halves it (Figure 2).</p>
+<p>A larger sample gives a more precise estimate of σ, but the sample SD does not get smaller on average; it settles near σ. In very small samples it runs slightly low: its expected value is about 94% of σ at <i>n</i> = 5 and about 99% at <i>n</i> = 25. The SE, in contrast, is divided by <span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span>,</span> so quadrupling the sample halves it (Figure 2).</p>
 
 <!--md-fig fig2-->
 <figure id="f2">
   <div class="fig"><svg id="fig2" viewBox="0 0 760 330" role="img" aria-label="Figure 2. As sample size increases from 3 to 1,000 on a log scale, the SD stays near 16 mmHg while the SE and the 95% CI half-width fall towards zero."></svg><noscript><img src="fig2.svg" alt="Figure 2. As sample size increases from 3 to 1,000 on a log scale, the SD stays near 16 mmHg while the SE and the 95% CI half-width fall towards zero." width="760" height="330"></noscript></div>
-  <figcaption><b>Figure 2. The SD settles; the SE keeps shrinking.</b> Lines show the population values for the blood-pressure example: σ = 16 mmHg (SD), σ/√<i>n</i> (SE), and the half-width of the 95% CI for the mean, <i>t</i><sub>0.975, <i>n</i>−1</sub> × σ/√<i>n</i> (dashed). Points show one simulated sample at each size. The horizontal axis is logarithmic. For <i>n</i> ≤ 6 the 95% CI for the mean extends further on each side than one SD, because the <i>t</i> multiplier is large when the SD itself is poorly estimated.</figcaption>
+  <figcaption><b>Figure 2. The SD settles; the SE keeps shrinking.</b> Lines show the population values for the blood-pressure example: σ = 16 mmHg (SD), <span class="nw">σ/<span class="rad"><span class="vh">√</span><i>n</i></span></span> (SE), and the half-width of the 95% CI for the mean, <i>t</i><sub>0.975, <i>n</i>−1</sub>&nbsp;×&nbsp;<span class="nw">σ/<span class="rad"><span class="vh">√</span><i>n</i></span></span> (dashed). Points show one simulated sample at each size. The horizontal axis is logarithmic. For <i>n</i> ≤ 6 the 95% CI for the mean extends further on each side than one SD, because the <i>t</i> multiplier is large when the SD itself is poorly estimated.</figcaption>
 </figure>
 <!--/md-fig-->
 
-<p>This has a practical consequence. The SE mixes two things, the variability of the participants and the size of the study. Two studies of the same kind of patients, one with 20 and one with 500 participants, report very different SEs for the same variable. A reader who wants to know how variable the patients were has to recover <i>n</i> and multiply by √<i>n</i>, and many will not. The SD gives that information directly. The reverse also holds: an SD alone does not say how precisely the mean is known unless <i>n</i> is given as well. Each quantity has its job, and neither can do the other's.</p>
+<p>This has a practical consequence. The SE mixes two things, the variability of the participants and the size of the study. Two studies of the same kind of patients, one with 20 and one with 500 participants, report very different SEs for the same variable. A reader who wants to know how variable the patients were has to recover <i>n</i> and multiply by <span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span>,</span> and many will not. The SD gives that information directly. The reverse also holds: an SD alone does not say how precisely the mean is known unless <i>n</i> is given as well. Each quantity has its job, and neither can do the other's.</p>
 
 <h2 id="bars"><span class="n">4</span>Error bars: what a reader can and cannot infer</h2>
 <p>A figure of group means with error bars can show SD, SE or CI bars, and the three look alike. The first two rules for any such figure are to state in the legend which one is shown and what <i>n</i> is, where <i>n</i> counts independent experiments or participants rather than replicates <sup class="cite">[<a href="#ref-cumming2007">4</a>]</sup>. After that, each type supports different conclusions.</p>
@@ -567,9 +585,9 @@ t.test(y ~ group, data = d)$conf.int   <span class="c"># Welch 95% CI for a diff
 <h3><span class="n">6.2</span>Skewed variables</h3>
 <p>The SD is a good summary only for roughly symmetric distributions. A quick check works from the summary statistics alone. For a variable that must be positive, such as a length of stay, a concentration or a cost, a mean smaller than twice the SD means the data are likely to be skewed, because a normal distribution extends more than two SDs either side of its mean and would then reach below zero <sup class="cite">[<a href="#ref-skew">11</a>]</sup>. A length of stay of 8.1 days (SD 9.4) is an example; the median and interquartile range describe such data far better. This is a problem of description, not inference. In large samples a CI for the mean based on the SE remains approximately valid even for skewed data, unless the skew is extreme, so the mean with its CI can still be the right estimate when the mean itself (total bed-days, total cost) is the quantity of interest.</p>
 <h3><span class="n">6.3</span>The wrong <i>n</i></h3>
-<p>SE = SD/√<i>n</i> assumes <i>n</i> independent units. Technical replicates are not independent: repeated wells from the same culture, repeated readings on the same sample or many cells from the same animal. With three mice and ten wells per mouse, <i>n</i> is 3, not 30. An SE computed over the 30 wells treats them as independent. If the wells from one mouse agree closely, it understates the true SE about three- to four-fold (roughly √10, the square root of the number of wells per mouse), and a 95% CI built from it uses 29 degrees of freedom instead of 2, so it can come out up to about eight times too narrow <sup class="cite">[<a href="#ref-vaux">12</a>]</sup>. Summarise each independent unit first (for example, average the wells for each mouse) and compute the SD and CI across units, or fit a model with a random effect for the unit.</p>
+<p>SE = <span class="nw">SD/<span class="rad"><span class="vh">√</span><i>n</i></span></span> assumes <i>n</i> independent units. Technical replicates are not independent: repeated wells from the same culture, repeated readings on the same sample or many cells from the same animal. With three mice and ten wells per mouse, <i>n</i> is 3, not 30. An SE computed over the 30 wells treats them as independent. If the wells from one mouse agree closely, it understates the true SE about three- to four-fold (roughly <span class="nw"><span class="rad"><span class="vh">√</span>10</span>,</span> the square root of the number of wells per mouse), and a 95% CI built from it uses 29 degrees of freedom instead of 2, so it can come out up to about eight times too narrow <sup class="cite">[<a href="#ref-vaux">12</a>]</sup>. Summarise each independent unit first (for example, average the wells for each mouse) and compute the SD and CI across units, or fit a model with a random effect for the unit.</p>
 <h3><span class="n">6.4</span>Meta-analyses need SDs</h3>
-<p>A meta-analysis of a continuous outcome needs <i>n</i>, the mean and the SD for each group. When only the SE of a group mean is reported, the SD can be recovered as SE × √<i>n</i>, where <i>n</i> is the size of that group. From a 95% CI for a group mean it is √<i>n</i> × (upper − lower) / 3.92 when the group is large (more than about 100); when it is small (fewer than about 60), 3.92 is replaced by 2 × <i>t</i><sub>0.975, <i>n</i>−1</sub>, and in between the <i>t</i> version is the safer choice <sup class="cite">[<a href="#ref-cochrane">13</a>]</sup>. The danger is an unlabelled SE that a meta-analyst reads as an SD. The study's variance is then understated by a factor of <i>n</i> and its inverse-variance weight inflated by the same factor: a trial with 100 participants per arm would count as much as 100 such trials. Clear labels protect your study from this misuse.</p>
+<p>A meta-analysis of a continuous outcome needs <i>n</i>, the mean and the SD for each group. When only the SE of a group mean is reported, the SD can be recovered as SE&nbsp;×&nbsp;<span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span>,</span> where <i>n</i> is the size of that group. From a 95% CI for a group mean it is <span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span></span>&nbsp;×&nbsp;(upper − lower) / 3.92 when the group is large (more than about 100); when it is small (fewer than about 60), 3.92 is replaced by 2 × <i>t</i><sub>0.975, <i>n</i>−1</sub>, and in between the <i>t</i> version is the safer choice <sup class="cite">[<a href="#ref-cochrane">13</a>]</sup>. The danger is an unlabelled SE that a meta-analyst reads as an SD. The study's variance is then understated by a factor of <i>n</i> and its inverse-variance weight inflated by the same factor: a trial with 100 participants per arm would count as much as 100 such trials. Clear labels protect your study from this misuse.</p>
 
 <h2 id="checklist"><span class="n">7</span>A checklist for authors and reviewers</h2>
 <ul class="check">
@@ -683,7 +701,7 @@ Keywords: standard deviation · standard error · confidence intervals · error 
 
 ## 1 A familiar line in a results table
 
-Suppose a table describing 120 patients reports `Age, years: 54.2 ± 1.1`. What does the 1.1 mean? If it is an SD, the cohort is remarkably uniform: assuming roughly normal ages, about two thirds of the patients are between 53.1 and 55.3 years old. If it is an SE, the SD is 1.1 × √120 ≈ 12.0 years, and the patients span several decades. These are two very different cohorts, and the line alone does not say which one the study enrolled.
+Suppose a table describing 120 patients reports `Age, years: 54.2 ± 1.1`. What does the 1.1 mean? If it is an SD, the cohort is remarkably uniform: assuming roughly normal ages, about two thirds of the patients are between 53.1 and 55.3 years old. If it is an SE, the SD is 1.1 × √120 ≈ 12.0 years, and the patients span several decades. These are two very different cohorts, and the line alone does not say which one the study enrolled.
 
 The ambiguity is common. In a review of 860 articles published in four anaesthesia journals in 2001, 198 (23%) used the standard error of the mean where the variability of the sample should have been described \[1\]. The confusion extends to figures. When 473 authors of articles in psychology, behavioural neuroscience and medicine were shown two means with error bars and asked to move one of them until the difference was just statistically significant, many showed serious misconceptions about how SE bars and confidence-interval bars relate to significance \[2\].
 
@@ -693,7 +711,7 @@ The misuse persists for a simple reason. For any sample with more than one obser
 
 Both quantities start from the same sample of *n* observations *x*&lt;sub&gt;1&lt;/sub&gt;, …, *x*&lt;sub&gt;*n*&lt;/sub&gt; with mean *x̄*.
 
-SD = *s* = √\[ Σ (*x*&lt;sub&gt;*i*&lt;/sub&gt; − *x̄*)&lt;sup&gt;2&lt;/sup&gt; / (*n* − 1) \]
+SD = *s* = √\[Σ (*x*&lt;sub&gt;*i*&lt;/sub&gt; − *x̄*)&lt;sup&gt;2&lt;/sup&gt; / (*n* − 1)\]
 
 SE(*x̄*) = *s* / √*n*
 
@@ -711,7 +729,7 @@ Every estimate has its own SE, not only the mean (Table 1). A 95% confidence int
 |----|----|----|
 | Mean *x̄* | *s* / √*n* | 95% CI: *x̄* ± *t*&lt;sub&gt;0.975, *n*−1&lt;/sub&gt; × SE |
 | Proportion *p* | √\[*p*(1 − *p*) / *n*\] | Wald form; prefer Wilson or exact intervals for small *n* or *p* near 0 or 1 |
-| Difference of two independent means | √(*s*&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;/*n*&lt;sub&gt;1&lt;/sub&gt; + *s*&lt;sub&gt;2&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;/*n*&lt;sub&gt;2&lt;/sub&gt;) | Welch form; the CI uses Welch–Satterthwaite degrees of freedom |
+| Difference of two independent means | √\[*s*&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;/*n*&lt;sub&gt;1&lt;/sub&gt; + *s*&lt;sub&gt;2&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;/*n*&lt;sub&gt;2&lt;/sub&gt;\] | Welch form; the CI uses Welch–Satterthwaite degrees of freedom |
 | Mean of paired differences | *s*&lt;sub&gt;*d*&lt;/sub&gt; / √*n* | *s*&lt;sub&gt;*d*&lt;/sub&gt; is the SD of the within-pair differences, not of either measurement |
 | Regression coefficient | From the model's variance–covariance matrix | Printed by the software next to each coefficient |
 
@@ -727,7 +745,7 @@ A larger sample gives a more precise estimate of σ, but the sample SD does not 
 
 ![As sample size increases from 3 to 1,000 on a log scale, the SD stays near 16 mmHg while the SE and the 95% CI half-width fall towards zero.](https://selcukorkmaz.github.io/blog/sd-or-se/fig2.svg)
 
-**Figure 2. The SD settles; the SE keeps shrinking.** Lines show the population values for the blood-pressure example: σ = 16 mmHg (SD), σ/√*n* (SE), and the half-width of the 95% CI for the mean, *t*&lt;sub&gt;0.975, *n*−1&lt;/sub&gt; × σ/√*n* (dashed). Points show one simulated sample at each size. The horizontal axis is logarithmic. For *n* ≤ 6 the 95% CI for the mean extends further on each side than one SD, because the *t* multiplier is large when the SD itself is poorly estimated.
+**Figure 2. The SD settles; the SE keeps shrinking.** Lines show the population values for the blood-pressure example: σ = 16 mmHg (SD), σ/√*n* (SE), and the half-width of the 95% CI for the mean, *t*&lt;sub&gt;0.975, *n*−1&lt;/sub&gt; × σ/√*n* (dashed). Points show one simulated sample at each size. The horizontal axis is logarithmic. For *n* ≤ 6 the 95% CI for the mean extends further on each side than one SD, because the *t* multiplier is large when the SD itself is poorly estimated.
 
 This has a practical consequence. The SE mixes two things, the variability of the participants and the size of the study. Two studies of the same kind of patients, one with 20 and one with 500 participants, report very different SEs for the same variable. A reader who wants to know how variable the patients were has to recover *n* and multiply by √*n*, and many will not. The SD gives that information directly. The reverse also holds: an SD alone does not say how precisely the mean is known unless *n* is given as well. Each quantity has its job, and neither can do the other's.
 
@@ -811,7 +829,7 @@ SE = SD/√*n* assumes *n* independent units. Technical replicates are not indep
 
 ### 6.4 Meta-analyses need SDs
 
-A meta-analysis of a continuous outcome needs *n*, the mean and the SD for each group. When only the SE of a group mean is reported, the SD can be recovered as SE × √*n*, where *n* is the size of that group. From a 95% CI for a group mean it is √*n* × (upper − lower) / 3.92 when the group is large (more than about 100); when it is small (fewer than about 60), 3.92 is replaced by 2 × *t*&lt;sub&gt;0.975, *n*−1&lt;/sub&gt;, and in between the *t* version is the safer choice \[13\]. The danger is an unlabelled SE that a meta-analyst reads as an SD. The study's variance is then understated by a factor of *n* and its inverse-variance weight inflated by the same factor: a trial with 100 participants per arm would count as much as 100 such trials. Clear labels protect your study from this misuse.
+A meta-analysis of a continuous outcome needs *n*, the mean and the SD for each group. When only the SE of a group mean is reported, the SD can be recovered as SE × √*n*, where *n* is the size of that group. From a 95% CI for a group mean it is √*n* × (upper − lower) / 3.92 when the group is large (more than about 100); when it is small (fewer than about 60), 3.92 is replaced by 2 × *t*&lt;sub&gt;0.975, *n*−1&lt;/sub&gt;, and in between the *t* version is the safer choice \[13\]. The danger is an unlabelled SE that a meta-analyst reads as an SD. The study's variance is then understated by a factor of *n* and its inverse-variance weight inflated by the same factor: a trial with 100 participants per arm would count as much as 100 such trials. Clear labels protect your study from this misuse.
 
 ## 7 A checklist for authors and reviewers
 
@@ -939,6 +957,23 @@ function vbar(svg, x, y1, y2, color) {
   el('line', { x1: x - 7, x2: x + 7, y1: y2, y2: y2, style: st, 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
 }
 
+/* SVG label "pre √rad post": the radical sign and its bar are drawn, as in the text (see the .rad CSS). */
+var RADICAL = [[1, 63], [12, 55], [27, 87], [50, 0], [56, 0], [56, 6], [31, 100], [25, 100], [9, 63], [4, 66]];
+function sqrtLabel(parent, x, y, pre, rad, post, attrs) {
+  var fs = attrs['font-size'], paint = {};
+  if (attrs['class']) paint['class'] = attrs['class'];
+  if (attrs.style) paint.style = attrs.style;
+  var text = function (x0, s) { var a = { x: x0, y: y }; for (var k in attrs) a[k] = attrs[k]; var t = el('text', a, parent, s.replace(/^ | $/g, '\u00a0')); return x0 + t.getComputedTextLength(); };  /* SVG drops edge spaces */
+  var x1 = text(x, pre), w = 0.58 * fs, top = y - 0.88 * fs, sy = (1.03 * fs) / 100, sx = w / 56;
+  var d = RADICAL.map(function (p, i) { return (i ? 'L' : 'M') + (x1 + p[0] * sx).toFixed(2) + ',' + (top + p[1] * sy).toFixed(2); }).join('') + 'Z';
+  var a = { d: d }; for (var k in paint) a[k] = paint[k]; el('path', a, parent);
+  var x2 = text(x1 + w, rad) + 0.04 * fs;
+  var r = { x: x1 + 0.52 * fs, y: top, width: x2 - x1 - 0.52 * fs, height: 0.06 * fs }; for (k in paint) r[k] = paint[k]; el('rect', r, parent);
+  return text(x2, post);
+}
+/* Label widths depend on the web fonts, so figures that use sqrtLabel redraw once the fonts have loaded. */
+function whenFontsReady(fn) { if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn); }
+
 var MU = 128, SIGMA = 16;
 
 /* ================= Figure 1: one sample vs the sampling distribution ================= */
@@ -997,14 +1032,14 @@ var MU = 128, SIGMA = 16;
       el('rect', { x: x0, y: bb - hgt, width: Math.max(0.8, x1 - x0 - 0.6), height: hgt, style: 'fill:var(--se);opacity:.75' }, svg);
     });
     el('text', { x: X(MU + 4 * SIGMA / Math.sqrt(n)) + 10, y: bb - 20, 'class': 't-2', 'font-size': 12 }, svg, 'SD of these means ' + f1(sdm));
-    el('text', { x: X(MU + 4 * SIGMA / Math.sqrt(n)) + 10, y: bb - 5, 'class': 't-mu', 'font-size': 11.5 }, svg, 'σ/√n = ' + f1(SIGMA / Math.sqrt(n)));
+    sqrtLabel(svg, X(MU + 4 * SIGMA / Math.sqrt(n)) + 10, bb - 5, 'σ/', 'n', ' = ' + f1(SIGMA / Math.sqrt(n)), { 'class': 't-mu', 'font-size': 11.5 });
     el('line', { x1: X(MU), x2: X(MU), y1: top - 8, y2: bb, style: 'stroke:var(--muted)', 'stroke-width': 1, 'stroke-dasharray': '2 3' }, svg);
     axis(bb);
     el('text', { x: X(MU), y: bb + 38, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Systolic blood pressure (mmHg)');
 
     document.getElementById('f1-read').innerHTML =
       'This sample: mean ' + f1(m) + ' mmHg, <span class="sw" style="background:var(--sd)"></span>SD ' + f1(s) +
-      ', <span class="sw" style="background:var(--se)"></span>SE ' + f1(se) + ' (' + f1(s) + ' / √' + n + ')' +
+      ', <span class="sw" style="background:var(--se)"></span>SE ' + f1(se) + ' <span class="nw">(' + f1(s) + ' / <span class="rad"><span class="vh">√</span>' + n + '</span>)</span>' +
       ', <span class="sw" style="background:var(--ci)"></span>95% CI ' + f1(m - h) + ' to ' + f1(m + h) +
       '. Across the 2,000 other samples, the means have an SD of ' + f1(sdm) + ' mmHg.';
   }
@@ -1012,12 +1047,15 @@ var MU = 128, SIGMA = 16;
   segmented(host, [5, 10, 25, 50, 100, 250].map(function (v) { return { label: v, value: v }; }), state.n, function (v) { state.n = v; draw(); });
   document.getElementById('f1-new').addEventListener('click', function () { state.seed += 1; draw(); });
   draw();
+  whenFontsReady(draw);
 })();
 
 /* ================= Figure 2: SD, SE and CI half-width against n ================= */
 (function () {
   var svg = document.getElementById('fig2');
   if (!svg) return;
+  function draw() {
+  clear(svg);
   var x0 = 64, x1 = 620, y0 = 290, y1 = 20, nlo = 3, nhi = 1000, ymax = 42;
   var X = function (n) { return x0 + (Math.log(n) - Math.log(nlo)) / (Math.log(nhi) - Math.log(nlo)) * (x1 - x0); };
   var Y = function (v) { return y0 - v / ymax * (y0 - y1); };
@@ -1054,8 +1092,11 @@ var MU = 128, SIGMA = 16;
   var lx = x1 + 12;
   el('text', { x: lx, y: Y(SIGMA) + 4, style: 'fill:var(--sd)', 'font-size': 12.5, 'font-weight': 600 }, svg, 'SD ≈ σ = 16');
   el('text', { x: lx, y: Y(SIGMA / Math.sqrt(nhi)) - 14, style: 'fill:var(--ci)', 'font-size': 12.5, 'font-weight': 600 }, svg, '95% CI half-width');
-  el('text', { x: lx, y: Y(SIGMA / Math.sqrt(nhi)) + 4, style: 'fill:var(--se)', 'font-size': 12.5, 'font-weight': 600 }, svg, 'SE = σ/√n');
+  sqrtLabel(svg, lx, Y(SIGMA / Math.sqrt(nhi)) + 4, 'SE = σ/', 'n', '', { style: 'fill:var(--se)', 'font-size': 12.5, 'font-weight': 600 });
   el('text', { x: X(3.5) + 8, y: Y(39.7) + 4, style: 'fill:var(--ci)', 'font-size': 11.5 }, svg, 'n = 3: 95% CI = mean ± 39.7');
+  }
+  draw();
+  whenFontsReady(draw);
 })();
 
 /* ================= Figure 3: SD, SE and CI bars on the same two groups ================= */

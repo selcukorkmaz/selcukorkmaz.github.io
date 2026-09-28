@@ -19,7 +19,7 @@ Keywords: standard deviation · standard error · confidence intervals · error 
 
 ## 1 A familiar line in a results table
 
-Suppose a table describing 120 patients reports `Age, years: 54.2 ± 1.1`. What does the 1.1 mean? If it is an SD, the cohort is remarkably uniform: assuming roughly normal ages, about two thirds of the patients are between 53.1 and 55.3 years old. If it is an SE, the SD is 1.1 × √120 ≈ 12.0 years, and the patients span several decades. These are two very different cohorts, and the line alone does not say which one the study enrolled.
+Suppose a table describing 120 patients reports `Age, years: 54.2 ± 1.1`. What does the 1.1 mean? If it is an SD, the cohort is remarkably uniform: assuming roughly normal ages, about two thirds of the patients are between 53.1 and 55.3 years old. If it is an SE, the SD is 1.1 × √120 ≈ 12.0 years, and the patients span several decades. These are two very different cohorts, and the line alone does not say which one the study enrolled.
 
 The ambiguity is common. In a review of 860 articles published in four anaesthesia journals in 2001, 198 (23%) used the standard error of the mean where the variability of the sample should have been described \[1\]. The confusion extends to figures. When 473 authors of articles in psychology, behavioural neuroscience and medicine were shown two means with error bars and asked to move one of them until the difference was just statistically significant, many showed serious misconceptions about how SE bars and confidence-interval bars relate to significance \[2\].
 
@@ -29,7 +29,7 @@ The misuse persists for a simple reason. For any sample with more than one obser
 
 Both quantities start from the same sample of *n* observations *x*<sub>1</sub>, …, *x*<sub>*n*</sub> with mean *x̄*.
 
-SD = *s* = √\[ Σ (*x*<sub>*i*</sub> − *x̄*)<sup>2</sup> / (*n* − 1) \]
+SD = *s* = √\[Σ (*x*<sub>*i*</sub> − *x̄*)<sup>2</sup> / (*n* − 1)\]
 
 SE(*x̄*) = *s* / √*n*
 
@@ -47,7 +47,7 @@ Every estimate has its own SE, not only the mean (Table 1). A 95% confidence int
 |----|----|----|
 | Mean *x̄* | *s* / √*n* | 95% CI: *x̄* ± *t*<sub>0.975, *n*−1</sub> × SE |
 | Proportion *p* | √\[*p*(1 − *p*) / *n*\] | Wald form; prefer Wilson or exact intervals for small *n* or *p* near 0 or 1 |
-| Difference of two independent means | √(*s*<sub>1</sub><sup>2</sup>/*n*<sub>1</sub> + *s*<sub>2</sub><sup>2</sup>/*n*<sub>2</sub>) | Welch form; the CI uses Welch–Satterthwaite degrees of freedom |
+| Difference of two independent means | √\[*s*<sub>1</sub><sup>2</sup>/*n*<sub>1</sub> + *s*<sub>2</sub><sup>2</sup>/*n*<sub>2</sub>\] | Welch form; the CI uses Welch–Satterthwaite degrees of freedom |
 | Mean of paired differences | *s*<sub>*d*</sub> / √*n* | *s*<sub>*d*</sub> is the SD of the within-pair differences, not of either measurement |
 | Regression coefficient | From the model's variance–covariance matrix | Printed by the software next to each coefficient |
 
@@ -63,7 +63,7 @@ A larger sample gives a more precise estimate of σ, but the sample SD does not 
 
 ![As sample size increases from 3 to 1,000 on a log scale, the SD stays near 16 mmHg while the SE and the 95% CI half-width fall towards zero.](https://selcukorkmaz.github.io/blog/sd-or-se/fig2.svg)
 
-**Figure 2. The SD settles; the SE keeps shrinking.** Lines show the population values for the blood-pressure example: σ = 16 mmHg (SD), σ/√*n* (SE), and the half-width of the 95% CI for the mean, *t*<sub>0.975, *n*−1</sub> × σ/√*n* (dashed). Points show one simulated sample at each size. The horizontal axis is logarithmic. For *n* ≤ 6 the 95% CI for the mean extends further on each side than one SD, because the *t* multiplier is large when the SD itself is poorly estimated.
+**Figure 2. The SD settles; the SE keeps shrinking.** Lines show the population values for the blood-pressure example: σ = 16 mmHg (SD), σ/√*n* (SE), and the half-width of the 95% CI for the mean, *t*<sub>0.975, *n*−1</sub> × σ/√*n* (dashed). Points show one simulated sample at each size. The horizontal axis is logarithmic. For *n* ≤ 6 the 95% CI for the mean extends further on each side than one SD, because the *t* multiplier is large when the SD itself is poorly estimated.
 
 This has a practical consequence. The SE mixes two things, the variability of the participants and the size of the study. Two studies of the same kind of patients, one with 20 and one with 500 participants, report very different SEs for the same variable. A reader who wants to know how variable the patients were has to recover *n* and multiply by √*n*, and many will not. The SD gives that information directly. The reverse also holds: an SD alone does not say how precisely the mean is known unless *n* is given as well. Each quantity has its job, and neither can do the other's.
 
@@ -147,7 +147,7 @@ SE = SD/√*n* assumes *n* independent units. Technical replicates are not indep
 
 ### 6.4 Meta-analyses need SDs
 
-A meta-analysis of a continuous outcome needs *n*, the mean and the SD for each group. When only the SE of a group mean is reported, the SD can be recovered as SE × √*n*, where *n* is the size of that group. From a 95% CI for a group mean it is √*n* × (upper − lower) / 3.92 when the group is large (more than about 100); when it is small (fewer than about 60), 3.92 is replaced by 2 × *t*<sub>0.975, *n*−1</sub>, and in between the *t* version is the safer choice \[13\]. The danger is an unlabelled SE that a meta-analyst reads as an SD. The study's variance is then understated by a factor of *n* and its inverse-variance weight inflated by the same factor: a trial with 100 participants per arm would count as much as 100 such trials. Clear labels protect your study from this misuse.
+A meta-analysis of a continuous outcome needs *n*, the mean and the SD for each group. When only the SE of a group mean is reported, the SD can be recovered as SE × √*n*, where *n* is the size of that group. From a 95% CI for a group mean it is √*n* × (upper − lower) / 3.92 when the group is large (more than about 100); when it is small (fewer than about 60), 3.92 is replaced by 2 × *t*<sub>0.975, *n*−1</sub>, and in between the *t* version is the safer choice \[13\]. The danger is an unlabelled SE that a meta-analyst reads as an SD. The study's variance is then understated by a factor of *n* and its inverse-variance weight inflated by the same factor: a trial with 100 participants per arm would count as much as 100 such trials. Clear labels protect your study from this misuse.
 
 ## 7 A checklist for authors and reviewers
 

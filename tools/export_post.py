@@ -79,6 +79,8 @@ def main(slug):
     style = '<style>\nsvg{%s;background:#ffffff}\n%s\n</style>' % (light_tokens(page), SVG_CLASSES)
     figs = {}
     for fid, attrs, inner in re.findall(r'<svg id="(fig\d+)"([^>]*)>(.*?)</svg>', dom, re.S):
+        # Chrome serialises the DOM as HTML; &nbsp; is not an XML entity, so make it numeric for standalone SVG.
+        inner = inner.replace('&nbsp;', '&#160;')
         vb = re.search(r'viewBox="0 0 ([\d.]+) ([\d.]+)"', attrs)
         lab = re.search(r'aria-label="([^"]*)"', attrs)
         label = html.unescape(lab.group(1)) if lab else fid
@@ -101,7 +103,14 @@ def main(slug):
     body = re.sub(r'<sup class="cite">(.*?)</sup>', lambda m: re.sub(r'<[^>]+>', '', m.group(1)), body)
     body = re.sub(r'<span class="n">([\d.]+)</span>', r'\1 ', body)
     body = re.sub(r'<span class="m">(.*?)</span>', r'<code>\1</code>', body)
+    # CSS-drawn radicals: keep their visually hidden linear notation ("√n", "√[ … ]"), drop the wrappers.
+    # Innermost spans first, so the non-greedy matches below never stop at a nested </span>.
+    body = re.sub(r'<span class="vh">([^<]*)</span>', r'\1', body)
+    body = re.sub(r'<span class="rad[^"]*">(.*?)</span>', r'\1', body)
     body = re.sub(r'<span class="nw">(.*?)</span>', r'\1', body)
+    # CSS-drawn bars (x̄) become a combining macron in plain text.
+    body = re.sub(r'<i class="xbar"[^>]*>(.*?)</i>',
+                  lambda m: '<i>%s</i>' % (m.group(1) if m.group(1).endswith('\u0304') else m.group(1) + '\u0304'), body)
     body = re.sub(r'</?section[^>]*>', '', body)
     body = re.sub(r'<li id="[^"]*">', '<li>', body)
     # Table captions become a paragraph above the table (pandoc would drop the markup).

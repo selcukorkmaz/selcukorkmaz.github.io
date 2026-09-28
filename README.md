@@ -64,10 +64,10 @@ post's card in `blog/index.html` if that changes.
 The same markers work for a new hand-written post if it follows this post's page structure:
 the paper-style tokens on `:root` (the figure SVGs take their light-theme colours from every
 top-level `:root{…}` rule), an `<h1>` with an optional `<span>` subtitle, and optionally a
-`<div class="kicker">` and a `<div class="byline">Author<small>date</small></div>`. Headless
-Chrome does not wait for the Google Fonts, so the PDF is set in the fallback fonts (Georgia,
-Helvetica Neue), as the other post's PDF is. The PDF is rewritten only when its content
-changes; Chrome's timestamps and internal structure-node numbers are ignored.
+`<div class="kicker">` and a `<div class="byline">Author<small>date</small></div>`. The PDF
+embeds the page's Google Fonts (Literata, IBM Plex Sans), so run the script online; offline,
+Chrome falls back to other fonts. The PDF is rewritten only when its content changes;
+Chrome's timestamps and internal structure-node numbers are ignored.
 
 ### Comments (giscus)
 
