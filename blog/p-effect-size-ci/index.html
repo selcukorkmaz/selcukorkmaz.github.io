@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Hand-written post. index.md, fig*.svg and p-effect-size-ci.pdf are derived from this file by tools/export_post.py; re-run it after editing. -->
+<title>p, effect size and CI — Selçuk Korkmaz</title>
+<meta name="description" content="A p-value, an effect size and a confidence interval answer three different questions about one result. What each says, how to read them together against the smallest effect that matters, and how to report them in a paper.">
+<meta name="author" content="Selçuk Korkmaz">
+<link rel="canonical" href="https://selcukorkmaz.github.io/blog/p-effect-size-ci/">
+<link rel="alternate" type="text/markdown" href="index.md" title="Markdown version">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Selçuk Korkmaz">
+<meta property="og:title" content="The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper">
+<meta property="og:description" content="A p-value, an effect size and a confidence interval answer three different questions about one result. What each says, how to read them together against the smallest effect that matters, and how to report them in a paper.">
+<meta property="og:url" content="https://selcukorkmaz.github.io/blog/p-effect-size-ci/">
+<meta property="og:image" content="https://selcukorkmaz.github.io/blog/p-effect-size-ci/card-figure1.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="Figure 1 of the post: six rows of 95% confidence intervals for the same 5 mmHg difference at group sizes from 10 to 3,000, with the p-value falling from 0.49 to below 0.001 as the intervals narrow.">
+<meta property="article:published_time" content="2026-10-01">
+<meta property="article:author" content="https://selcukorkmaz.github.io/">
+<meta property="article:tag" content="p-values">
+<meta property="article:tag" content="effect size">
+<meta property="article:tag" content="confidence intervals">
+<meta property="article:tag" content="clinical significance">
+<meta property="article:tag" content="statistical reporting">
+<meta property="article:tag" content="reporting guidelines">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper">
+<meta name="twitter:description" content="A p-value, an effect size and a confidence interval answer three different questions about one result. What each says, how to read them together against the smallest effect that matters, and how to report them in a paper.">
+<meta name="twitter:creator" content="@selcukorkmaz">
+<meta name="twitter:image" content="https://selcukorkmaz.github.io/blog/p-effect-size-ci/card-figure1.png">
+<meta name="twitter:image:alt" content="Figure 1 of the post: six rows of 95% confidence intervals for the same 5 mmHg difference at group sizes from 10 to 3,000, with the p-value falling from 0.49 to below 0.001 as the intervals narrow.">
+<meta name="color-scheme" content="light dark">
+<meta id="metaThemeColor" name="theme-color" content="#f6f7f5">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper",
+  "name": "The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper",
+  "description": "A p-value, an effect size and a confidence interval answer three different questions about one result. What each says, how to read them together against the smallest effect that matters, and how to report them in a paper.",
+  "url": "https://selcukorkmaz.github.io/blog/p-effect-size-ci/",
+  "mainEntityOfPage": "https://selcukorkmaz.github.io/blog/p-effect-size-ci/",
+  "datePublished": "2026-10-01",
+  "inLanguage": "en",
+  "keywords": [
+    "p-values",
+    "effect size",
+    "confidence intervals",
+    "clinical significance",
+    "statistical reporting",
+    "reporting guidelines"
+  ],
+  "image": "https://selcukorkmaz.github.io/blog/p-effect-size-ci/card-figure1.png",
+  "encoding": [
+    {
+      "@type": "MediaObject",
+      "encodingFormat": "application/pdf",
+      "contentUrl": "https://selcukorkmaz.github.io/blog/p-effect-size-ci/p-effect-size-ci.pdf"
+    },
+    {
+      "@type": "MediaObject",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "https://selcukorkmaz.github.io/blog/p-effect-size-ci/index.md"
+    }
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Trakya University",
+      "department": {
+        "@type": "Organization",
+        "name": "Trakya University Faculty of Medicine, Department of Biostatistics"
+      }
+    }
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/"
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Blog · Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/blog/"
+  }
+}
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') { root.classList.add(t); root.setAttribute('data-theme', t); }
+  } catch (e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f5; --panel:#ffffff; --ink:#17202b; --ink-2:#465262; --muted:#6a7584; --rule:#d9dee3; --soft:#eceff1;
+  --accent:#2d3e50; --sg:#12707a; --fm:#2f5f9e; --bl:#9a5a12; --leak:#b23a30; --ok:#23794f;
+  --s1:#2a78d6; --s2:#eb6834; --code:#eef1f3; --hl:rgba(178,58,48,.09);
+  --serif:"Literata",Georgia,"Times New Roman",serif; --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark;
+    --bg:#11161c; --panel:#161c23; --ink:#e5e9ed; --ink-2:#b8c1cb; --muted:#8a95a2; --rule:#2b343e; --soft:#1b222a;
+    --accent:#a9bfd6; --sg:#56b6bf; --fm:#80a9e2; --bl:#dda45c; --leak:#ee7d71; --ok:#5cc08b;
+    --s1:#3987e5; --s2:#d95926; --code:#1a2129; --hl:rgba(238,125,113,.12); }
+}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --bg:#11161c; --panel:#161c23; --ink:#e5e9ed; --ink-2:#b8c1cb; --muted:#8a95a2; --rule:#2b343e; --soft:#1b222a;
+  --accent:#a9bfd6; --sg:#56b6bf; --fm:#80a9e2; --bl:#dda45c; --leak:#ee7d71; --ok:#5cc08b;
+  --s1:#3987e5; --s2:#d95926; --code:#1a2129; --hl:rgba(238,125,113,.12); }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17.5px;line-height:1.62;margin:0;padding-inline:20px;padding-block:0 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px}
+@media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}.toc{display:none}}
+.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-top:64px;font-family:var(--sans);font-size:13.5px}
+.toc b{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:600}
+.toc a{display:block;color:var(--ink-2);text-decoration:none;padding:4px 0 4px 12px;border-left:2px solid var(--rule);line-height:1.35}
+.toc a:hover,.toc a:focus-visible{color:var(--ink);border-left-color:var(--accent)}
+main{min-width:0;max-width:940px}
+main p,main ul,main ol,main h2,main h3,main .box,main .algo,main pre,main .tw,main figure:not(.wide),header.title>*{max-width:760px}
+header.title{padding-top:56px;padding-bottom:28px;border-bottom:1px solid var(--rule)}
+.kicker{font-family:var(--sans);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--sans);font-weight:700;font-size:clamp(30px,4.4vw,44px);line-height:1.08;letter-spacing:-.02em;margin:14px 0 18px;text-wrap:balance}
+h1 span{color:var(--muted);font-weight:600}
+.byline{font-family:var(--sans);font-size:15px;color:var(--ink-2)}
+.byline small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.pkgs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;font-family:var(--mono);font-size:12.5px}
+.pkg{padding:3px 9px;border-radius:4px;border:1px solid var(--rule);background:var(--panel)}
+.pkg i{font-style:normal;display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:0}
+.abstract{margin:28px 0 8px;padding:22px 24px;background:var(--panel);border:1px solid var(--rule);border-radius:6px}
+.abstract h2{margin:0 0 8px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.abstract p{margin:0 0 10px;font-size:16.5px}
+.kw{font-family:var(--sans);font-size:13.5px;color:var(--muted);margin-top:10px}
+h2{font-family:var(--sans);font-weight:700;font-size:25px;letter-spacing:-.01em;line-height:1.2;margin:56px 0 12px;text-wrap:balance}
+h2 .n{color:var(--muted);font-weight:600;margin-right:10px}
+h3{font-family:var(--sans);font-weight:700;font-size:18.5px;margin:34px 0 8px;text-wrap:balance}
+h3 .n{color:var(--muted);font-weight:600;margin-right:8px}
+p{margin:0 0 16px}
+em{font-style:italic}
+a{color:var(--fm)}
+code,.m,pre,.algo{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+code,.m{font-family:var(--mono);font-size:.84em;background:var(--code);padding:1px 5px;border-radius:3px;word-break:break-word}
+pre{font-family:var(--mono);font-size:13.5px;line-height:1.6;background:var(--code);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;overflow-x:auto;margin:10px 0 22px}
+pre code{background:none;padding:0;font-size:inherit}
+pre .c{color:var(--muted);font-style:italic}
+pre .sg{color:var(--sg)} pre .fm{color:var(--fm)} pre .bl{color:var(--bl)}
+ul,ol{padding-left:22px;margin:0 0 16px} li{margin-bottom:6px}
+.eq{font-family:var(--serif);font-style:italic;text-align:center;margin:14px 0 18px;font-size:17px;overflow-x:auto}
+.eq sub,.eq sup{font-size:.7em}
+.box{border-left:3px solid var(--accent);background:var(--panel);padding:14px 18px;margin:18px 0 22px;border-radius:0 6px 6px 0;font-size:16px}
+.box b{font-family:var(--sans)}
+.algo{font-family:var(--mono);font-size:13.5px;line-height:1.7;background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 18px;margin:12px 0 22px;overflow-x:auto;white-space:pre}
+.algo b{font-family:var(--sans);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+figure{margin:28px 0 30px}
+figure.wide{max-width:940px}
+.fig{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:16px 16px 10px;overflow-x:auto}
+.fig svg{display:block;width:100%;height:auto}
+.fig.diagram svg{min-width:720px}
+figcaption{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-2);margin-top:10px}
+figcaption b{color:var(--ink)}
+.tw{overflow-x:auto;margin:14px 0 26px;border:1px solid var(--rule);border-radius:6px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14px;font-variant-numeric:tabular-nums}
+caption{caption-side:top;text-align:left;font-size:14px;color:var(--ink-2);padding:12px 14px 4px;line-height:1.45}
+caption b{color:var(--ink)}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+td.r,th.r{text-align:right}
+tr:last-child td{border-bottom:0}
+td .m{font-size:12.5px}
+.yes{color:var(--ok);font-weight:600}.no{color:var(--muted)}.warn{color:var(--leak);font-weight:600}
+.pos{color:var(--leak)} .neg{color:var(--ok)}
+tr.best td{background:var(--hl)}
+.cfg{font-family:var(--mono);font-size:12.5px;font-weight:500}
+.refs{font-size:15px;line-height:1.5;padding-left:0;list-style:none;counter-reset:r}
+.refs li{counter-increment:r;padding-left:34px;position:relative;margin-bottom:9px;overflow-wrap:anywhere}
+.refs li::before{content:"[" counter(r) "]";position:absolute;left:0;color:var(--muted);font-family:var(--sans);font-size:13px;top:2px}
+sup.cite{font-family:var(--sans);font-size:.68em;color:var(--muted)}
+sup.cite a{color:inherit;text-decoration:none}
+.tip{position:fixed;pointer-events:none;z-index:9;background:var(--ink);color:var(--bg);font-family:var(--sans);font-size:12.5px;line-height:1.35;padding:6px 9px;border-radius:5px;max-width:260px;opacity:0;transition:opacity .1s}
+.tip.on{opacity:1}
+svg text{font-family:var(--sans)}
+svg .t-ink{fill:var(--ink)} svg .t-2{fill:var(--ink-2)} svg .t-mu{fill:var(--muted)}
+svg .grid{stroke:var(--rule);stroke-width:1}
+svg .axis{stroke:var(--muted);stroke-width:1}
+[data-tip]{cursor:default}
+:focus-visible{outline:2px solid var(--fm);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:600px){body{font-size:16.5px}h2{font-size:22px}.abstract{padding:18px}}
+.fig.plain{background:#ffffff;padding:10px}
+.fig.plain img{display:block;width:100%;height:auto}
+main ul ul{margin:6px 0 4px}
+/* ---- this post: colours for the p-value, the effect size and the interval, and the figure controls ---- */
+:root{ --pv:#9a5a12; --ef:#12707a; --ci:#2f5f9e }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --pv:#dda45c; --ef:#56b6bf; --ci:#80a9e2 } }
+:root[data-theme="dark"]{ --pv:#dda45c; --ef:#56b6bf; --ci:#80a9e2 }
+.fig svg{min-width:560px}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 10px;font-family:var(--sans);font-size:13px}
+.ctl .lab{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--panel)}
+.seg button{font:500 13px/1 var(--sans);padding:7px 11px;border:0;border-left:1px solid var(--rule);background:transparent;color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--ink);background:var(--soft)}
+.seg button[aria-pressed="true"]{background:var(--soft);color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+html:not(.js) .ctl{display:none}
+main p.readout{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-2);margin:10px 0 0;font-variant-numeric:tabular-nums;min-height:3em}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 5px 0 2px;vertical-align:0}
+.check{list-style:none;padding-left:0}
+.check li{position:relative;padding-left:28px}
+.check li::before{content:"";position:absolute;left:2px;top:.45em;width:14px;height:14px;border:1.5px solid var(--accent);border-radius:3px}
+.abstract h2{margin:0 0 8px}
+.nw{white-space:nowrap}
+/* √: neither Literata nor IBM Plex Sans has the glyph, so a font-drawn √ came from whatever fallback
+   the system had, and it had no bar over the radicand. Draw the sign (a mask, so it takes the text colour)
+   and the bar with CSS instead; the box's line-height puts the bar about .88em above the baseline in both
+   fonts. The visually hidden "√[ … ]" keeps the notation for screen readers, copying and index.md. */
+.rad{display:inline-block;position:relative;padding:0 .04em 0 .58em;margin-left:.03em;line-height:.89;vertical-align:baseline}
+.rad::before{content:"";position:absolute;left:0;top:0;bottom:-.14em;width:.58em;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%}
+.rad::after{content:"";position:absolute;left:.52em;right:0;top:0;border-top:.06em solid currentColor}
+table .rad, figcaption .rad, .readout .rad{line-height:1.01}
+.rad.tall{padding-top:.22em}  /* radicands with superscripts: lift the bar clear of them */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* x̄: the combining macron sits badly on italic x in Literata, and an overline follows the tall line box.
+   Draw the bar as a zero-height box anchored on the baseline and lifted just above the x-height
+   (about 0.5em in Literata, IBM Plex Sans, Georgia and Helvetica), shifted right for the italic slant. */
+.xbar::after{content:""; display:inline-block; vertical-align:baseline; position:relative; top:-.62em;
+  width:.4em; height:0; margin-left:-.41em; border-top:.065em solid currentColor}
+/* Light-theme muted text darkened slightly so small text meets WCAG AA (4.5:1) on the page, panels and soft fills. */
+:root{ --muted:#626d7b }
+.fig img{display:block;width:100%;height:auto;min-width:560px}
+html:not(.js) .fig svg, html:not(.js) p.readout{display:none}
+.eq > span{display:inline-block;margin:0 1.2em;white-space:nowrap}
+/* Room for the drawn radicals, which reach slightly above and below the text; never scroll vertically. */
+.eq{padding:.3em 0;overflow-y:hidden}
+</style>
+<style>
+/* ======== site bar, post tools, comments and print (same as the other posts) ======== */
+/* ---- site bar ---- */
+:root{ --sitebar-h:52px }
+html{ scroll-padding-top:calc(var(--sitebar-h) + env(safe-area-inset-top, 0px) + 12px) }
+.toc{ top:calc(env(safe-area-inset-top, 0px) + var(--sitebar-h)) }
+.sitebar{
+  position:sticky; top:0; z-index:8;
+  margin-inline:-20px; padding:env(safe-area-inset-top, 0px) 20px 0;
+  background:var(--bg); border-bottom:1px solid var(--rule);
+  font-family:var(--sans);
+}
+.sitebar-in{ max-width:1200px; margin:0 auto; height:var(--sitebar-h); display:flex; align-items:center; gap:12px }
+.sb-crumbs{ display:flex; align-items:center; gap:8px; min-width:0; font-size:14.5px; line-height:1.2 }
+.sb-crumbs a{ color:var(--ink); text-decoration:none; font-weight:600; white-space:nowrap; border-radius:4px }
+.sb-crumbs a.sb-blog{ color:var(--ink-2); font-weight:500 }
+.sb-crumbs a:hover{ text-decoration:underline; text-underline-offset:3px }
+.sb-sep{ color:var(--muted) }
+.sb-toggle{
+  margin-left:auto; flex:0 0 auto; display:inline-flex; align-items:center; gap:8px;
+  font:500 13px/1 var(--sans); padding:7px 12px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--rule); background:var(--panel); color:var(--ink);
+}
+.sb-toggle:hover{ border-color:var(--accent) }
+.sb-ico{ width:18px; height:18px; flex:0 0 18px }
+:root:not([data-theme="dark"]) .sb-moon{ display:none }
+:root[data-theme="dark"] .sb-sun{ display:none }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme]) .sb-sun{ display:none }
+  :root:not([data-theme]) .sb-moon{ display:inline }
+}
+html:not(.js) .sb-toggle, html:not(.js) [data-pt-copy-md], html:not(.js) .pt-row button{ display:none }
+.sb-skip{
+  position:fixed; left:12px; top:12px; z-index:20; font-family:var(--sans); font-size:14px;
+  background:var(--panel); color:var(--ink); border:1px solid var(--rule);
+  padding:8px 12px; border-radius:6px; transform:translateY(-200%);
+}
+.sb-skip:focus{ transform:translateY(0) }
+.sb-printurl{ display:none }
+@media (max-width:600px){ .sb-label{ display:none } .sb-toggle{ padding:7px 10px } }
+
+/* ---- post tools ---- */
+.pt{ font-family:var(--sans); font-size:14px; line-height:1.45; margin:22px 0 0; max-width:760px }
+.pt-end{ margin-top:56px; padding-top:18px; border-top:1px solid var(--rule) }
+.pt-lead{ margin:0 0 10px; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+.pt-row, .pt-links{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+.pt-btn{
+  display:inline-flex; align-items:center; gap:6px; font:500 13px/1.1 var(--sans);
+  padding:7px 11px; border-radius:999px; cursor:pointer; white-space:nowrap; text-decoration:none;
+  border:1px solid var(--rule); background:var(--panel); color:var(--ink);
+}
+.pt-btn:hover{ border-color:var(--accent) }
+.pt-btn[aria-expanded="true"]{ border-color:var(--accent); background:var(--soft) }
+.pt-btn[aria-expanded="true"] .pt-chev{ transform:rotate(180deg) }
+.pt-btn[hidden]{ display:none }
+.pt-quiet{ border-color:transparent; background:transparent; color:var(--ink-2); text-decoration:underline; text-underline-offset:3px; padding-inline:6px }
+.pt-quiet:hover{ color:var(--ink) }
+.pt-sm{ padding:5px 9px; font-size:12.5px }
+.pt-ico{ width:15px; height:15px; flex:0 0 15px }
+.pt-chev{ width:13px; height:13px; flex:0 0 13px; margin-left:-2px; color:var(--muted) }
+.pt-panel{ margin-top:10px; padding:14px 16px; background:var(--panel); border:1px solid var(--rule); border-radius:6px }
+.pt-panel[hidden]{ display:none }
+.pt-cite + .pt-cite{ margin-top:14px }
+.pt-cite-h{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px }
+.pt-cite-h b{ font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
+main pre.pt-code{ margin:0; padding:10px 12px; font-size:12.5px; white-space:pre-wrap; overflow-wrap:anywhere; max-width:none }
+main p.pt-apa{ margin:0; font-family:var(--serif); font-size:15px; overflow-wrap:anywhere; max-width:none }
+main p.pt-note{ margin:0 0 10px; color:var(--ink-2); font-size:13.5px; max-width:none }
+main p.pt-status{ margin:8px 0 0; min-height:1.2em; font-size:13px; color:var(--ok); max-width:none }
+.pt-status:empty{ margin:0; min-height:0 }
+.pt-ta{ position:absolute; left:-9999px; top:0; width:1px; height:1px; opacity:0 }
+.pt-ta.show{ position:static; left:auto; width:100%; height:12em; opacity:1; margin-top:8px; font:12.5px/1.5 var(--mono); color:var(--ink); background:var(--code); border:1px solid var(--rule); border-radius:6px; padding:8px }
+
+/* ---- comments ---- */
+.comments{ max-width:760px }
+main p.cm-note{ color:var(--muted); font-family:var(--sans); font-size:15px; margin:0 }
+
+/* ---- print (also used for the PDF) ---- */
+@media print{
+  @page{ size:A4; margin:16mm 15mm 18mm }
+  html:root[lang]{ color-scheme:light;
+    --bg:#f6f7f5; --panel:#ffffff; --ink:#17202b; --ink-2:#465262; --muted:#6a7584; --rule:#d9dee3; --soft:#eceff1;
+  --accent:#2d3e50; --sg:#12707a; --fm:#2f5f9e; --bl:#9a5a12; --leak:#b23a30; --ok:#23794f;
+  --s1:#2a78d6; --s2:#eb6834; --code:#eef1f3; --hl:rgba(178,58,48,.09);
+  --pv:#9a5a12; --ef:#12707a; --ci:#2f5f9e; --muted:#626d7b;
+  --serif:"Literata",Georgia,"Times New Roman",serif; --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact }
+  body{ background:#fff; padding:0; font-size:11pt; line-height:1.5 }
+  .sitebar, .sb-skip, .toc, .pt, .pt-ta, .comments, .tip, .ctl{ display:none !important }
+  main p.readout{ min-height:0 }
+  .fig svg{ min-width:0 }
+  .sb-printurl{ display:block; margin:0 0 6mm; font:9pt/1.3 var(--sans); color:var(--muted) }
+  .wrap{ display:block; max-width:none }
+  main{ max-width:none }
+  header.title{ padding-top:0; padding-bottom:18px }
+  .abstract{ break-inside:avoid }
+  .abstract p{ font-size:10.5pt }
+  h2{ margin:26px 0 10px; break-after:avoid }
+  h3{ margin:20px 0 6px; break-after:avoid }
+  p, li{ orphans:3; widows:3 }
+  figure, .tw, table, pre, .algo, .box, .eq{ break-inside:avoid }
+  tr, li{ break-inside:avoid }
+  p:has(+ .eq){ break-after:avoid }
+  figure{ margin:16px 0 18px }
+  .fig, .tw, pre, .algo, .eq{ overflow:visible }
+  .fig.diagram svg{ min-width:0 }
+  pre, .algo{ white-space:pre-wrap; overflow-wrap:anywhere; font-size:9pt }
+  table{ font-size:9pt }
+  th{ font-size:8pt }
+  figcaption, caption{ font-size:9pt }
+  .refs{ font-size:9.5pt }
+  .box{ font-size:10.5pt }
+  .refs li{ padding-left:34px; text-indent:-34px }
+  .refs li::before{ position:static; display:inline-block; width:34px; text-indent:0 }
+  a{ color:inherit; text-decoration:none }
+}
+</style>
+</head>
+<body>
+<a class="sb-skip" href="#main">Skip to content</a>
+<header class="sitebar">
+  <div class="sitebar-in">
+    <nav class="sb-crumbs" aria-label="Site">
+      <a href="../../">Selçuk Korkmaz</a>
+      <span class="sb-sep" aria-hidden="true">/</span>
+      <a class="sb-blog" href="../">Blog</a>
+    </nav>
+    <button class="sb-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
+      <svg class="sb-ico sb-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="sb-ico sb-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span class="sb-label">Theme</span>
+    </button>
+  </div>
+</header>
+<p class="sb-printurl">selcukorkmaz.github.io/blog/p-effect-size-ci/ · 1 October 2026</p>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <b>Contents</b>
+  <a href="#three">1 · Three numbers</a>
+  <a href="#pvalue">2 · The <i>p</i>-value</a>
+  <a href="#effect">3 · The effect size</a>
+  <a href="#ci">4 · The interval</a>
+  <a href="#together">5 · Reading them together</a>
+  <a href="#report">6 · How to report</a>
+  <a href="#traps">7 · Five traps</a>
+  <a href="#checklist">8 · Checklist</a>
+  <a href="#refs">References</a>
+</nav>
+
+<main id="main">
+<header class="title">
+  <div class="kicker">Statistics note · Reporting in biomedical research</div>
+  <h1>The <i>p</i>-value, the effect size and the confidence interval <span>What each tells the reader, and how to report them in a paper</span></h1>
+  <div class="byline">Selçuk Korkmaz<small>1 October 2026</small></div>
+  <!--md-skip-->
+<div class="pt pt-top" data-md-skip>
+  <div class="pt-row" role="group" aria-label="Post tools">
+    <a class="pt-btn" href="p-effect-size-ci.pdf" download><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a>
+    <button class="pt-btn" type="button" data-pt-copy-md><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15V9l2.5 3L12 9v6M16 9v6M14 13l2 2 2-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy as Markdown</button>
+    <a class="pt-btn pt-quiet" href="index.md">View Markdown</a>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-cite"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6.8" cy="9.6" r="3.3" fill="currentColor"/><path d="M10.1 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.2" cy="9.6" r="3.3" fill="currentColor"/><path d="M20.5 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Cite<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-share"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-tr"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Translate<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="pt-panel" id="pt-top-cite" hidden>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>BibTeX</b><button class="pt-btn pt-sm" type="button" data-pt-copy="bibtex" data-pt-label="BibTeX"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <pre class="pt-code"><code>@misc{korkmaz2026p,
+  author       = {Korkmaz, Sel{\c{c}}uk},
+  title        = {The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper},
+  year         = {2026},
+  month        = oct,
+  date         = {2026-10-01},
+  howpublished = {\url{https://selcukorkmaz.github.io/blog/p-effect-size-ci/}},
+  url          = {https://selcukorkmaz.github.io/blog/p-effect-size-ci/},
+  note         = {Blog post}
+}</code></pre>
+    </div>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>APA</b><button class="pt-btn pt-sm" type="button" data-pt-copy="apa" data-pt-label="APA citation"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <p class="pt-apa">Korkmaz, S. (2026, October 1). <i>The p-value, the effect size and the confidence interval: What each tells the reader, and how to report them in a paper</i> [Blog post]. https://selcukorkmaz.github.io/blog/p-effect-size-ci/</p>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-top-share" hidden>
+    <div class="pt-links">
+        <button class="pt-btn" type="button" data-pt-copy="link" data-pt-label="Link"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy link</button>
+        <button class="pt-btn" type="button" data-pt-native hidden><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share…</button>
+        <a class="pt-btn" href="https://x.com/intent/post?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F&amp;text=The%20p-value%2C%20the%20effect%20size%20and%20the%20confidence%20interval%3A%20what%20each%20tells%20the%20reader%2C%20and%20how%20to%20report%20them%20in%20a%20paper" target="_blank" rel="noopener">X</a>
+        <a class="pt-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pt-btn" href="https://bsky.app/intent/compose?text=The%20p-value%2C%20the%20effect%20size%20and%20the%20confidence%20interval%3A%20what%20each%20tells%20the%20reader%2C%20and%20how%20to%20report%20them%20in%20a%20paper%20https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener">Bluesky</a>
+        <a class="pt-btn" href="mailto:?subject=The%20p-value%2C%20the%20effect%20size%20and%20the%20confidence%20interval%3A%20what%20each%20tells%20the%20reader%2C%20and%20how%20to%20report%20them%20in%20a%20paper&amp;body=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F">Email</a>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-top-tr" hidden>
+    <p class="pt-note">Opens this page in Google Translate (machine translation). It works once the post is public at its web address.</p>
+    <div class="pt-links">
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=tr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="tr" lang="tr">Türkçe</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=de&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="de" lang="de">Deutsch</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=fr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="fr" lang="fr">Français</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=es&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="es" lang="es">Español</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=ar&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="ar" lang="ar" dir="rtl">العربية</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=zh-CN&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </div>
+  </div>
+  <p class="pt-status" role="status" aria-live="polite"></p>
+</div>
+<!--/md-skip-->
+</header>
+<!--md-body-->
+<section class="abstract" aria-label="Summary">
+  <h2>In short</h2>
+  <p>A <i>p</i>-value, an effect size and a confidence interval answer three different questions about the same result. The <i>p</i>-value asks how surprising the data would be if a specified hypothesis, usually "no difference", were true. The effect size asks how large the difference or association is. The confidence interval asks which sizes the data leave compatible, and so how precisely the study measured it. Only the second and third can tell a reader whether a finding matters, and the 95% interval also shows whether <i>p</i> is below 0.05 for the matching test.</p>
+  <p>The rule for papers follows from that. Lead with the effect estimate in its original units and its 95% confidence interval, add an exact <i>p</i>-value if you want one, and read the interval against the smallest effect that would matter. Three figures (two of them interactive) show how the three numbers behave, Table 4 words six typical patterns, and Table 5 and Table 6 show what to write and what to report for common analyses.</p>
+  <div class="kw">Keywords: <i>p</i>-values · effect size · confidence intervals · clinical significance · statistical reporting · reporting guidelines</div>
+</section>
+
+<h2 id="three"><span class="n">1</span>Three numbers, three questions</h2>
+<p>Suppose a trial randomises 130 adults, 65 to a lifestyle programme and 65 to usual care, and measures systolic blood pressure after 12 weeks. The standard deviation (SD) is about 16 mmHg in both arms, and the programme arm ends up 6.2 mmHg lower. The results section could summarise this one finding with three numbers, and each answers a different question (Table 1).</p>
+
+<div class="tw"><table>
+  <caption><b>Table 1.</b> Three summaries of one result: a 6.2 mmHg lower blood pressure with the programme (65 per arm, SD 16 mmHg).</caption>
+  <thead><tr><th>Quantity</th><th>The question it answers</th><th>In the example</th><th>With more participants</th></tr></thead>
+  <tbody>
+    <tr><td><b>Effect size</b></td><td>How large is the difference?</td><td>6.2 mmHg (standardised: Hedges' <i>g</i> = 0.39, see Section 3)</td><td>Settles near the true value</td></tr>
+    <tr><td><b>95% confidence interval (CI)</b></td><td>Which sizes are compatible with the data, and how precisely was the effect measured?</td><td>0.6 to 11.8 mmHg</td><td>Width shrinks in proportion to 1/<span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span></span></td></tr>
+    <tr><td><b><i>p</i>-value</b></td><td>How surprising would a difference this far from zero be if the true difference were exactly zero?</td><td><i>p</i> = 0.03</td><td>Tends to fall, whatever the size of the effect, provided it is not exactly zero</td></tr>
+  </tbody>
+</table></div>
+
+<p>The three are not independent. The <i>p</i>-value and the interval are both built from the same two ingredients, the estimate (which is the effect size) and its standard error (SE), which I described in an <a href="https://selcukorkmaz.github.io/blog/sd-or-se/">earlier note on the SD and the SE</a>. For a difference in two means:</p>
+<div class="eq"><span><i>D</i> = <i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i><sub>1</sub> − <i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i><sub>2</sub></span><span>SE(<i>D</i>) = <span class="nw"><span class="rad tall"><span class="vh">√[</span><i>s</i><sub>1</sub><sup>2</sup>/<i>n</i><sub>1</sub> + <i>s</i><sub>2</sub><sup>2</sup>/<i>n</i><sub>2</sub><span class="vh">]</span></span></span></span><span>95% CI = <i>D</i> ± <i>t</i><sub>0.975</sub> × SE(<i>D</i>)</span><span><i>p</i> = 2 × Pr(<i>T</i> ≥ |<i>D</i> / SE(<i>D</i>)|)</span></div>
+<p>Here group 1 is usual care and group 2 the programme, each with mean <i class="xbar" role="math" aria-label="x-bar">x<span class="vh">̄</span></i>, SD <i>s</i> and size <i>n</i>, so <i>D</i> is usual care minus programme (positive values favour the programme); <i>t</i><sub>0.975</sub> is the 97.5th percentile of the <i>t</i> distribution with the test's degrees of freedom, and <i>T</i> follows that distribution. In the example, SE = 16 × <span class="nw"><span class="rad tall"><span class="vh">√[</span>2/65<span class="vh">]</span></span></span> = 2.81 mmHg. The test statistic is 6.2 / 2.81 = 2.21 on 128 degrees of freedom, which gives <i>p</i> = 0.03, and with <i>t</i><sub>0.975</sub> = 1.98 the 95% CI is 6.2 ± 1.98 × 2.81, or 0.6 to 11.8 mmHg.</p>
+<p>Because the ingredients are shared, a two-sided <i>p</i>-value below 0.05 and a 95% confidence interval that excludes zero are the same statement, when both are computed from the same test statistic and standard error, as with the <i>t</i>-test and <i>t</i>-interval here. (For proportions, a Wald interval and a pooled test can disagree near the boundary.) So the interval already tells the reader whether <i>p</i> is below 0.05, and it adds the size and precision that the <i>p</i>-value hides. Gardner and Altman recommended reporting both, and dropping the <i>p</i>-value first if one had to be omitted <sup class="cite">[<a href="#ref-gardner1986">1</a>]</sup>.</p>
+
+<h2 id="pvalue"><span class="n">2</span>The <i>p</i>-value</h2>
+<p>A <i>p</i>-value is the probability of getting a test statistic at least as extreme as the one observed, computed on the assumption that the null hypothesis and every other assumption of the statistical model are true <sup class="cite">[<a href="#ref-greenland2016">2</a>]</sup>. In the example, <i>p</i> = 0.03 says that if the programme had no effect at all and the model were right, a difference of 6.2 mmHg or more in either direction would turn up about 3 times in 100 repetitions of the trial.</p>
+<p>Greenland and colleagues describe it as a continuous measure of compatibility between the data and the whole set of assumptions used to compute it: a small value signals that something in that set, the null hypothesis or another assumption, is doubtful <sup class="cite">[<a href="#ref-greenland2016">2</a>]</sup>. Rafi and Greenland add a way to feel its size: the surprisal, or S-value, <i>S</i> = −log<sub>2</sub>(<i>p</i>), in bits (written <i>S</i> here to keep it apart from the SD <i>s</i>). A <i>p</i> of 0.03 is about 5 bits, as surprising as five heads in a row from a fair coin <sup class="cite">[<a href="#ref-rafi2020">3</a>]</sup>.</p>
+<div class="box"><b>What a <i>p</i>-value does not do.</b> It is not the probability that the null hypothesis is true, or that the data arose by chance alone. It does not measure the size of an effect or the importance of a result. By itself it is not a good measure of evidence about a model or hypothesis. And a conclusion should not be based only on whether it falls on one side of a threshold <sup class="cite">[<a href="#ref-asa2016">4</a>]</sup>.</div>
+<p>The most useful thing to know about a <i>p</i>-value is that it depends on the sample size as much as on the effect. Figure 1 holds the SD at 16 mmHg and changes the group size. In one view the observed difference stays at 5 mmHg, and <i>p</i> nevertheless runs from 0.49 to below 0.001. In the other, every row is chosen so that <i>p</i> = 0.03, and the estimate runs from 16.9 mmHg down to 0.9.</p>
+
+<!--md-fig fig1-->
+<figure id="f1">
+  <div class="ctl" data-md-skip>
+    <span class="lab">Hold fixed</span>
+    <span class="seg" role="group" aria-label="What to hold fixed" id="f1-hold"></span>
+  </div>
+  <div class="fig"><svg id="fig1" viewBox="0 0 760 392" role="img" aria-label="Figure 1. Six rows of 95% confidence intervals for the difference in blood pressure between two groups, at 10 to 3,000 participants per group. With the estimate held at 5 mmHg, the p-value falls from 0.49 to below 0.001 as the intervals narrow."></svg><noscript><img src="fig1.svg" alt="Figure 1. Six rows of 95% confidence intervals for the difference in blood pressure between two groups, at 10 to 3,000 participants per group. With the estimate held at 5 mmHg, the p-value falls from 0.49 to below 0.001 as the intervals narrow." width="760" height="392"></noscript></div>
+  <p class="readout" id="f1-read" aria-live="polite"></p>
+  <figcaption><b>Figure 1. The same effect can have any <i>p</i>-value, and the same <i>p</i>-value any effect.</b> Two-arm comparison of systolic blood pressure with an SD of 16 mmHg in each arm. Each row shows the difference in means (positive favours the programme) with its 95% CI, the two-sample <i>t</i>-test <i>p</i>-value and Hedges' <i>g</i>. Effect fixed: the difference is 5 mmHg at every group size, so <i>p</i> falls and the interval narrows as the groups grow. <i>p</i> fixed: each row is chosen so that <i>p</i> = 0.03, so the estimate shrinks as the groups grow. The dashed line marks 5 mmHg, assumed here to be the smallest difference of interest. On the interactive page the buttons switch between the two views; the static copy shows the first. With <i>p</i> fixed, the estimates are 16.9, 9.2, 4.9, 2.8, 1.6 and 0.9 mmHg.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<p>Two consequences follow. A <i>p</i>-value below 0.05 says the data are hard to reconcile with an effect of exactly zero. It does not say the effect is big enough to matter, and in a large enough study a difference of 0.9 mmHg will reach it. A <i>p</i>-value above 0.05 does not say there is no effect either; it may only mean the study was small <sup class="cite">[<a href="#ref-greenland2016">2</a>]</sup>.</p>
+
+<h2 id="effect"><span class="n">3</span>The effect size</h2>
+<p>An effect size is how large the difference or association is. It answers the question the reader actually has: how much? It can be <em>unstandardised</em>, in the units of the outcome (6.2 mmHg, 2 days, 8 percentage points), or <em>standardised</em>, expressed in units of variability or as a ratio, so that it has no units (Table 2).</p>
+<p>Prefer the unstandardised form whenever the units mean something to your readers, because they can judge it directly against what they know about blood pressure, length of stay or risk <sup class="cite">[<a href="#ref-baguley2009">5</a>,<a href="#ref-sullivan2012">6</a>]</sup>. Use a standardised effect size when the outcome has no intrinsic units <sup class="cite">[<a href="#ref-sullivan2012">6</a>]</sup>, when studies used different scales to measure the same construct <sup class="cite">[<a href="#ref-baguley2009">5</a>,<a href="#ref-sullivan2012">6</a>]</sup>, or when you need to compare or pool results across studies <sup class="cite">[<a href="#ref-sullivan2012">6</a>]</sup>, and give its confidence interval as well. Standardising an arbitrary or poorly measured scale obscures its deficiencies rather than fixing them <sup class="cite">[<a href="#ref-baguley2009">5</a>]</sup>.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 2.</b> Common effect sizes by type of outcome.</caption>
+  <thead><tr><th>Outcome and comparison</th><th>Unstandardised</th><th>Standardised or relative</th></tr></thead>
+  <tbody>
+    <tr><td>Continuous, two groups</td><td>difference in means (with units)</td><td>Cohen's <i>d</i>, Hedges' <i>g</i></td></tr>
+    <tr><td>Continuous, paired or repeated</td><td>mean of the paired differences</td><td>standardised mean change (state the SD used)</td></tr>
+    <tr><td>Binary outcome</td><td>risk difference (percentage points), number needed to treat</td><td>risk ratio, odds ratio</td></tr>
+    <tr><td>Time to event</td><td>difference in median or restricted mean survival time</td><td>hazard ratio</td></tr>
+    <tr><td>Two continuous variables</td><td>regression slope (outcome units per unit of exposure)</td><td>correlation coefficient <i>r</i></td></tr>
+    <tr><td>Three or more groups, or a model</td><td>contrasts between group means</td><td><i>η</i><sup>2</sup>, partial <i>η</i><sup>2</sup>, <i>R</i><sup>2</sup> (shares of variance explained)</td></tr>
+    <tr><td>Ranks or ordinal data</td><td>Hodges–Lehmann shift, with each group's median and interquartile range (IQR)</td><td>probability of superiority</td></tr>
+  </tbody>
+</table></div>
+
+<p>The best-known standardised measure for two means is Cohen's <i>d</i>, the difference divided by the pooled SD. Hedges' <i>g</i> multiplies it by a small correction, which matters when the groups are small <sup class="cite">[<a href="#ref-lakens2013">7</a>,<a href="#ref-hedgesolkin">8</a>]</sup>. An approximate SE for <i>g</i> gives its confidence interval <sup class="cite">[<a href="#ref-hedgesolkin">8</a>]</sup>:</p>
+<div class="eq"><span><i>d</i> = <i>D</i> / <i>s</i><sub>pooled</sub></span><span><i>g</i> ≈ <i>d</i> × [1 − 3 / (4(<i>n</i><sub>1</sub> + <i>n</i><sub>2</sub>) − 9)]</span><span>SE(<i>g</i>) ≈ <span class="nw"><span class="rad tall"><span class="vh">√[</span>(<i>n</i><sub>1</sub> + <i>n</i><sub>2</sub>) / (<i>n</i><sub>1</sub><i>n</i><sub>2</sub>) + <i>g</i><sup>2</sup> / (2(<i>n</i><sub>1</sub> + <i>n</i><sub>2</sub>))<span class="vh">]</span></span></span></span></div>
+<p>In the example, <i>d</i> = 6.2 / 16 = 0.39, <i>g</i> = 0.39 and its 95% CI, <i>g</i> ± 1.96 × SE(<i>g</i>) with SE(<i>g</i>) = 0.177, is 0.04 to 0.73. A standardised effect is only as interpretable as its denominator: <i>d</i> shrinks if the sample is more heterogeneous, even when the raw effect is unchanged <sup class="cite">[<a href="#ref-baguley2009">5</a>]</sup>. State which SD was used.</p>
+
+<h3><span class="n">3.1</span>What counts as large?</h3>
+<p>Cohen's conventions are 0.2, 0.5 and 0.8 for <i>d</i> (small, medium, large), with matching values for other measures (Table 3) <sup class="cite">[<a href="#ref-cohen1988">9</a>]</sup>. Cohen presented them as reference points to use only when nothing better is available <sup class="cite">[<a href="#ref-lakens2013">7</a>,<a href="#ref-cohen1988">9</a>]</sup>. Something better is almost always available: the smallest effect that would matter to patients, clinicians or the science. The Statistical Analyses and Methods in the Published Literature (SAMPL) guidelines ask authors, where possible, to say what minimum difference they consider clinically important, and not to call a correlation low, moderate or high unless they define the ranges <sup class="cite">[<a href="#ref-sampl">10</a>]</sup>. For patient outcomes, that threshold is often called the minimal clinically important difference, which was originally defined as the smallest difference in the domain of interest that patients perceive as beneficial and that would mandate a change in management, in the absence of troublesome side effects and excessive cost <sup class="cite">[<a href="#ref-jaeschke1989">11</a>]</sup>. It is the yardstick for reading an interval in Section 5.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 3.</b> Cohen's conventions for three common measures. Use them only as a last resort, and prefer a threshold based on your field and your outcome.</caption>
+  <thead><tr><th>Measure</th><th class="r">Small</th><th class="r">Medium</th><th class="r">Large</th></tr></thead>
+  <tbody>
+    <tr><td>Difference between two means, <i>d</i></td><td class="r">0.2</td><td class="r">0.5</td><td class="r">0.8</td></tr>
+    <tr><td>Correlation, <i>r</i></td><td class="r">0.1</td><td class="r">0.3</td><td class="r">0.5</td></tr>
+    <tr><td>Variance explained, <i>η</i><sup>2</sup></td><td class="r">0.01</td><td class="r">0.06</td><td class="r">0.14</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="ci"><span class="n">4</span>The confidence interval</h2>
+<p>A 95% confidence interval is the range of values produced by a procedure that, across repeated studies and if the model's assumptions hold, would contain the true value in 95% of them <sup class="cite">[<a href="#ref-greenland2016">2</a>]</sup>. That statement is about the procedure, not about the one interval in front of you. The reading that works in practice is the one Rafi and Greenland propose: an interval shows the values most compatible with the data under the model, with the estimate in the middle the most compatible, and values near the ends less so <sup class="cite">[<a href="#ref-rafi2020">3</a>]</sup>. The usual shortcut, "there is a 95% probability that the true value lies in this interval", is not what the interval means, and it is one of the misreadings that researchers commonly endorse <sup class="cite">[<a href="#ref-hoekstra2014">12</a>]</sup>.</p>
+<p>Figure 2 shows how the interval, the estimate and the <i>p</i>-value fit together. Take every possible true difference in turn and ask how compatible the data are with it, using the same <i>t</i>-test that gave the <i>p</i>-value for zero. The result is a curve, the <i>p</i>-value function. Its peak is the estimate. The <i>p</i>-value reported for "no difference" is only the height of the curve at zero. And the 95% confidence interval is the stretch of the horizontal axis where the curve lies above 0.05 <sup class="cite">[<a href="#ref-rafi2020">3</a>]</sup>. The curve is not a probability distribution for the true difference <sup class="cite">[<a href="#ref-rafi2020">3</a>]</sup>: its height is the two-sided <i>p</i>-value of each hypothesis. It equals exactly 1 at the estimate, where the test statistic is 0, and it has a sharp point there because the <i>p</i>-value ignores the sign of the difference.</p>
+
+<!--md-fig fig2-->
+<figure id="f2">
+  <div class="ctl" data-md-skip>
+    <span class="lab">Per group</span>
+    <span class="seg" role="group" aria-label="Participants per group" id="f2-n"></span>
+    <span class="lab">Confidence level</span>
+    <span class="seg" role="group" aria-label="Confidence level" id="f2-level"></span>
+  </div>
+  <div class="fig"><svg id="fig2" viewBox="0 0 760 400" role="img" aria-label="Figure 2. The p-value function for an observed difference of 6.2 mmHg: a curve peaking at the estimate, with the p-value for zero read off at zero and the 95% confidence interval where the curve lies above 0.05."></svg><noscript><img src="fig2.svg" alt="Figure 2. The p-value function for an observed difference of 6.2 mmHg: a curve peaking at the estimate, with the p-value for zero read off at zero and the 95% confidence interval where the curve lies above 0.05." width="760" height="400"></noscript></div>
+  <p class="readout" id="f2-read" aria-live="polite"></p>
+  <figcaption><b>Figure 2. One curve holds the estimate, the <i>p</i>-value and the interval.</b> Observed difference 6.2 mmHg, SD 16 mmHg in each arm. For each hypothesised true reduction on the horizontal axis, the curve gives the two-sided <i>p</i>-value of the <i>t</i>-test of that hypothesis. The peak is the estimate; the <i>p</i>-value reported in a paper is the height of the curve at 0; the confidence interval is the part of the axis where the curve lies above the dashed line at <i>α</i> = 1 − confidence level. More participants make the curve narrower, so the interval shrinks and the <i>p</i>-value at 0 falls while the peak stays where it is. The curve is not a probability distribution for the true difference.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<p>Three practical points follow from the picture.</p>
+<ul>
+  <li><b>Width is precision.</b> The interval's width shrinks in proportion to 1/<span class="nw"><span class="rad"><span class="vh">√</span><i>n</i></span></span>, so four times as many participants roughly halve it, and a wide interval says the study cannot pin the effect down, whatever its <i>p</i>-value.</li>
+  <li><b>Ratio intervals are symmetric on the log scale.</b> Intervals for risk ratios, odds ratios and hazard ratios are usually calculated on the log scale, so they are not centred on the estimate, and the no-effect value is 1, not 0.</li>
+  <li><b>An interval is only as good as its assumptions.</b> It reflects sampling variation only <sup class="cite">[<a href="#ref-gardner1986">1</a>]</sup>; it does not correct for bias, and it is a best-case measure of uncertainty because it depends on the model being right <sup class="cite">[<a href="#ref-greenland2016">2</a>]</sup>. A narrow interval around a biased estimate is a precise wrong answer. And intervals of two separate groups say little about their difference <sup class="cite">[<a href="#ref-greenland2016">2</a>]</sup>; estimate the difference itself, as the <a href="https://selcukorkmaz.github.io/blog/sd-or-se/#bars">note on error bars</a> shows.</li>
+</ul>
+<p>Gardner and Altman argued in 1986 that confidence intervals should be used for the major findings, in the main text and in the abstract <sup class="cite">[<a href="#ref-gardner1986">1</a>]</sup>. Current guidelines, discussed in Section 6, ask for the same estimate-plus-interval reporting <sup class="cite">[<a href="#ref-sampl">10</a>,<a href="#ref-consort2025">13</a>,<a href="#ref-icmje">14</a>]</sup>.</p>
+
+<h2 id="together"><span class="n">5</span>Reading the three together</h2>
+<div class="box"><b>Compare the interval with two reference points.</b> Zero, or one for a ratio, tells you whether the data are compatible with no effect. The smallest effect of interest tells you whether the compatible values would matter. Where the interval sits relative to both gives the interpretation.</div>
+<p>Figure 3 places six illustrative intervals against a zone of trivial effects (here ±5 mmHg). The first three are statistically significant, and the last three are not, yet within each group the meaning differs a great deal (Table 4).</p>
+
+<!--md-fig fig3-->
+<figure id="f3" class="wide">
+  <div class="fig"><svg id="fig3" viewBox="0 0 760 430" role="img" aria-label="Figure 3. Six 95% confidence intervals for a reduction in blood pressure, drawn against a shaded zone of trivial effects from minus 5 to 5 mmHg. Three exclude zero and three include it, with different meanings."></svg><noscript><img src="fig3.svg" alt="Figure 3. Six 95% confidence intervals for a reduction in blood pressure, drawn against a shaded zone of trivial effects from minus 5 to 5 mmHg. Three exclude zero and three include it, with different meanings." width="760" height="430"></noscript></div>
+  <figcaption><b>Figure 3. Six ways an interval can sit relative to zero and to the smallest effect of interest.</b> Illustrative 95% confidence intervals (dots are the estimates) for the reduction in systolic blood pressure with a programme; positive values favour the programme. The shaded zone covers differences of 5 mmHg or less in either direction, assumed here to be too small to matter. <i>p</i>-values come from a normal approximation to each interval. Rows 1 to 3 are statistically significant and rows 4 to 6 are not.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<div class="tw"><table>
+  <caption><b>Table 4.</b> Wording for each pattern in Figure 3.</caption>
+  <thead><tr><th>Pattern</th><th>What the data support</th><th>Wording</th></tr></thead>
+  <tbody>
+    <tr><td>1. Significant, clearly important</td><td>Incompatible with no effect, and every compatible value is important</td><td>"Blood pressure was 12 mmHg lower (95% CI 7 to 17), more than the 5 mmHg we regarded as important."</td></tr>
+    <tr><td>2. Significant, importance unclear</td><td>Incompatible with no effect, but compatible values run from trivial to important</td><td>"Blood pressure was 6 mmHg lower (95% CI 1 to 11). The data are incompatible with no effect but cannot say whether the benefit exceeds 5 mmHg."</td></tr>
+    <tr><td>3. Significant, too small to matter</td><td>Incompatible with no effect, but no compatible value is important</td><td>"Blood pressure was 2.3 mmHg lower (95% CI 0.5 to 4.1); every compatible value is below the 5 mmHg we regarded as important."</td></tr>
+    <tr><td>4. Not significant, inconclusive</td><td>Compatible with no effect and with a large benefit</td><td>"Blood pressure was 7 mmHg lower (95% CI 1 higher to 15 lower; <i>p</i> = 0.09). The data are compatible with no effect and with a benefit well above 5 mmHg."</td></tr>
+    <tr><td>5. Not significant, inconclusive</td><td>Compatible with a harm and with a benefit that both exceed 5 mmHg</td><td>"Blood pressure was 1.5 mmHg higher (95% CI 9.0 higher to 6.0 lower). The study is too imprecise to say whether the programme helps or harms, or by how much."</td></tr>
+    <tr><td>6. Not significant, no important effect</td><td>Compatible only with trivial differences in either direction</td><td>"Blood pressure was 0.5 mmHg lower (95% CI 2.5 higher to 3.5 lower). The data are compatible only with differences smaller than 5 mmHg in either direction." (Only if the margin was set in advance.)</td></tr>
+  </tbody>
+</table></div>
+
+<p>Rows 4 and 5 show why "not significant" must never be read as "no effect". The mistake is common: in a compilation of four published surveys covering 791 articles in five journals, Amrhein and colleagues reported that about half (402, or 51%) wrongly read a non-significant result as showing no effect <sup class="cite">[<a href="#ref-amrhein2019">15</a>]</sup>. As Altman and Bland put it, absence of evidence is not evidence of absence <sup class="cite">[<a href="#ref-altman1995">16</a>]</sup>. To claim that an effect is negligible, as in row 6, you need a confidence interval that lies inside a margin based on the smallest effect of interest, which is the logic of equivalence testing <sup class="cite">[<a href="#ref-lakens2017">17</a>]</sup>. Set the margin before seeing the data. The usual two one-sided tests at the 5% level correspond to a 90% interval, and a 95% interval is more demanding <sup class="cite">[<a href="#ref-lakens2017">17</a>]</sup>. SAMPL asks authors to report the equivalence margin <sup class="cite">[<a href="#ref-sampl">10</a>]</sup>.</p>
+
+<h2 id="report"><span class="n">6</span>How to report them in a paper</h2>
+<div class="box"><b>Rule of thumb.</b> Estimate first, interval second, <i>p</i>-value last and optional, everything in the units of the outcome, and a sentence that says what the interval means against the smallest effect of interest.</div>
+<p>Reporting guidelines agree. The SAMPL guidelines ask authors to give the estimate, or effect size, with a measure of precision, usually a 95% confidence interval, and not to rely on <i>p</i>-values alone <sup class="cite">[<a href="#ref-sampl">10</a>]</sup>. The Consolidated Standards of Reporting Trials (CONSORT) 2025 statement, item 26, asks trial reports to give, for each primary and secondary outcome, the estimated effect size and its precision, such as a 95% CI, and for binary outcomes both the absolute and the relative effect <sup class="cite">[<a href="#ref-consort2025">13</a>,<a href="#ref-consort2025stmt">18</a>]</sup>. The International Committee of Medical Journal Editors (ICMJE) recommendations ask for appropriate measures of uncertainty, such as confidence intervals, rather than reliance on hypothesis tests alone <sup class="cite">[<a href="#ref-icmje">14</a>]</sup>.</p>
+
+<h3><span class="n">6.1</span>The basic sentence</h3>
+<p>Table 5 shows one result written three ways. The weak version hides the size and the precision; the better one gives the size but not the precision; the best gives both and reads them against the smallest effect of interest.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 5.</b> One result, three ways of reporting it.</caption>
+  <thead><tr><th>Version</th><th>Text</th><th>What is missing</th></tr></thead>
+  <tbody>
+    <tr><td>Weak</td><td>"The programme significantly reduced blood pressure (<i>p</i> &lt; 0.05)."</td><td>Size, precision, exact <i>p</i>, the comparison, the units</td></tr>
+    <tr><td>Better</td><td>"Blood pressure fell 6.2 mmHg more with the programme (<i>p</i> = 0.03)."</td><td>Precision: the reader cannot tell a benefit of about 1 mmHg from one of about 12</td></tr>
+    <tr><td>Best</td><td>"At 12 weeks, mean systolic blood pressure was 6.2 mmHg lower in the programme group (<i>n</i> = 65) than in the usual-care group (<i>n</i> = 65) (95% CI 0.6 to 11.8; <i>p</i> = 0.03; Hedges' <i>g</i> = 0.39, 95% CI 0.04 to 0.73). The interval includes differences below the 5 mmHg named in the protocol as the smallest effect of interest, so the data are incompatible with no benefit but do not establish that the benefit is important."</td><td>Nothing essential</td></tr>
+  </tbody>
+</table></div>
+
+<h3><span class="n">6.2</span>Formatting rules</h3>
+<ul>
+  <li><b>Say what the difference is.</b> Name the direction (for example usual care minus programme, or "lower in the programme group"), the units and the confidence level (95% CI).</li>
+  <li><b>Write intervals with "to".</b> "−3.9 to 6.3" is unambiguous with negative numbers, where a dash is not. Give the estimate and both limits the same number of decimals, and no more precision than the data support.</li>
+  <li><b>Give exact <i>p</i>-values.</b> Write <i>p</i> = 0.03, not <i>p</i> &lt; 0.05, and never "NS". SAMPL calls <i>p</i>-values less preferred than confidence intervals but, if they are given, asks for equalities to one or two decimals, with <i>p</i> &lt; 0.001 as the smallest value worth reporting <sup class="cite">[<a href="#ref-sampl">10</a>]</sup>. My own habit is two decimals, three below 0.01 or when the value is close to 0.05 (so 0.049 is not rounded to 0.05). Never write <i>p</i> = 0.000.</li>
+  <li><b>Name the test and the sidedness</b> in the methods, and say whether tests were two-sided and what <i>α</i> was, if you use a threshold at all <sup class="cite">[<a href="#ref-sampl">10</a>]</sup>.</li>
+  <li><b>Do not use stars alone.</b> Asterisks in a table are no substitute for the estimate and the interval.</li>
+  <li><b>Define the standardised effect size.</b> Say whether <i>d</i> or <i>g</i>, which SD was used <sup class="cite">[<a href="#ref-lakens2013">7</a>]</sup>, which group was subtracted from which, and give its 95% CI.</li>
+  <li><b>Take a position on "significant".</b> Some statisticians recommend dropping the phrase "statistically significant" altogether <sup class="cite">[<a href="#ref-amrhein2019">15</a>,<a href="#ref-asa2019">19</a>]</sup>, and journals differ. If you use it, define <i>α</i> in advance and never let it stand in for the estimate.</li>
+</ul>
+
+<h3><span class="n">6.3</span>Binary outcomes: report both scales</h3>
+<p>For a binary outcome, give the absolute effect (risk difference) and the relative effect (risk ratio or odds ratio), each with its interval <sup class="cite">[<a href="#ref-consort2025">13</a>]</sup>; the number needed to treat (NNT) can also help <sup class="cite">[<a href="#ref-consort2025">13</a>]</sup>. A relative effect alone can make a rare outcome look important, and an absolute effect alone hides how it scales with baseline risk <sup class="cite">[<a href="#ref-consort2025">13</a>]</sup>. With 18 events among 200 participants in one arm and 34 among 200 in the other:</p>
+<div class="box">Events occurred in 18 of 200 participants (9.0%) in the intervention group and 34 of 200 (17.0%) in the control group: risk difference −8.0 percentage points (intervention minus control; 95% CI −14.5 to −1.5; <i>p</i> = 0.02); risk ratio 0.53 (95% CI 0.31 to 0.91). The number needed to treat to prevent one event was 13 (95% CI 7 to 69).</div>
+<p>The interval for the NNT comes from inverting the unrounded limits of the risk difference. That is straightforward only when the risk-difference interval excludes zero, as it does here; when it does not, the interval for the NNT is not a single range, and Altman shows how to report it <sup class="cite">[<a href="#ref-altman1998">20</a>]</sup>.</p>
+
+<h3><span class="n">6.4</span>Non-significant results</h3>
+<p>Report them exactly like significant ones, with the estimate, the interval and the exact <i>p</i>-value, and describe what the interval rules out:</p>
+<div class="box">Mean systolic blood pressure was 1.2 mmHg lower in the programme group (95% CI 3.9 higher to 6.3 lower; <i>p</i> = 0.64). The data are compatible with a reduction larger than the 5 mmHg we set as the smallest effect of interest and with a modest increase, so the trial is inconclusive rather than negative.</div>
+
+<h3><span class="n">6.5</span>Tables, figures and the abstract</h3>
+<p>In a table, give one column for the estimate with its interval and, if wanted, one for the <i>p</i>-value; state in the footnote what the estimate is, what test gave the <i>p</i>-value, and whether tests were adjusted for multiplicity. For many outcomes or subgroups, a forest plot with the reference line at no effect and a second line at the smallest effect of interest lets readers do Section 5 for themselves. The abstract should carry the estimate and 95% interval of the primary outcome, not just a <i>p</i>-value <sup class="cite">[<a href="#ref-gardner1986">1</a>]</sup>. Table 6 lists what to report for common analyses.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 6.</b> What to report for common analyses.</caption>
+  <thead><tr><th>Analysis</th><th>Effect estimate</th><th>Interval</th><th>Also useful</th></tr></thead>
+  <tbody>
+    <tr><td>Two independent means</td><td>difference in means (A − B), with units</td><td>Welch 95% CI</td><td>Hedges' <i>g</i> with CI if the scale is arbitrary; <i>n</i>, mean and SD per group</td></tr>
+    <tr><td>Paired or repeated measures</td><td>mean of the paired differences</td><td>95% CI of that mean</td><td>the SD of the differences</td></tr>
+    <tr><td>Two proportions</td><td>risk difference and risk ratio</td><td>95% CI for each</td><td>number needed to treat with its interval; if the risk-difference interval includes 0, report it as described by Altman <sup class="cite">[<a href="#ref-altman1998">20</a>]</sup></td></tr>
+    <tr><td>Logistic regression</td><td>odds ratio</td><td>95% CI</td><td>absolute risks at chosen covariate values</td></tr>
+    <tr><td>Linear regression</td><td>coefficient, in outcome units per unit of the predictor</td><td>95% CI</td><td>the unit of the predictor stated explicitly</td></tr>
+    <tr><td>Time to event</td><td>hazard ratio</td><td>95% CI</td><td>median survival or restricted mean difference, with CI</td></tr>
+    <tr><td>Correlation</td><td><i>r</i> (or <i>ρ</i>)</td><td>95% CI</td><td>scatter plot; no "low", "moderate" or "high" without stated ranges <sup class="cite">[<a href="#ref-sampl">10</a>]</sup></td></tr>
+    <tr><td>Three or more groups</td><td>pairwise differences or planned contrasts</td><td>95% CIs (adjusted if several)</td><td>the omnibus test and partial <i>η</i><sup>2</sup>, with CI</td></tr>
+    <tr><td>Rank-based comparison</td><td>Hodges–Lehmann shift or probability of superiority</td><td>95% CI</td><td>median (IQR) in each group</td></tr>
+  </tbody>
+</table></div>
+
+<h3><span class="n">6.6</span>Sentences to adapt</h3>
+<ul>
+  <li><b>Methods.</b> "The primary outcome was the between-group difference in systolic blood pressure at 12 weeks, estimated with Welch's <i>t</i>-test. Tests were two-sided with <i>α</i> = 0.05, and results are reported as differences with 95% confidence intervals and exact <i>p</i>-values. The smallest effect of interest, 5 mmHg, was specified before data collection. No adjustment was made for secondary outcomes, which are exploratory."</li>
+  <li><b>Table footnote.</b> "Estimates are differences in means (usual care&nbsp;−&nbsp;programme; positive values favour the programme) with 95% CI from Welch's <i>t</i>-test; <i>p</i>, two-sided, unadjusted."</li>
+  <li><b>Figure legend.</b> "Squares show the reduction in systolic blood pressure (usual care&nbsp;−&nbsp;programme; positive values favour the programme) and horizontal lines show 95% confidence intervals. The dashed line marks the smallest effect of interest (5 mmHg)."</li>
+</ul>
+<p>Base R gives the estimate, interval and <i>p</i>-value for a two-group comparison of means or proportions; the risk ratio and the NNT above are computed by hand from the counts. The <code>effectsize</code> package adds the standardised effect with its interval; check that its sign convention matches the direction you report. Its interval is the exact (noncentral <i>t</i>) one, so it can differ slightly from the approximation above.</p>
+<pre class="r"><code>d$arm &lt;- factor(d$arm, levels = c("usual care", "programme"))   <span class="c"># first − second</span>
+fit &lt;- t.test(sbp ~ arm, data = d)              <span class="c"># Welch test</span>
+unname(fit$estimate[1] - fit$estimate[2])       <span class="c"># usual care − programme</span>
+fit$conf.int                                    <span class="c"># its 95% CI</span>
+fit$p.value                                     <span class="c"># two-sided p</span>
+effectsize::hedges_g(sbp ~ arm, data = d)       <span class="c"># Hedges' g with 95% CI</span>
+
+<span class="c"># Wald CI and pooled-test p; sign is intervention − control</span>
+prop.test(c(18, 34), c(200, 200), correct = FALSE)</code></pre>
+
+<h2 id="traps"><span class="n">7</span>Five traps</h2>
+<h3><span class="n">7.1</span>Treating 0.05 as a cliff</h3>
+<p>A result with <i>p</i> = 0.049 and one with <i>p</i> = 0.051 are practically the same evidence, and no sensible reading treats them as opposites. Phrases such as "a trend towards significance" for 0.06, or "highly significant" for 0.001, treat the threshold as if it were a fact about the world. Report the number and let readers weigh it. The American Statistical Association's statement says that conclusions should not be based only on whether a <i>p</i>-value passes a threshold <sup class="cite">[<a href="#ref-asa2016">4</a>]</sup>.</p>
+<h3><span class="n">7.2</span>Reading "not significant" as "no effect"</h3>
+<p>Covered in Section 5: a wide interval that includes zero is not evidence of absence <sup class="cite">[<a href="#ref-altman1995">16</a>]</sup>. Read the whole interval, and reserve claims of no important effect for intervals inside a margin set in advance.</p>
+<h3><span class="n">7.3</span>Comparing significance levels of two groups</h3>
+<p>The difference between "significant" and "not significant" is not itself statistically significant <sup class="cite">[<a href="#ref-gelman2006">21</a>]</sup>. Suppose a treatment effect is 25 (SE 10) in one subgroup and 10 (SE 10) in another. The first is significant (<i>p</i> = 0.01) and the second is not (<i>p</i> = 0.32), but the difference between them is 15 with an SE of 14, and <i>p</i> = 0.29. To claim that subgroups differ, test the difference, with an interaction term, and report its interval.</p>
+<h3><span class="n">7.4</span>Reporting observed power</h3>
+<p>Power calculated from the observed result is a direct function of the <i>p</i>-value and adds no information; a non-significant result always has observed power of about 50% or less <sup class="cite">[<a href="#ref-hoenig2001">22</a>]</sup>. Report the confidence interval instead, which shows what the study could and could not exclude. Power belongs in the planning of a study, computed for a difference you named in advance.</p>
+<h3><span class="n">7.5</span>Uncounted tests</h3>
+<p>With 20 independent tests of true null hypotheses at <i>α</i> = 0.05, the chance of at least one <i>p</i> below 0.05 is 1 − 0.95<sup>20</sup> = 64%. Reporting only the significant ones, or presenting a chosen analysis as if it had been the plan, makes the <i>p</i>-values and the intervals misleading <sup class="cite">[<a href="#ref-greenland2016">2</a>]</sup>. State which outcomes were primary and how multiplicity was handled <sup class="cite">[<a href="#ref-sampl">10</a>]</sup>.</p>
+
+<h2 id="checklist"><span class="n">8</span>A checklist for authors and reviewers</h2>
+<ul class="check">
+  <li>Every main result gives the estimate in original units, its direction, and a 95% confidence interval.</li>
+  <li>The comparison is stated (A − B, or "lower in group A"), and so is the confidence level.</li>
+  <li><i>p</i>-values are exact (<i>p</i> = 0.03; <i>p</i> &lt; 0.001 only below that), never "NS", never <i>p</i> = 0.000, and never stars alone.</li>
+  <li>Standardised effect sizes are named and defined, come with a confidence interval, and are not judged by Cohen's labels alone.</li>
+  <li>Binary outcomes give the absolute and the relative effect.</li>
+  <li>The smallest effect of interest is stated in the methods, with how it was chosen, and the interval is read against it.</li>
+  <li>Non-significant results are described by what their interval excludes, not as "no effect".</li>
+  <li>The test, the sidedness, <i>α</i>, the primary outcome, and any adjustment for multiple comparisons are in the methods.</li>
+  <li>The abstract has the estimate and interval of the primary outcome.</li>
+</ul>
+<p>The <i>p</i>-value tells the reader whether zero is a comfortable value for the effect. The effect size tells them how large it is, and the interval how well the study knows it. Give them the last two first <sup class="cite">[<a href="#ref-gardner1986">1</a>]</sup>.</p>
+
+<section id="refs">
+<h2>References</h2>
+<ol class="refs">
+<li id="ref-gardner1986">Gardner MJ, Altman DG. Confidence intervals rather than P values: estimation rather than hypothesis testing. <i>British Medical Journal (Clinical Research Ed)</i>. 1986;292(6522):746–750. doi:10.1136/bmj.292.6522.746</li>
+<li id="ref-greenland2016">Greenland S, Senn SJ, Rothman KJ, et al. Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations. <i>European Journal of Epidemiology</i>. 2016;31(4):337–350. doi:10.1007/s10654-016-0149-3</li>
+<li id="ref-rafi2020">Rafi Z, Greenland S. Semantic and cognitive tools to aid statistical science: replace confidence and significance by compatibility and surprise. <i>BMC Medical Research Methodology</i>. 2020;20:244. doi:10.1186/s12874-020-01105-9</li>
+<li id="ref-asa2016">Wasserstein RL, Lazar NA. The ASA statement on <i>p</i>-values: context, process, and purpose. <i>The American Statistician</i>. 2016;70(2):129–133. doi:10.1080/00031305.2016.1154108</li>
+<li id="ref-baguley2009">Baguley T. Standardized or simple effect size: what should be reported? <i>British Journal of Psychology</i>. 2009;100(3):603–617. doi:10.1348/000712608X377117</li>
+<li id="ref-sullivan2012">Sullivan GM, Feinn R. Using effect size—or why the P value is not enough. <i>Journal of Graduate Medical Education</i>. 2012;4(3):279–282. doi:10.4300/JGME-D-12-00156.1</li>
+<li id="ref-lakens2013">Lakens D. Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for <i>t</i>-tests and ANOVAs. <i>Frontiers in Psychology</i>. 2013;4:863. doi:10.3389/fpsyg.2013.00863</li>
+<li id="ref-hedgesolkin">Hedges LV, Olkin I. <i>Statistical Methods for Meta-Analysis</i>. Academic Press; 1985.</li>
+<li id="ref-cohen1988">Cohen J. <i>Statistical Power Analysis for the Behavioral Sciences</i>. 2nd ed. Lawrence Erlbaum Associates; 1988.</li>
+<li id="ref-sampl">Lang TA, Altman DG. Basic statistical reporting for articles published in biomedical journals: the "Statistical Analyses and Methods in the Published Literature" or the SAMPL Guidelines. <i>International Journal of Nursing Studies</i>. 2015;52(1):5–9. doi:10.1016/j.ijnurstu.2014.09.006. Full text: https://www.equator-network.org/wp-content/uploads/2013/07/SAMPL-Guidelines-6-27-13.pdf</li>
+<li id="ref-jaeschke1989">Jaeschke R, Singer J, Guyatt GH. Measurement of health status: ascertaining the minimal clinically important difference. <i>Controlled Clinical Trials</i>. 1989;10(4):407–415. doi:10.1016/0197-2456(89)90005-6</li>
+<li id="ref-hoekstra2014">Hoekstra R, Morey RD, Rouder JN, Wagenmakers EJ. Robust misinterpretation of confidence intervals. <i>Psychonomic Bulletin &amp; Review</i>. 2014;21(5):1157–1164. doi:10.3758/s13423-013-0572-3</li>
+<li id="ref-consort2025">Hopewell S, Chan AW, Collins GS, et al. CONSORT 2025 explanation and elaboration: updated guideline for reporting randomised trials. <i>BMJ</i>. 2025;389:e081124. doi:10.1136/bmj-2024-081124</li>
+<li id="ref-icmje">International Committee of Medical Journal Editors. Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals: Preparing a Manuscript for Submission to a Medical Journal, Methods, Statistics. Updated January 2026. Available at https://www.icmje.org/recommendations/browse/manuscript-preparation/preparing-for-submission.html (accessed 1 October 2026).</li>
+<li id="ref-amrhein2019">Amrhein V, Greenland S, McShane B. Scientists rise up against statistical significance. <i>Nature</i>. 2019;567(7748):305–307. doi:10.1038/d41586-019-00857-9. The counts (402 of 791) are in the Supplementary Information.</li>
+<li id="ref-altman1995">Altman DG, Bland JM. Absence of evidence is not evidence of absence. <i>BMJ</i>. 1995;311(7003):485. doi:10.1136/bmj.311.7003.485</li>
+<li id="ref-lakens2017">Lakens D. Equivalence tests: a practical primer for <i>t</i> tests, correlations, and meta-analyses. <i>Social Psychological and Personality Science</i>. 2017;8(4):355–362. doi:10.1177/1948550617697177</li>
+<li id="ref-consort2025stmt">Hopewell S, Chan AW, Collins GS, et al. CONSORT 2025 statement: updated guideline for reporting randomised trials. <i>BMJ</i>. 2025;389:e081123. doi:10.1136/bmj-2024-081123</li>
+<li id="ref-asa2019">Wasserstein RL, Schirm AL, Lazar NA. Moving to a world beyond "<i>p</i> &lt; 0.05". <i>The American Statistician</i>. 2019;73(sup1):1–19. doi:10.1080/00031305.2019.1583913</li>
+<li id="ref-altman1998">Altman DG. Confidence intervals for the number needed to treat. <i>BMJ</i>. 1998;317(7168):1309–1312. doi:10.1136/bmj.317.7168.1309</li>
+<li id="ref-gelman2006">Gelman A, Stern H. The difference between "significant" and "not significant" is not itself statistically significant. <i>The American Statistician</i>. 2006;60(4):328–331. doi:10.1198/000313006X152649</li>
+<li id="ref-hoenig2001">Hoenig JM, Heisey DM. The abuse of power: the pervasive fallacy of power calculations for data analysis. <i>The American Statistician</i>. 2001;55(1):19–24. doi:10.1198/000313001300339897</li>
+</ol>
+</section>
+<!--/md-body-->
+
+<!--md-skip-->
+<div class="pt pt-end" data-md-skip>
+  <p class="pt-lead">Download, cite or share this post</p>
+  <div class="pt-row" role="group" aria-label="Post tools">
+    <a class="pt-btn" href="p-effect-size-ci.pdf" download><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a>
+    <button class="pt-btn" type="button" data-pt-copy-md><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15V9l2.5 3L12 9v6M16 9v6M14 13l2 2 2-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy as Markdown</button>
+    <a class="pt-btn pt-quiet" href="index.md">View Markdown</a>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-cite"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6.8" cy="9.6" r="3.3" fill="currentColor"/><path d="M10.1 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.2" cy="9.6" r="3.3" fill="currentColor"/><path d="M20.5 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Cite<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-share"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-tr"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Translate<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="pt-panel" id="pt-end-cite" hidden>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>BibTeX</b><button class="pt-btn pt-sm" type="button" data-pt-copy="bibtex" data-pt-label="BibTeX"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <pre class="pt-code"><code>@misc{korkmaz2026p,
+  author       = {Korkmaz, Sel{\c{c}}uk},
+  title        = {The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper},
+  year         = {2026},
+  month        = oct,
+  date         = {2026-10-01},
+  howpublished = {\url{https://selcukorkmaz.github.io/blog/p-effect-size-ci/}},
+  url          = {https://selcukorkmaz.github.io/blog/p-effect-size-ci/},
+  note         = {Blog post}
+}</code></pre>
+    </div>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>APA</b><button class="pt-btn pt-sm" type="button" data-pt-copy="apa" data-pt-label="APA citation"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <p class="pt-apa">Korkmaz, S. (2026, October 1). <i>The p-value, the effect size and the confidence interval: What each tells the reader, and how to report them in a paper</i> [Blog post]. https://selcukorkmaz.github.io/blog/p-effect-size-ci/</p>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-end-share" hidden>
+    <div class="pt-links">
+        <button class="pt-btn" type="button" data-pt-copy="link" data-pt-label="Link"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy link</button>
+        <button class="pt-btn" type="button" data-pt-native hidden><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share…</button>
+        <a class="pt-btn" href="https://x.com/intent/post?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F&amp;text=The%20p-value%2C%20the%20effect%20size%20and%20the%20confidence%20interval%3A%20what%20each%20tells%20the%20reader%2C%20and%20how%20to%20report%20them%20in%20a%20paper" target="_blank" rel="noopener">X</a>
+        <a class="pt-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pt-btn" href="https://bsky.app/intent/compose?text=The%20p-value%2C%20the%20effect%20size%20and%20the%20confidence%20interval%3A%20what%20each%20tells%20the%20reader%2C%20and%20how%20to%20report%20them%20in%20a%20paper%20https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener">Bluesky</a>
+        <a class="pt-btn" href="mailto:?subject=The%20p-value%2C%20the%20effect%20size%20and%20the%20confidence%20interval%3A%20what%20each%20tells%20the%20reader%2C%20and%20how%20to%20report%20them%20in%20a%20paper&amp;body=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F">Email</a>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-end-tr" hidden>
+    <p class="pt-note">Opens this page in Google Translate (machine translation). It works once the post is public at its web address.</p>
+    <div class="pt-links">
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=tr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="tr" lang="tr">Türkçe</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=de&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="de" lang="de">Deutsch</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=fr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="fr" lang="fr">Français</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=es&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="es" lang="es">Español</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=ar&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="ar" lang="ar" dir="rtl">العربية</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=zh-CN&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fp-effect-size-ci%2F" target="_blank" rel="noopener" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </div>
+  </div>
+  <p class="pt-status" role="status" aria-live="polite"></p>
+</div>
+<section class="comments" id="comments" aria-labelledby="comments-h" data-md-skip>
+<h2 id="comments-h">Comments</h2>
+<div class="giscus"><p class="cm-note">Comments are coming soon.</p></div>
+</section>
+<textarea id="pt-md" class="pt-ta" readonly tabindex="-1" aria-hidden="true" data-md-skip># The p-value, the effect size and the confidence interval
+
+*What each tells the reader, and how to report them in a paper*
+
+Statistics note · Reporting in biomedical research
+
+&gt; Source: https://selcukorkmaz.github.io/blog/p-effect-size-ci/ · 1 October 2026
+
+Selçuk Korkmaz\
+1 October 2026
+
+## In short
+
+A *p*-value, an effect size and a confidence interval answer three different questions about the same result. The *p*-value asks how surprising the data would be if a specified hypothesis, usually "no difference", were true. The effect size asks how large the difference or association is. The confidence interval asks which sizes the data leave compatible, and so how precisely the study measured it. Only the second and third can tell a reader whether a finding matters, and the 95% interval also shows whether *p* is below 0.05 for the matching test.
+
+The rule for papers follows from that. Lead with the effect estimate in its original units and its 95% confidence interval, add an exact *p*-value if you want one, and read the interval against the smallest effect that would matter. Three figures (two of them interactive) show how the three numbers behave, Table 4 words six typical patterns, and Table 5 and Table 6 show what to write and what to report for common analyses.
+
+Keywords: *p*-values · effect size · confidence intervals · clinical significance · statistical reporting · reporting guidelines
+
+## 1 Three numbers, three questions
+
+Suppose a trial randomises 130 adults, 65 to a lifestyle programme and 65 to usual care, and measures systolic blood pressure after 12 weeks. The standard deviation (SD) is about 16 mmHg in both arms, and the programme arm ends up 6.2 mmHg lower. The results section could summarise this one finding with three numbers, and each answers a different question (Table 1).
+
+**Table 1.** Three summaries of one result: a 6.2 mmHg lower blood pressure with the programme (65 per arm, SD 16 mmHg).
+
+| Quantity | The question it answers | In the example | With more participants |
+|----|----|----|----|
+| **Effect size** | How large is the difference? | 6.2 mmHg (standardised: Hedges' *g* = 0.39, see Section 3) | Settles near the true value |
+| **95% confidence interval (CI)** | Which sizes are compatible with the data, and how precisely was the effect measured? | 0.6 to 11.8 mmHg | Width shrinks in proportion to 1/√*n* |
+| ***p*-value** | How surprising would a difference this far from zero be if the true difference were exactly zero? | *p* = 0.03 | Tends to fall, whatever the size of the effect, provided it is not exactly zero |
+
+The three are not independent. The *p*-value and the interval are both built from the same two ingredients, the estimate (which is the effect size) and its standard error (SE), which I described in an [earlier note on the SD and the SE](https://selcukorkmaz.github.io/blog/sd-or-se/). For a difference in two means:
+
+*D* = *x̄*&lt;sub&gt;1&lt;/sub&gt; − *x̄*&lt;sub&gt;2&lt;/sub&gt;
+
+SE(*D*) = √\[*s*&lt;sub&gt;1&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;/*n*&lt;sub&gt;1&lt;/sub&gt; + *s*&lt;sub&gt;2&lt;/sub&gt;&lt;sup&gt;2&lt;/sup&gt;/*n*&lt;sub&gt;2&lt;/sub&gt;\]
+
+95% CI = *D* ± *t*&lt;sub&gt;0.975&lt;/sub&gt; × SE(*D*)
+
+*p* = 2 × Pr(*T* ≥ \|*D* / SE(*D*)\|)
+
+Here group 1 is usual care and group 2 the programme, each with mean *x̄*, SD *s* and size *n*, so *D* is usual care minus programme (positive values favour the programme); *t*&lt;sub&gt;0.975&lt;/sub&gt; is the 97.5th percentile of the *t* distribution with the test's degrees of freedom, and *T* follows that distribution. In the example, SE = 16 × √\[2/65\] = 2.81 mmHg. The test statistic is 6.2 / 2.81 = 2.21 on 128 degrees of freedom, which gives *p* = 0.03, and with *t*&lt;sub&gt;0.975&lt;/sub&gt; = 1.98 the 95% CI is 6.2 ± 1.98 × 2.81, or 0.6 to 11.8 mmHg.
+
+Because the ingredients are shared, a two-sided *p*-value below 0.05 and a 95% confidence interval that excludes zero are the same statement, when both are computed from the same test statistic and standard error, as with the *t*-test and *t*-interval here. (For proportions, a Wald interval and a pooled test can disagree near the boundary.) So the interval already tells the reader whether *p* is below 0.05, and it adds the size and precision that the *p*-value hides. Gardner and Altman recommended reporting both, and dropping the *p*-value first if one had to be omitted \[1\].
+
+## 2 The *p*-value
+
+A *p*-value is the probability of getting a test statistic at least as extreme as the one observed, computed on the assumption that the null hypothesis and every other assumption of the statistical model are true \[2\]. In the example, *p* = 0.03 says that if the programme had no effect at all and the model were right, a difference of 6.2 mmHg or more in either direction would turn up about 3 times in 100 repetitions of the trial.
+
+Greenland and colleagues describe it as a continuous measure of compatibility between the data and the whole set of assumptions used to compute it: a small value signals that something in that set, the null hypothesis or another assumption, is doubtful \[2\]. Rafi and Greenland add a way to feel its size: the surprisal, or S-value, *S* = −log&lt;sub&gt;2&lt;/sub&gt;(*p*), in bits (written *S* here to keep it apart from the SD *s*). A *p* of 0.03 is about 5 bits, as surprising as five heads in a row from a fair coin \[3\].
+
+**What a *p*-value does not do.** It is not the probability that the null hypothesis is true, or that the data arose by chance alone. It does not measure the size of an effect or the importance of a result. By itself it is not a good measure of evidence about a model or hypothesis. And a conclusion should not be based only on whether it falls on one side of a threshold \[4\].
+
+The most useful thing to know about a *p*-value is that it depends on the sample size as much as on the effect. Figure 1 holds the SD at 16 mmHg and changes the group size. In one view the observed difference stays at 5 mmHg, and *p* nevertheless runs from 0.49 to below 0.001. In the other, every row is chosen so that *p* = 0.03, and the estimate runs from 16.9 mmHg down to 0.9.
+
+![Six rows of 95% confidence intervals for the difference in blood pressure between two groups, at 10 to 3,000 participants per group. With the estimate held at 5 mmHg, the p-value falls from 0.49 to below 0.001 as the intervals narrow.](https://selcukorkmaz.github.io/blog/p-effect-size-ci/fig1.svg)
+
+**Figure 1. The same effect can have any *p*-value, and the same *p*-value any effect.** Two-arm comparison of systolic blood pressure with an SD of 16 mmHg in each arm. Each row shows the difference in means (positive favours the programme) with its 95% CI, the two-sample *t*-test *p*-value and Hedges' *g*. Effect fixed: the difference is 5 mmHg at every group size, so *p* falls and the interval narrows as the groups grow. *p* fixed: each row is chosen so that *p* = 0.03, so the estimate shrinks as the groups grow. The dashed line marks 5 mmHg, assumed here to be the smallest difference of interest. On the interactive page the buttons switch between the two views; the static copy shows the first. With *p* fixed, the estimates are 16.9, 9.2, 4.9, 2.8, 1.6 and 0.9 mmHg.
+
+Two consequences follow. A *p*-value below 0.05 says the data are hard to reconcile with an effect of exactly zero. It does not say the effect is big enough to matter, and in a large enough study a difference of 0.9 mmHg will reach it. A *p*-value above 0.05 does not say there is no effect either; it may only mean the study was small \[2\].
+
+## 3 The effect size
+
+An effect size is how large the difference or association is. It answers the question the reader actually has: how much? It can be *unstandardised*, in the units of the outcome (6.2 mmHg, 2 days, 8 percentage points), or *standardised*, expressed in units of variability or as a ratio, so that it has no units (Table 2).
+
+Prefer the unstandardised form whenever the units mean something to your readers, because they can judge it directly against what they know about blood pressure, length of stay or risk \[5,6\]. Use a standardised effect size when the outcome has no intrinsic units \[6\], when studies used different scales to measure the same construct \[5,6\], or when you need to compare or pool results across studies \[6\], and give its confidence interval as well. Standardising an arbitrary or poorly measured scale obscures its deficiencies rather than fixing them \[5\].
+
+**Table 2.** Common effect sizes by type of outcome.
+
+| Outcome and comparison | Unstandardised | Standardised or relative |
+|----|----|----|
+| Continuous, two groups | difference in means (with units) | Cohen's *d*, Hedges' *g* |
+| Continuous, paired or repeated | mean of the paired differences | standardised mean change (state the SD used) |
+| Binary outcome | risk difference (percentage points), number needed to treat | risk ratio, odds ratio |
+| Time to event | difference in median or restricted mean survival time | hazard ratio |
+| Two continuous variables | regression slope (outcome units per unit of exposure) | correlation coefficient *r* |
+| Three or more groups, or a model | contrasts between group means | *η*&lt;sup&gt;2&lt;/sup&gt;, partial *η*&lt;sup&gt;2&lt;/sup&gt;, *R*&lt;sup&gt;2&lt;/sup&gt; (shares of variance explained) |
+| Ranks or ordinal data | Hodges–Lehmann shift, with each group's median and interquartile range (IQR) | probability of superiority |
+
+The best-known standardised measure for two means is Cohen's *d*, the difference divided by the pooled SD. Hedges' *g* multiplies it by a small correction, which matters when the groups are small \[7,8\]. An approximate SE for *g* gives its confidence interval \[8\]:
+
+*d* = *D* / *s*&lt;sub&gt;pooled&lt;/sub&gt;
+
+*g* ≈ *d* × \[1 − 3 / (4(*n*&lt;sub&gt;1&lt;/sub&gt; + *n*&lt;sub&gt;2&lt;/sub&gt;) − 9)\]
+
+SE(*g*) ≈ √\[(*n*&lt;sub&gt;1&lt;/sub&gt; + *n*&lt;sub&gt;2&lt;/sub&gt;) / (*n*&lt;sub&gt;1&lt;/sub&gt;*n*&lt;sub&gt;2&lt;/sub&gt;) + *g*&lt;sup&gt;2&lt;/sup&gt; / (2(*n*&lt;sub&gt;1&lt;/sub&gt; + *n*&lt;sub&gt;2&lt;/sub&gt;))\]
+
+In the example, *d* = 6.2 / 16 = 0.39, *g* = 0.39 and its 95% CI, *g* ± 1.96 × SE(*g*) with SE(*g*) = 0.177, is 0.04 to 0.73. A standardised effect is only as interpretable as its denominator: *d* shrinks if the sample is more heterogeneous, even when the raw effect is unchanged \[5\]. State which SD was used.
+
+### 3.1 What counts as large?
+
+Cohen's conventions are 0.2, 0.5 and 0.8 for *d* (small, medium, large), with matching values for other measures (Table 3) \[9\]. Cohen presented them as reference points to use only when nothing better is available \[7,9\]. Something better is almost always available: the smallest effect that would matter to patients, clinicians or the science. The Statistical Analyses and Methods in the Published Literature (SAMPL) guidelines ask authors, where possible, to say what minimum difference they consider clinically important, and not to call a correlation low, moderate or high unless they define the ranges \[10\]. For patient outcomes, that threshold is often called the minimal clinically important difference, which was originally defined as the smallest difference in the domain of interest that patients perceive as beneficial and that would mandate a change in management, in the absence of troublesome side effects and excessive cost \[11\]. It is the yardstick for reading an interval in Section 5.
+
+**Table 3.** Cohen's conventions for three common measures. Use them only as a last resort, and prefer a threshold based on your field and your outcome.
+
+| Measure                             | Small | Medium | Large |
+|-------------------------------------|-------|--------|-------|
+| Difference between two means, *d*   | 0.2   | 0.5    | 0.8   |
+| Correlation, *r*                    | 0.1   | 0.3    | 0.5   |
+| Variance explained, *η*&lt;sup&gt;2&lt;/sup&gt; | 0.01  | 0.06   | 0.14  |
+
+## 4 The confidence interval
+
+A 95% confidence interval is the range of values produced by a procedure that, across repeated studies and if the model's assumptions hold, would contain the true value in 95% of them \[2\]. That statement is about the procedure, not about the one interval in front of you. The reading that works in practice is the one Rafi and Greenland propose: an interval shows the values most compatible with the data under the model, with the estimate in the middle the most compatible, and values near the ends less so \[3\]. The usual shortcut, "there is a 95% probability that the true value lies in this interval", is not what the interval means, and it is one of the misreadings that researchers commonly endorse \[12\].
+
+Figure 2 shows how the interval, the estimate and the *p*-value fit together. Take every possible true difference in turn and ask how compatible the data are with it, using the same *t*-test that gave the *p*-value for zero. The result is a curve, the *p*-value function. Its peak is the estimate. The *p*-value reported for "no difference" is only the height of the curve at zero. And the 95% confidence interval is the stretch of the horizontal axis where the curve lies above 0.05 \[3\]. The curve is not a probability distribution for the true difference \[3\]: its height is the two-sided *p*-value of each hypothesis. It equals exactly 1 at the estimate, where the test statistic is 0, and it has a sharp point there because the *p*-value ignores the sign of the difference.
+
+![The p-value function for an observed difference of 6.2 mmHg: a curve peaking at the estimate, with the p-value for zero read off at zero and the 95% confidence interval where the curve lies above 0.05.](https://selcukorkmaz.github.io/blog/p-effect-size-ci/fig2.svg)
+
+**Figure 2. One curve holds the estimate, the *p*-value and the interval.** Observed difference 6.2 mmHg, SD 16 mmHg in each arm. For each hypothesised true reduction on the horizontal axis, the curve gives the two-sided *p*-value of the *t*-test of that hypothesis. The peak is the estimate; the *p*-value reported in a paper is the height of the curve at 0; the confidence interval is the part of the axis where the curve lies above the dashed line at *α* = 1 − confidence level. More participants make the curve narrower, so the interval shrinks and the *p*-value at 0 falls while the peak stays where it is. The curve is not a probability distribution for the true difference.
+
+Three practical points follow from the picture.
+
+- **Width is precision.** The interval's width shrinks in proportion to 1/√*n*, so four times as many participants roughly halve it, and a wide interval says the study cannot pin the effect down, whatever its *p*-value.
+- **Ratio intervals are symmetric on the log scale.** Intervals for risk ratios, odds ratios and hazard ratios are usually calculated on the log scale, so they are not centred on the estimate, and the no-effect value is 1, not 0.
+- **An interval is only as good as its assumptions.** It reflects sampling variation only \[1\]; it does not correct for bias, and it is a best-case measure of uncertainty because it depends on the model being right \[2\]. A narrow interval around a biased estimate is a precise wrong answer. And intervals of two separate groups say little about their difference \[2\]; estimate the difference itself, as the [note on error bars](https://selcukorkmaz.github.io/blog/sd-or-se/#bars) shows.
+
+Gardner and Altman argued in 1986 that confidence intervals should be used for the major findings, in the main text and in the abstract \[1\]. Current guidelines, discussed in Section 6, ask for the same estimate-plus-interval reporting \[10,13,14\].
+
+## 5 Reading the three together
+
+**Compare the interval with two reference points.** Zero, or one for a ratio, tells you whether the data are compatible with no effect. The smallest effect of interest tells you whether the compatible values would matter. Where the interval sits relative to both gives the interpretation.
+
+Figure 3 places six illustrative intervals against a zone of trivial effects (here ±5 mmHg). The first three are statistically significant, and the last three are not, yet within each group the meaning differs a great deal (Table 4).
+
+![Six 95% confidence intervals for a reduction in blood pressure, drawn against a shaded zone of trivial effects from minus 5 to 5 mmHg. Three exclude zero and three include it, with different meanings.](https://selcukorkmaz.github.io/blog/p-effect-size-ci/fig3.svg)
+
+**Figure 3. Six ways an interval can sit relative to zero and to the smallest effect of interest.** Illustrative 95% confidence intervals (dots are the estimates) for the reduction in systolic blood pressure with a programme; positive values favour the programme. The shaded zone covers differences of 5 mmHg or less in either direction, assumed here to be too small to matter. *p*-values come from a normal approximation to each interval. Rows 1 to 3 are statistically significant and rows 4 to 6 are not.
+
+**Table 4.** Wording for each pattern in Figure 3.
+
+| Pattern | What the data support | Wording |
+|----|----|----|
+| 1\. Significant, clearly important | Incompatible with no effect, and every compatible value is important | "Blood pressure was 12 mmHg lower (95% CI 7 to 17), more than the 5 mmHg we regarded as important." |
+| 2\. Significant, importance unclear | Incompatible with no effect, but compatible values run from trivial to important | "Blood pressure was 6 mmHg lower (95% CI 1 to 11). The data are incompatible with no effect but cannot say whether the benefit exceeds 5 mmHg." |
+| 3\. Significant, too small to matter | Incompatible with no effect, but no compatible value is important | "Blood pressure was 2.3 mmHg lower (95% CI 0.5 to 4.1); every compatible value is below the 5 mmHg we regarded as important." |
+| 4\. Not significant, inconclusive | Compatible with no effect and with a large benefit | "Blood pressure was 7 mmHg lower (95% CI 1 higher to 15 lower; *p* = 0.09). The data are compatible with no effect and with a benefit well above 5 mmHg." |
+| 5\. Not significant, inconclusive | Compatible with a harm and with a benefit that both exceed 5 mmHg | "Blood pressure was 1.5 mmHg higher (95% CI 9.0 higher to 6.0 lower). The study is too imprecise to say whether the programme helps or harms, or by how much." |
+| 6\. Not significant, no important effect | Compatible only with trivial differences in either direction | "Blood pressure was 0.5 mmHg lower (95% CI 2.5 higher to 3.5 lower). The data are compatible only with differences smaller than 5 mmHg in either direction." (Only if the margin was set in advance.) |
+
+Rows 4 and 5 show why "not significant" must never be read as "no effect". The mistake is common: in a compilation of four published surveys covering 791 articles in five journals, Amrhein and colleagues reported that about half (402, or 51%) wrongly read a non-significant result as showing no effect \[15\]. As Altman and Bland put it, absence of evidence is not evidence of absence \[16\]. To claim that an effect is negligible, as in row 6, you need a confidence interval that lies inside a margin based on the smallest effect of interest, which is the logic of equivalence testing \[17\]. Set the margin before seeing the data. The usual two one-sided tests at the 5% level correspond to a 90% interval, and a 95% interval is more demanding \[17\]. SAMPL asks authors to report the equivalence margin \[10\].
+
+## 6 How to report them in a paper
+
+**Rule of thumb.** Estimate first, interval second, *p*-value last and optional, everything in the units of the outcome, and a sentence that says what the interval means against the smallest effect of interest.
+
+Reporting guidelines agree. The SAMPL guidelines ask authors to give the estimate, or effect size, with a measure of precision, usually a 95% confidence interval, and not to rely on *p*-values alone \[10\]. The Consolidated Standards of Reporting Trials (CONSORT) 2025 statement, item 26, asks trial reports to give, for each primary and secondary outcome, the estimated effect size and its precision, such as a 95% CI, and for binary outcomes both the absolute and the relative effect \[13,18\]. The International Committee of Medical Journal Editors (ICMJE) recommendations ask for appropriate measures of uncertainty, such as confidence intervals, rather than reliance on hypothesis tests alone \[14\].
+
+### 6.1 The basic sentence
+
+Table 5 shows one result written three ways. The weak version hides the size and the precision; the better one gives the size but not the precision; the best gives both and reads them against the smallest effect of interest.
+
+**Table 5.** One result, three ways of reporting it.
+
+| Version | Text | What is missing |
+|----|----|----|
+| Weak | "The programme significantly reduced blood pressure (*p* \&lt; 0.05)." | Size, precision, exact *p*, the comparison, the units |
+| Better | "Blood pressure fell 6.2 mmHg more with the programme (*p* = 0.03)." | Precision: the reader cannot tell a benefit of about 1 mmHg from one of about 12 |
+| Best | "At 12 weeks, mean systolic blood pressure was 6.2 mmHg lower in the programme group (*n* = 65) than in the usual-care group (*n* = 65) (95% CI 0.6 to 11.8; *p* = 0.03; Hedges' *g* = 0.39, 95% CI 0.04 to 0.73). The interval includes differences below the 5 mmHg named in the protocol as the smallest effect of interest, so the data are incompatible with no benefit but do not establish that the benefit is important." | Nothing essential |
+
+### 6.2 Formatting rules
+
+- **Say what the difference is.** Name the direction (for example usual care minus programme, or "lower in the programme group"), the units and the confidence level (95% CI).
+- **Write intervals with "to".** "−3.9 to 6.3" is unambiguous with negative numbers, where a dash is not. Give the estimate and both limits the same number of decimals, and no more precision than the data support.
+- **Give exact *p*-values.** Write *p* = 0.03, not *p* \&lt; 0.05, and never "NS". SAMPL calls *p*-values less preferred than confidence intervals but, if they are given, asks for equalities to one or two decimals, with *p* \&lt; 0.001 as the smallest value worth reporting \[10\]. My own habit is two decimals, three below 0.01 or when the value is close to 0.05 (so 0.049 is not rounded to 0.05). Never write *p* = 0.000.
+- **Name the test and the sidedness** in the methods, and say whether tests were two-sided and what *α* was, if you use a threshold at all \[10\].
+- **Do not use stars alone.** Asterisks in a table are no substitute for the estimate and the interval.
+- **Define the standardised effect size.** Say whether *d* or *g*, which SD was used \[7\], which group was subtracted from which, and give its 95% CI.
+- **Take a position on "significant".** Some statisticians recommend dropping the phrase "statistically significant" altogether \[15,19\], and journals differ. If you use it, define *α* in advance and never let it stand in for the estimate.
+
+### 6.3 Binary outcomes: report both scales
+
+For a binary outcome, give the absolute effect (risk difference) and the relative effect (risk ratio or odds ratio), each with its interval \[13\]; the number needed to treat (NNT) can also help \[13\]. A relative effect alone can make a rare outcome look important, and an absolute effect alone hides how it scales with baseline risk \[13\]. With 18 events among 200 participants in one arm and 34 among 200 in the other:
+
+Events occurred in 18 of 200 participants (9.0%) in the intervention group and 34 of 200 (17.0%) in the control group: risk difference −8.0 percentage points (intervention minus control; 95% CI −14.5 to −1.5; *p* = 0.02); risk ratio 0.53 (95% CI 0.31 to 0.91). The number needed to treat to prevent one event was 13 (95% CI 7 to 69).
+
+The interval for the NNT comes from inverting the unrounded limits of the risk difference. That is straightforward only when the risk-difference interval excludes zero, as it does here; when it does not, the interval for the NNT is not a single range, and Altman shows how to report it \[20\].
+
+### 6.4 Non-significant results
+
+Report them exactly like significant ones, with the estimate, the interval and the exact *p*-value, and describe what the interval rules out:
+
+Mean systolic blood pressure was 1.2 mmHg lower in the programme group (95% CI 3.9 higher to 6.3 lower; *p* = 0.64). The data are compatible with a reduction larger than the 5 mmHg we set as the smallest effect of interest and with a modest increase, so the trial is inconclusive rather than negative.
+
+### 6.5 Tables, figures and the abstract
+
+In a table, give one column for the estimate with its interval and, if wanted, one for the *p*-value; state in the footnote what the estimate is, what test gave the *p*-value, and whether tests were adjusted for multiplicity. For many outcomes or subgroups, a forest plot with the reference line at no effect and a second line at the smallest effect of interest lets readers do Section 5 for themselves. The abstract should carry the estimate and 95% interval of the primary outcome, not just a *p*-value \[1\]. Table 6 lists what to report for common analyses.
+
+**Table 6.** What to report for common analyses.
+
+| Analysis | Effect estimate | Interval | Also useful |
+|----|----|----|----|
+| Two independent means | difference in means (A − B), with units | Welch 95% CI | Hedges' *g* with CI if the scale is arbitrary; *n*, mean and SD per group |
+| Paired or repeated measures | mean of the paired differences | 95% CI of that mean | the SD of the differences |
+| Two proportions | risk difference and risk ratio | 95% CI for each | number needed to treat with its interval; if the risk-difference interval includes 0, report it as described by Altman \[20\] |
+| Logistic regression | odds ratio | 95% CI | absolute risks at chosen covariate values |
+| Linear regression | coefficient, in outcome units per unit of the predictor | 95% CI | the unit of the predictor stated explicitly |
+| Time to event | hazard ratio | 95% CI | median survival or restricted mean difference, with CI |
+| Correlation | *r* (or *ρ*) | 95% CI | scatter plot; no "low", "moderate" or "high" without stated ranges \[10\] |
+| Three or more groups | pairwise differences or planned contrasts | 95% CIs (adjusted if several) | the omnibus test and partial *η*&lt;sup&gt;2&lt;/sup&gt;, with CI |
+| Rank-based comparison | Hodges–Lehmann shift or probability of superiority | 95% CI | median (IQR) in each group |
+
+### 6.6 Sentences to adapt
+
+- **Methods.** "The primary outcome was the between-group difference in systolic blood pressure at 12 weeks, estimated with Welch's *t*-test. Tests were two-sided with *α* = 0.05, and results are reported as differences with 95% confidence intervals and exact *p*-values. The smallest effect of interest, 5 mmHg, was specified before data collection. No adjustment was made for secondary outcomes, which are exploratory."
+- **Table footnote.** "Estimates are differences in means (usual care − programme; positive values favour the programme) with 95% CI from Welch's *t*-test; *p*, two-sided, unadjusted."
+- **Figure legend.** "Squares show the reduction in systolic blood pressure (usual care − programme; positive values favour the programme) and horizontal lines show 95% confidence intervals. The dashed line marks the smallest effect of interest (5 mmHg)."
+
+Base R gives the estimate, interval and *p*-value for a two-group comparison of means or proportions; the risk ratio and the NNT above are computed by hand from the counts. The `effectsize` package adds the standardised effect with its interval; check that its sign convention matches the direction you report. Its interval is the exact (noncentral *t*) one, so it can differ slightly from the approximation above.
+
+``` r
+d$arm &lt;- factor(d$arm, levels = c("usual care", "programme"))   # first − second
+fit &lt;- t.test(sbp ~ arm, data = d)              # Welch test
+unname(fit$estimate[1] - fit$estimate[2])       # usual care − programme
+fit$conf.int                                    # its 95% CI
+fit$p.value                                     # two-sided p
+effectsize::hedges_g(sbp ~ arm, data = d)       # Hedges' g with 95% CI
+
+# Wald CI and pooled-test p; sign is intervention − control
+prop.test(c(18, 34), c(200, 200), correct = FALSE)
+```
+
+## 7 Five traps
+
+### 7.1 Treating 0.05 as a cliff
+
+A result with *p* = 0.049 and one with *p* = 0.051 are practically the same evidence, and no sensible reading treats them as opposites. Phrases such as "a trend towards significance" for 0.06, or "highly significant" for 0.001, treat the threshold as if it were a fact about the world. Report the number and let readers weigh it. The American Statistical Association's statement says that conclusions should not be based only on whether a *p*-value passes a threshold \[4\].
+
+### 7.2 Reading "not significant" as "no effect"
+
+Covered in Section 5: a wide interval that includes zero is not evidence of absence \[16\]. Read the whole interval, and reserve claims of no important effect for intervals inside a margin set in advance.
+
+### 7.3 Comparing significance levels of two groups
+
+The difference between "significant" and "not significant" is not itself statistically significant \[21\]. Suppose a treatment effect is 25 (SE 10) in one subgroup and 10 (SE 10) in another. The first is significant (*p* = 0.01) and the second is not (*p* = 0.32), but the difference between them is 15 with an SE of 14, and *p* = 0.29. To claim that subgroups differ, test the difference, with an interaction term, and report its interval.
+
+### 7.4 Reporting observed power
+
+Power calculated from the observed result is a direct function of the *p*-value and adds no information; a non-significant result always has observed power of about 50% or less \[22\]. Report the confidence interval instead, which shows what the study could and could not exclude. Power belongs in the planning of a study, computed for a difference you named in advance.
+
+### 7.5 Uncounted tests
+
+With 20 independent tests of true null hypotheses at *α* = 0.05, the chance of at least one *p* below 0.05 is 1 − 0.95&lt;sup&gt;20&lt;/sup&gt; = 64%. Reporting only the significant ones, or presenting a chosen analysis as if it had been the plan, makes the *p*-values and the intervals misleading \[2\]. State which outcomes were primary and how multiplicity was handled \[10\].
+
+## 8 A checklist for authors and reviewers
+
+- Every main result gives the estimate in original units, its direction, and a 95% confidence interval.
+- The comparison is stated (A − B, or "lower in group A"), and so is the confidence level.
+- *p*-values are exact (*p* = 0.03; *p* \&lt; 0.001 only below that), never "NS", never *p* = 0.000, and never stars alone.
+- Standardised effect sizes are named and defined, come with a confidence interval, and are not judged by Cohen's labels alone.
+- Binary outcomes give the absolute and the relative effect.
+- The smallest effect of interest is stated in the methods, with how it was chosen, and the interval is read against it.
+- Non-significant results are described by what their interval excludes, not as "no effect".
+- The test, the sidedness, *α*, the primary outcome, and any adjustment for multiple comparisons are in the methods.
+- The abstract has the estimate and interval of the primary outcome.
+
+The *p*-value tells the reader whether zero is a comfortable value for the effect. The effect size tells them how large it is, and the interval how well the study knows it. Give them the last two first \[1\].
+
+## References
+
+1.  Gardner MJ, Altman DG. Confidence intervals rather than P values: estimation rather than hypothesis testing. *British Medical Journal (Clinical Research Ed)*. 1986;292(6522):746–750. doi:10.1136/bmj.292.6522.746
+2.  Greenland S, Senn SJ, Rothman KJ, et al. Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations. *European Journal of Epidemiology*. 2016;31(4):337–350. doi:10.1007/s10654-016-0149-3
+3.  Rafi Z, Greenland S. Semantic and cognitive tools to aid statistical science: replace confidence and significance by compatibility and surprise. *BMC Medical Research Methodology*. 2020;20:244. doi:10.1186/s12874-020-01105-9
+4.  Wasserstein RL, Lazar NA. The ASA statement on *p*-values: context, process, and purpose. *The American Statistician*. 2016;70(2):129–133. doi:10.1080/00031305.2016.1154108
+5.  Baguley T. Standardized or simple effect size: what should be reported? *British Journal of Psychology*. 2009;100(3):603–617. doi:10.1348/000712608X377117
+6.  Sullivan GM, Feinn R. Using effect size—or why the P value is not enough. *Journal of Graduate Medical Education*. 2012;4(3):279–282. doi:10.4300/JGME-D-12-00156.1
+7.  Lakens D. Calculating and reporting effect sizes to facilitate cumulative science: a practical primer for *t*-tests and ANOVAs. *Frontiers in Psychology*. 2013;4:863. doi:10.3389/fpsyg.2013.00863
+8.  Hedges LV, Olkin I. *Statistical Methods for Meta-Analysis*. Academic Press; 1985.
+9.  Cohen J. *Statistical Power Analysis for the Behavioral Sciences*. 2nd ed. Lawrence Erlbaum Associates; 1988.
+10. Lang TA, Altman DG. Basic statistical reporting for articles published in biomedical journals: the "Statistical Analyses and Methods in the Published Literature" or the SAMPL Guidelines. *International Journal of Nursing Studies*. 2015;52(1):5–9. doi:10.1016/j.ijnurstu.2014.09.006. Full text: https://www.equator-network.org/wp-content/uploads/2013/07/SAMPL-Guidelines-6-27-13.pdf
+11. Jaeschke R, Singer J, Guyatt GH. Measurement of health status: ascertaining the minimal clinically important difference. *Controlled Clinical Trials*. 1989;10(4):407–415. doi:10.1016/0197-2456(89)90005-6
+12. Hoekstra R, Morey RD, Rouder JN, Wagenmakers EJ. Robust misinterpretation of confidence intervals. *Psychonomic Bulletin &amp; Review*. 2014;21(5):1157–1164. doi:10.3758/s13423-013-0572-3
+13. Hopewell S, Chan AW, Collins GS, et al. CONSORT 2025 explanation and elaboration: updated guideline for reporting randomised trials. *BMJ*. 2025;389:e081124. doi:10.1136/bmj-2024-081124
+14. International Committee of Medical Journal Editors. Recommendations for the Conduct, Reporting, Editing, and Publication of Scholarly Work in Medical Journals: Preparing a Manuscript for Submission to a Medical Journal, Methods, Statistics. Updated January 2026. Available at https://www.icmje.org/recommendations/browse/manuscript-preparation/preparing-for-submission.html (accessed 1 October 2026).
+15. Amrhein V, Greenland S, McShane B. Scientists rise up against statistical significance. *Nature*. 2019;567(7748):305–307. doi:10.1038/d41586-019-00857-9. The counts (402 of 791) are in the Supplementary Information.
+16. Altman DG, Bland JM. Absence of evidence is not evidence of absence. *BMJ*. 1995;311(7003):485. doi:10.1136/bmj.311.7003.485
+17. Lakens D. Equivalence tests: a practical primer for *t* tests, correlations, and meta-analyses. *Social Psychological and Personality Science*. 2017;8(4):355–362. doi:10.1177/1948550617697177
+18. Hopewell S, Chan AW, Collins GS, et al. CONSORT 2025 statement: updated guideline for reporting randomised trials. *BMJ*. 2025;389:e081123. doi:10.1136/bmj-2024-081123
+19. Wasserstein RL, Schirm AL, Lazar NA. Moving to a world beyond "*p* \&lt; 0.05". *The American Statistician*. 2019;73(sup1):1–19. doi:10.1080/00031305.2019.1583913
+20. Altman DG. Confidence intervals for the number needed to treat. *BMJ*. 1998;317(7168):1309–1312. doi:10.1136/bmj.317.7168.1309
+21. Gelman A, Stern H. The difference between "significant" and "not significant" is not itself statistically significant. *The American Statistician*. 2006;60(4):328–331. doi:10.1198/000313006X152649
+22. Hoenig JM, Heisey DM. The abuse of power: the pervasive fallacy of power calculations for data analysis. *The American Statistician*. 2001;55(1):19–24. doi:10.1198/000313001300339897
+</textarea>
+<!--/md-skip-->
+</main>
+</div>
+
+<script>
+(function () {
+'use strict';
+var NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) {
+  var e = document.createElementNS(NS, tag);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function clear(svg) { while (svg.firstChild) svg.removeChild(svg.firstChild); }
+
+/* ---------- random numbers (seeded, so the page renders the same way every time) ---------- */
+function rng(seed) {
+  var a = seed >>> 0;
+  return function () {
+    a = (a + 0x6D2B79F5) >>> 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function normal(r) { var u = 0; while (u === 0) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
+
+/* ---------- summary statistics and the t distribution ---------- */
+function mean(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return s / a.length; }
+function sd(a) { var m = mean(a), s = 0; for (var i = 0; i < a.length; i++) s += (a[i] - m) * (a[i] - m); return Math.sqrt(s / (a.length - 1)); }
+function lgamma(x) {
+  var c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059,
+    12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  if (x < 0.5) return Math.log(Math.PI / Math.abs(Math.sin(Math.PI * x))) - lgamma(1 - x);
+  x -= 1; var a = c[0], t = x + 7.5;
+  for (var i = 1; i < 9; i++) a += c[i] / (x + i);
+  return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+}
+function betacf(a, b, x) {
+  var TINY = 1e-300, qab = a + b, qap = a + 1, qam = a - 1, c = 1, d = 1 - qab * x / qap;
+  if (Math.abs(d) < TINY) d = TINY; d = 1 / d; var h = d;
+  for (var m = 1; m <= 300; m++) {
+    var m2 = 2 * m, aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d; h *= d * c;
+    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+    d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d;
+    var del = d * c; h *= del; if (Math.abs(del - 1) < 3e-14) break;
+  }
+  return h;
+}
+function ibeta(x, a, b) {
+  if (x <= 0) return 0; if (x >= 1) return 1;
+  var bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+  return x < (a + 1) / (a + b + 2) ? bt * betacf(a, b, x) / a : 1 - bt * betacf(b, a, 1 - x) / b;
+}
+function tcdf(t, df) { var p = 0.5 * ibeta(df / (df + t * t), df / 2, 0.5); return t > 0 ? 1 - p : p; }
+function tq(p, df) { var lo = -200, hi = 200; for (var i = 0; i < 80; i++) { var m = (lo + hi) / 2; if (tcdf(m, df) < p) lo = m; else hi = m; } return (lo + hi) / 2; }
+
+function f1(x) { return x.toFixed(1); }
+/* p for display: two decimals, three below 0.01 or near 0.05, and never rounded up to 0.05 from below. */
+function fp(p) {
+  if (p < 0.001) return '< 0.001';
+  var d = p < 0.01 || (p >= 0.045 && p < 0.055) ? 3 : 2, s = p.toFixed(d);
+  while (p < 0.05 && +s >= 0.05) s = p.toFixed(++d);
+  return '= ' + s;
+}
+function neg(x, d) { return (x < 0 ? '−' : '') + Math.abs(x).toFixed(d == null ? 1 : d); }
+
+/* A row of toggle buttons that behaves like a radio group. */
+function segmented(host, options, value, onChange) {
+  var buttons = options.map(function (o) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = o.label; b.setAttribute('aria-pressed', String(o.value === value));
+    b.addEventListener('click', function () {
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      onChange(o.value);
+    });
+    host.appendChild(b); return b;
+  });
+}
+/* A horizontal interval with end caps. */
+function hbar(svg, x1, x2, y, color, width) {
+  var st = 'stroke:' + color;
+  el('line', { x1: x1, x2: x2, y1: y, y2: y, style: st, 'stroke-width': width || 2.5, 'stroke-linecap': 'round' }, svg);
+  el('line', { x1: x1, x2: x1, y1: y - 6, y2: y + 6, style: st, 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
+  el('line', { x1: x2, x2: x2, y1: y - 6, y2: y + 6, style: st, 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
+}
+function vbar(svg, x, y1, y2, color) {
+  var st = 'stroke:' + color;
+  el('line', { x1: x, x2: x, y1: y1, y2: y2, style: st, 'stroke-width': 2.5, 'stroke-linecap': 'round' }, svg);
+  el('line', { x1: x - 7, x2: x + 7, y1: y1, y2: y1, style: st, 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
+  el('line', { x1: x - 7, x2: x + 7, y1: y2, y2: y2, style: st, 'stroke-width': 2, 'stroke-linecap': 'round' }, svg);
+}
+
+/* SVG label "pre √rad post": the radical sign and its bar are drawn, as in the text (see the .rad CSS). */
+var RADICAL = [[1, 63], [12, 55], [27, 87], [50, 0], [56, 0], [56, 6], [31, 100], [25, 100], [9, 63], [4, 66]];
+function sqrtLabel(parent, x, y, pre, rad, post, attrs) {
+  var fs = attrs['font-size'], paint = {};
+  if (attrs['class']) paint['class'] = attrs['class'];
+  if (attrs.style) paint.style = attrs.style;
+  var text = function (x0, s) { var a = { x: x0, y: y }; for (var k in attrs) a[k] = attrs[k]; var t = el('text', a, parent, s.replace(/^ | $/g, '\u00a0')); return x0 + t.getComputedTextLength(); };  /* SVG drops edge spaces */
+  var x1 = text(x, pre), w = 0.58 * fs, top = y - 0.88 * fs, sy = (1.03 * fs) / 100, sx = w / 56;
+  var d = RADICAL.map(function (p, i) { return (i ? 'L' : 'M') + (x1 + p[0] * sx).toFixed(2) + ',' + (top + p[1] * sy).toFixed(2); }).join('') + 'Z';
+  var a = { d: d }; for (var k in paint) a[k] = paint[k]; el('path', a, parent);
+  var x2 = text(x1 + w, rad) + 0.04 * fs;
+  var r = { x: x1 + 0.52 * fs, y: top, width: x2 - x1 - 0.52 * fs, height: 0.06 * fs }; for (k in paint) r[k] = paint[k]; el('rect', r, parent);
+  return text(x2, post);
+}
+/* Label widths depend on the web fonts, so figures that use sqrtLabel redraw once the fonts have loaded. */
+function whenFontsReady(fn) { if (document.fonts && document.fonts.ready) document.fonts.ready.then(fn); }
+
+var SD = 16;   /* SD of systolic blood pressure in each arm, mmHg */
+
+/* Exact two-sided p for a t statistic (regularised incomplete beta), so tiny p-values do not lose precision. */
+function tp(t, df) { return ibeta(df / (df + t * t), df / 2, 0.5); }
+/* Two equal arms of n, common SD, observed difference diff (positive favours the programme). */
+function two(n, diff) {
+  var df = 2 * n - 2, se = SD * Math.sqrt(2 / n), h = tq(0.975, df) * se;
+  var g = (1 - 3 / (4 * df - 1)) * diff / SD, seg = Math.sqrt(2 / n + g * g / (4 * n));
+  return { n: n, df: df, se: se, diff: diff, p: tp(diff / se, df), lo: diff - h, hi: diff + h, g: g, glo: g - 1.96 * seg, ghi: g + 1.96 * seg };
+}
+/* Normal cdf (Numerical Recipes erfc approximation, error < 1.2e-7): enough for a p-value shown to two decimals. */
+function normcdf(z) {
+  var x = Math.abs(z) / Math.SQRT2, t = 1 / (1 + 0.5 * x);
+  var erfc = t * Math.exp(-x * x - 1.26551223 + t * (1.00002368 + t * (0.37409196 + t * (0.09678418 + t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 + t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+  return z >= 0 ? 1 - 0.5 * erfc : 0.5 * erfc;
+}
+function f2(x) { return x.toFixed(2); }
+function big(n) { return n >= 1000 ? Math.floor(n / 1000) + ',' + ('00' + (n % 1000)).slice(-3) : String(n); }
+var MIN = 5;   /* smallest effect of interest, mmHg (assumed) */
+
+/* ================= Figure 1: same effect, any p; same p, any effect ================= */
+(function () {
+  var svg = document.getElementById('fig1');
+  if (!svg) return;
+  var state = { hold: 'effect' }, NS_ = [10, 30, 100, 300, 1000, 3000];
+  var lo = -15, hi = 35, xa = 150, xb = 540, PX = 580, GX = 672;
+  var X = function (v) { return xa + (Math.max(lo, Math.min(hi, v)) - lo) / (hi - lo) * (xb - xa); };
+
+  function draw() {
+    clear(svg);
+    var R = NS_.map(function (n) { return two(n, state.hold === 'effect' ? 5 : tq(1 - 0.015, 2 * n - 2) * SD * Math.sqrt(2 / n)); });
+    var top = 84, gap = 46, ay = top + 5 * gap + 26;
+    el('text', { x: 0, y: 20, 'class': 't-mu', 'font-size': 12, 'font-weight': 600 }, svg, 'Per group');
+    el('text', { x: (xa + xb) / 2, y: 20, 'text-anchor': 'middle', 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, 'Difference with 95% CI (mmHg)');
+    el('text', { x: PX, y: 20, style: 'fill:var(--pv)', 'font-size': 12.5, 'font-weight': 700 }, svg, 'p-value');
+    el('text', { x: GX, y: 20, style: 'fill:var(--ef)', 'font-size': 12.5, 'font-weight': 700 }, svg, 'Hedges\' g');
+    for (var t = -10; t <= 30; t += 10) {
+      el('line', { x1: X(t), x2: X(t), y1: 58, y2: ay, 'class': 'grid' }, svg);
+      el('line', { x1: X(t), x2: X(t), y1: ay, y2: ay + 5, 'class': 'axis' }, svg);
+      el('text', { x: X(t), y: ay + 19, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, t < 0 ? '−' + (-t) : t);
+    }
+    el('line', { x1: X(lo), x2: X(hi), y1: ay, y2: ay, 'class': 'axis' }, svg);
+    el('line', { x1: X(0), x2: X(0), y1: 58, y2: ay, style: 'stroke:var(--muted)', 'stroke-width': 1.5 }, svg);
+    el('line', { x1: X(MIN), x2: X(MIN), y1: 58, y2: ay, style: 'stroke:var(--ink-2)', 'stroke-width': 1.3, 'stroke-dasharray': '4 3' }, svg);
+    el('text', { x: X(0) - 5, y: 52, 'text-anchor': 'end', 'class': 't-mu', 'font-size': 11.5 }, svg, 'no difference');
+    el('text', { x: X(MIN) + 5, y: 52, 'class': 't-2', 'font-size': 11.5 }, svg, 'smallest effect of interest (5)');
+    el('text', { x: (xa + xb) / 2, y: ay + 40, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Reduction in systolic blood pressure with the programme (mmHg)');
+    R.forEach(function (r, i) {
+      var y = top + i * gap;
+      el('text', { x: 0, y: y + 4, 'class': 't-ink', 'font-size': 13, 'font-weight': 600 }, svg, big(r.n));
+      hbar(svg, X(r.lo), X(r.hi), y, 'var(--ci)');
+      el('circle', { cx: X(r.diff), cy: y, r: 4.5, style: 'fill:var(--ef);stroke:var(--panel)', 'stroke-width': 1.6 }, svg);
+      el('text', { x: PX, y: y + 4, style: 'fill:var(--pv)', 'font-size': 12.5, 'font-weight': 600 }, svg, 'p ' + fp(r.p));
+      el('text', { x: GX, y: y + 4, style: 'fill:var(--ef)', 'font-size': 12.5, 'font-weight': 600 }, svg, f2(r.g));
+    });
+    var first = R[0], last = R[R.length - 1], msg;
+    if (state.hold === 'effect') {
+      var k = R.filter(function (r) { return r.p >= 0.001; }).length;
+      msg = 'The estimate stays at 5.0 mmHg (<i>g</i> = ' + f2(first.g) + ' to ' + f2(last.g) + '). <i>p</i> ' + fp(first.p) + ' with ' + big(first.n) +
+        ' per group, and below 0.001 from ' + big(R[k].n) + ' per group on; the 95% CI narrows from ' + f1(first.hi - first.lo) + ' mmHg wide (' + neg(first.lo) + ' to ' + neg(first.hi) +
+        ') to ' + f1(last.hi - last.lo) + ' mmHg wide (' + neg(last.lo) + ' to ' + neg(last.hi) + '). Only the evidence against zero changes.';
+    } else {
+      var reach = R.filter(function (r) { return r.diff >= MIN; }), below = R.filter(function (r) { return r.hi < MIN; })[0];
+      msg = '<i>p</i> stays at 0.03. The estimate runs from ' + neg(first.diff) + ' mmHg with ' + big(first.n) + ' per group to ' + neg(last.diff) + ' with ' + big(last.n) +
+        ' (<i>g</i> ' + f2(first.g) + ' to ' + f2(last.g) + '). It reaches 5 mmHg only with ' + big(reach[reach.length - 1].n) + ' or fewer per group' +
+        (below ? ', and from ' + big(below.n) + ' per group on the whole interval lies below it' : '') + '.';
+    }
+    svg.setAttribute('aria-label', state.hold === 'effect'
+      ? 'Figure 1. Six rows of 95% confidence intervals for the difference in blood pressure between two groups, at 10 to 3,000 participants per group. With the estimate held at 5 mmHg, the p-value falls from 0.49 to below 0.001 as the intervals narrow.'
+      : 'Figure 1. Six rows of 95% confidence intervals for the difference in blood pressure between two groups, at 10 to 3,000 participants per group. With the p-value held at 0.03, the estimate shrinks from 16.9 to 0.9 mmHg as the groups grow.');
+    document.getElementById('f1-read').innerHTML = msg;
+  }
+  segmented(document.getElementById('f1-hold'), [{ label: 'The effect (5 mmHg)', value: 'effect' }, { label: 'The p-value (0.03)', value: 'p' }], state.hold, function (v) { state.hold = v; draw(); });
+  draw();
+})();
+
+/* ================= Figure 2: the p-value function ================= */
+(function () {
+  var svg = document.getElementById('fig2');
+  if (!svg) return;
+  var state = { n: 65, level: 0.95 }, D = 6.2;
+  var xlo = -12, xhi = 24, xa = 60, xb = 720, y0 = 300, y1 = 40;
+  var X = function (v) { return xa + (v - xlo) / (xhi - xlo) * (xb - xa); };
+  var Y = function (p) { return y0 - p * (y0 - y1); };
+
+  function draw() {
+    clear(svg);
+    var r = two(state.n, D), alpha = 1 - state.level, pf = function (d) { return tp((D - d) / r.se, r.df); };
+    var m = tq(1 - alpha / 2, r.df) * r.se, lo = D - m, hi = D + m;
+    [0, 0.25, 0.5, 0.75, 1].forEach(function (p) {
+      el('line', { x1: xa, x2: xb, y1: Y(p), y2: Y(p), 'class': 'grid' }, svg);
+      el('text', { x: xa - 10, y: Y(p) + 4, 'text-anchor': 'end', 'class': 't-mu', 'font-size': 12 }, svg, p === 0 ? '0' : p === 1 ? '1' : String(p));
+    });
+    el('text', { x: 0, y: y1 - 18, 'class': 't-mu', 'font-size': 12 }, svg, 'p-value of the test of each hypothesised difference');
+    for (var t = -12; t <= 24; t += 4) {
+      el('line', { x1: X(t), x2: X(t), y1: y0, y2: y0 + 5, 'class': 'axis' }, svg);
+      el('text', { x: X(t), y: y0 + 19, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, t < 0 ? '−' + (-t) : t);
+    }
+    el('line', { x1: xa, x2: xb, y1: y0, y2: y0, 'class': 'axis' }, svg);
+
+    /* the part of the curve above alpha: the confidence interval */
+    var d = ['M' + X(lo).toFixed(1) + ',' + Y(alpha).toFixed(1)], k;
+    for (k = 0; k <= 80; k++) { var v = lo + (hi - lo) * k / 80; d.push('L' + X(v).toFixed(1) + ',' + Y(pf(v)).toFixed(1)); }
+    el('path', { d: d.join(' ') + ' Z', style: 'fill:var(--ci);opacity:.14' }, svg);
+    var c = [];
+    for (v = xlo; v <= xhi + 1e-9; v += 0.1) c.push((c.length ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(pf(v)).toFixed(1));
+    el('path', { d: c.join(' '), style: 'fill:none;stroke:var(--ci)', 'stroke-width': 2.5, 'stroke-linejoin': 'round' }, svg);
+
+    el('line', { x1: xa, x2: xb, y1: Y(alpha), y2: Y(alpha), style: 'stroke:var(--pv)', 'stroke-width': 1.4, 'stroke-dasharray': '5 4' }, svg);
+    el('text', { x: xb, y: Y(alpha) - 6, 'text-anchor': 'end', style: 'fill:var(--pv)', 'font-size': 12, 'font-weight': 600 }, svg, 'α = ' + alpha.toFixed(2));
+    [lo, hi].forEach(function (e) {
+      el('line', { x1: X(e), x2: X(e), y1: Y(alpha), y2: y0, style: 'stroke:var(--ci)', 'stroke-width': 1, 'stroke-dasharray': '2 3' }, svg);
+    });
+
+    /* p-value for "no difference": the curve's height at zero */
+    var p0 = pf(0);
+    el('line', { x1: X(0), x2: X(0), y1: Y(p0), y2: y0, style: 'stroke:var(--pv)', 'stroke-width': 1.3, 'stroke-dasharray': '3 3' }, svg);
+    el('circle', { cx: X(0), cy: Y(p0), r: 5, style: 'fill:var(--pv);stroke:var(--panel)', 'stroke-width': 1.6 }, svg);
+    el('text', { x: X(0) - 10, y: Math.min(Y(p0), Y(alpha)) - 10, 'text-anchor': 'end', style: 'fill:var(--pv)', 'font-size': 12.5, 'font-weight': 600 }, svg, 'p ' + fp(p0) + ' at zero');
+
+    /* the estimate: the peak */
+    el('circle', { cx: X(D), cy: Y(1), r: 5, style: 'fill:var(--ef);stroke:var(--panel)', 'stroke-width': 1.6 }, svg);
+    el('text', { x: X(D) + 10, y: Y(1) + 4, style: 'fill:var(--ef)', 'font-size': 12.5, 'font-weight': 600 }, svg, 'estimate ' + f1(D));
+
+    /* the interval as a bar under the axis */
+    hbar(svg, X(lo), X(hi), y0 + 46, 'var(--ci)');
+    el('circle', { cx: X(D), cy: y0 + 46, r: 4.5, style: 'fill:var(--ef);stroke:var(--panel)', 'stroke-width': 1.6 }, svg);
+    var right = X(hi) < 540;
+    el('text', { x: right ? X(hi) + 12 : X(lo) - 12, y: y0 + 50, 'text-anchor': right ? 'start' : 'end', style: 'fill:var(--ci)', 'font-size': 12.5, 'font-weight': 600 }, svg, Math.round(state.level * 100) + '% CI ' + neg(lo) + ' to ' + neg(hi));
+    el('text', { x: (xa + xb) / 2, y: y0 + 86, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Hypothesised true reduction in systolic blood pressure (mmHg)');
+
+    var lev = Math.round(state.level * 100);
+    svg.setAttribute('aria-label', 'Figure 2. The p-value function for an observed difference of 6.2 mmHg: a curve peaking at the estimate, with the p-value for zero read off at zero and the ' + lev + '% confidence interval where the curve lies above ' + alpha.toFixed(2) + '.');
+    document.getElementById('f2-read').innerHTML =
+      big(state.n) + ' per group: difference ' + f1(D) + ' mmHg, <span class="sw" style="background:var(--ci)"></span>' + lev + '% CI ' + neg(lo) + ' to ' + neg(hi) +
+      ', <span class="sw" style="background:var(--pv)"></span><i>p</i> ' + fp(p0) + ' for zero, <span class="sw" style="background:var(--ef)"></span>Hedges\' <i>g</i> ' + f2(r.g) +
+      ' (95% CI ' + neg(r.glo, 2) + ' to ' + neg(r.ghi, 2) + '). The interval is exactly the set of hypothesised differences whose own <i>p</i>-value is above ' + alpha.toFixed(2) + '.';
+  }
+  segmented(document.getElementById('f2-n'), [20, 65, 200, 800].map(function (v) { return { label: v, value: v }; }), state.n, function (v) { state.n = v; draw(); });
+  segmented(document.getElementById('f2-level'), [0.9, 0.95, 0.99].map(function (v) { return { label: Math.round(v * 100) + '%', value: v }; }), state.level, function (v) { state.level = v; draw(); });
+  draw();
+})();
+
+/* ================= Figure 3: intervals against zero and the smallest effect of interest ================= */
+(function () {
+  var svg = document.getElementById('fig3');
+  if (!svg) return;
+  var ROWS = [
+    { t: 'Significant, clearly important', s: 'whole interval beyond 5', est: 12, lo: 7, hi: 17 },
+    { t: 'Significant, importance unclear', s: 'interval crosses 5', est: 6, lo: 1, hi: 11 },
+    { t: 'Significant, too small to matter', s: 'whole interval within ±5', est: 2.3, lo: 0.5, hi: 4.1 },
+    { t: 'Not significant, inconclusive', s: 'compatible with no effect or a large benefit', est: 7, lo: -1, hi: 15 },
+    { t: 'Not significant, inconclusive', s: 'compatible with harm or benefit beyond 5', est: -1.5, lo: -9, hi: 6 },
+    { t: 'Not significant, no important effect', s: 'whole interval within ±5', est: 0.5, lo: -2.5, hi: 3.5 }
+  ];
+  var lo = -12, hi = 20, xa = 300, xb = 660, PX = 690;
+  var X = function (v) { return xa + (v - lo) / (hi - lo) * (xb - xa); };
+  var top = 90, gap = 52, ay = top + 5 * gap + 28;
+  el('text', { x: 0, y: 20, 'class': 't-mu', 'font-size': 12, 'font-weight': 600 }, svg, 'Scenario');
+  el('text', { x: (xa + xb) / 2, y: 20, 'text-anchor': 'middle', 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, 'Reduction in systolic blood pressure with 95% CI (mmHg)');
+  el('text', { x: PX, y: 20, style: 'fill:var(--pv)', 'font-size': 12.5, 'font-weight': 700 }, svg, 'p-value');
+  el('rect', { x: X(-5), y: 58, width: X(5) - X(-5), height: ay - 58, style: 'fill:var(--soft)' }, svg);
+  el('text', { x: X(0), y: 52, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, 'trivial effects (−5 to 5)');
+  for (var t = -10; t <= 20; t += 5) {
+    el('line', { x1: X(t), x2: X(t), y1: ay, y2: ay + 5, 'class': 'axis' }, svg);
+    el('text', { x: X(t), y: ay + 19, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, t < 0 ? '−' + (-t) : t);
+  }
+  el('line', { x1: xa, x2: xb, y1: ay, y2: ay, 'class': 'axis' }, svg);
+  el('line', { x1: X(0), x2: X(0), y1: 58, y2: ay, style: 'stroke:var(--muted)', 'stroke-width': 1.5 }, svg);
+  [-5, 5].forEach(function (v) {
+    el('line', { x1: X(v), x2: X(v), y1: 58, y2: ay, style: 'stroke:var(--ink-2)', 'stroke-width': 1.2, 'stroke-dasharray': '4 3' }, svg);
+  });
+  el('text', { x: (xa + xb) / 2, y: ay + 42, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Positive values favour the programme');
+  ROWS.forEach(function (r, i) {
+    var y = top + i * gap, se = (r.hi - r.lo) / 3.92, p = 2 * (1 - normcdf(Math.abs(r.est / se)));
+    el('text', { x: 0, y: y - 2, 'class': 't-ink', 'font-size': 13, 'font-weight': 600 }, svg, (i + 1) + '  ' + r.t);
+    el('text', { x: 18, y: y + 14, 'class': 't-mu', 'font-size': 11.5 }, svg, r.s);
+    hbar(svg, X(r.lo), X(r.hi), y, 'var(--ci)');
+    el('circle', { cx: X(r.est), cy: y, r: 4.5, style: 'fill:var(--ef);stroke:var(--panel)', 'stroke-width': 1.6 }, svg);
+    el('text', { x: PX, y: y + 4, style: 'fill:var(--pv)', 'font-size': 12.5, 'font-weight': 600 }, svg, 'p ' + fp(p));
+  });
+})();
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+
+  /* ================= giscus comments: the one place to configure them =================
+     Comments load only when both "category" and "categoryId" are filled in.
+     Same settings as the other posts (see README.md, "Comments (giscus)"). */
+  var GISCUS = {
+      "repo": "selcukorkmaz/selcukorkmaz.github.io",
+      "repoId": "R_kgDOPupOnA",
+      "category": "Announcements",
+      "categoryId": "DIC_kwDOPupOnM4DGb_J",
+      "mapping": "pathname",
+      "strict": "1",
+      "reactionsEnabled": "1",
+      "emitMetadata": "0",
+      "inputPosition": "top",
+      "lang": "en",
+      "loading": "lazy",
+      "themeLight": "light",
+      "themeDark": "dark"
+  };
+
+  var root = document.documentElement;
+  var meta = document.getElementById('metaThemeColor');
+  var COLORS = {"light": "#f6f7f5", "dark": "#11161c"};
+  var URL = "https://selcukorkmaz.github.io/blog/p-effect-size-ci/";
+
+  /* ---------------- theme (shared with the main site) ---------------- */
+  function current() {
+    var t = root.getAttribute('data-theme');
+    if (t === 'dark' || t === 'light') return t;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function label(t) {
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+      b.setAttribute('title', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    });
+  }
+  function giscusTheme(t) { return t === 'dark' ? GISCUS.themeDark : GISCUS.themeLight; }
+  function apply(t) {
+    root.classList.remove('light', 'dark');
+    root.classList.add(t);                 /* the main site's convention */
+    root.setAttribute('data-theme', t);    /* the paper's convention */
+    if (meta) meta.setAttribute('content', COLORS[t]);
+    try { localStorage.setItem('theme', t); } catch (e) {}
+    label(t);
+    var frame = document.querySelector('iframe.giscus-frame');
+    if (frame && frame.contentWindow) {
+      frame.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme(t) } } }, 'https://giscus.app');
+    }
+  }
+  if (meta) meta.setAttribute('content', COLORS[current()]);
+  label(current());
+  document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () { apply(current() === 'dark' ? 'light' : 'dark'); });
+  });
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onScheme = function () { if (!root.getAttribute('data-theme')) apply(current()); };
+    if (mq.addEventListener) mq.addEventListener('change', onScheme);
+  }
+
+  /* ---------------- comments ---------------- */
+  (function () {
+    var slot = document.querySelector('#comments .giscus');
+    if (!slot || !GISCUS.category || !GISCUS.categoryId) return;   /* keep the "coming soon" note */
+    slot.innerHTML = '';
+    var s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    var data = { repo: GISCUS.repo, 'repo-id': GISCUS.repoId, category: GISCUS.category,
+      'category-id': GISCUS.categoryId, mapping: GISCUS.mapping, strict: GISCUS.strict,
+      'reactions-enabled': GISCUS.reactionsEnabled, 'emit-metadata': GISCUS.emitMetadata,
+      'input-position': GISCUS.inputPosition, theme: giscusTheme(current()), lang: GISCUS.lang,
+      loading: GISCUS.loading };
+    Object.keys(data).forEach(function (k) { s.setAttribute('data-' + k, data[k]); });
+    s.setAttribute('crossorigin', 'anonymous');
+    s.async = true;
+    slot.appendChild(s);
+  })();
+
+  /* ---------------- post tools ---------------- */
+  var TEXT = {"bibtex": "@misc{korkmaz2026p,\n  author       = {Korkmaz, Sel{\\c{c}}uk},\n  title        = {The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper},\n  year         = {2026},\n  month        = oct,\n  date         = {2026-10-01},\n  howpublished = {\\url{https://selcukorkmaz.github.io/blog/p-effect-size-ci/}},\n  url          = {https://selcukorkmaz.github.io/blog/p-effect-size-ci/},\n  note         = {Blog post}\n}", "apa": "Korkmaz, S. (2026, October 1). The p-value, the effect size and the confidence interval: What each tells the reader, and how to report them in a paper [Blog post]. https://selcukorkmaz.github.io/blog/p-effect-size-ci/", "link": "https://selcukorkmaz.github.io/blog/p-effect-size-ci/"};
+  var mdCache = null;
+
+  function status(bar, msg) {
+    var el = bar && bar.querySelector('.pt-status');
+    if (!el) return;
+    el.textContent = msg;
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.textContent = ''; }, 3000);
+  }
+  function legacyCopy(ta) {
+    ta.removeAttribute('hidden');
+    ta.focus({ preventScroll: true });
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    return ok;
+  }
+  function copy(bar, text, what, ta) {
+    var fallback = function () {
+      var own = !ta;
+      if (own) { ta = document.createElement('textarea'); ta.className = 'pt-ta'; ta.value = text; bar.appendChild(ta); }
+      if (legacyCopy(ta)) { status(bar, what + ' copied'); if (own) bar.removeChild(ta); return; }
+      /* Last resort: show the text selected so it can be copied by hand. */
+      if (!own) bar.appendChild(ta);
+      ta.classList.add('show'); ta.removeAttribute('aria-hidden'); ta.removeAttribute('tabindex');
+      ta.focus(); ta.select();
+      status(bar, 'Press ' + (/Mac|iP/.test(navigator.platform) ? '⌘C' : 'Ctrl+C') + ' to copy the selected text');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { status(bar, what + ' copied'); }, fallback);
+    } else { fallback(); }
+  }
+
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.pt'));
+  bars.forEach(function (bar) {
+    var toggles = Array.prototype.slice.call(bar.querySelectorAll('.pt-row [aria-controls]'));
+    function close(btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      document.getElementById(btn.getAttribute('aria-controls')).hidden = true;
+    }
+    toggles.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        toggles.forEach(close);
+        if (!open) {
+          btn.setAttribute('aria-expanded', 'true');
+          document.getElementById(btn.getAttribute('aria-controls')).hidden = false;
+        }
+      });
+    });
+    bar.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var openBtn = toggles.filter(function (b) { return b.getAttribute('aria-expanded') === 'true'; })[0];
+      if (openBtn) { close(openBtn); openBtn.focus(); }
+    });
+    bar.querySelectorAll('[data-pt-copy]').forEach(function (b) {
+      b.addEventListener('click', function () { copy(bar, TEXT[b.getAttribute('data-pt-copy')], b.getAttribute('data-pt-label')); });
+    });
+    var nativeBtn = bar.querySelector('[data-pt-native]');
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener('click', function () {
+        navigator.share({ title: document.title, text: "The p-value, the effect size and the confidence interval: what each tells the reader, and how to report them in a paper", url: URL }).catch(function () {});
+      });
+    }
+    var mdBtn = bar.querySelector('[data-pt-copy-md]');
+    if (mdBtn) mdBtn.addEventListener('click', function () {
+      var ta = document.getElementById('pt-md');
+      var done = function (text) { mdCache = text; copy(bar, text, 'Markdown', ta); };
+      if (mdCache) return done(mdCache);
+      fetch('index.md', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then(done, function () { done(ta.value); });   /* offline or file://: use the copy embedded in the page */
+    });
+  });
+
+  /* ---------------- opened from disk (file://) ---------------- */
+  // "../" would show a directory listing; point folder links at index.html instead.
+  if (location.protocol === 'file:') {
+    document.querySelectorAll('.sitebar a[href]').forEach(function (a) {
+      var h = a.getAttribute('href'), m = h.match(/^([^#?]*)(.*)$/);
+      if (!/^[a-z][a-z0-9+.-]*:|^\/|^#/i.test(h) && m[1].slice(-1) === '/') a.setAttribute('href', m[1] + 'index.html' + m[2]);
+    });
+  }
+})();
+</script>
+</body>
+</html>

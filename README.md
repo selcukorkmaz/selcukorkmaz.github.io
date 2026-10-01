@@ -45,12 +45,12 @@ changes.
 
 ### Hand-written posts
 
-`blog/sd-or-se/` is written by hand: `index.html` is the source, and you edit it directly.
-Its companion files (`index.md`, `fig*.svg`, `sd-or-se.pdf`) are derived from it by
+`blog/sd-or-se/` and `blog/p-effect-size-ci/` are written by hand: `index.html` is the source, and you
+edit it directly. Their companion files (`index.md`, `fig*.svg`, `<slug>.pdf`) are derived from it by
 `tools/export_post.py`. After editing the page, re-run:
 
 ```sh
-python3 tools/export_post.py sd-or-se      # needs Google Chrome and pandoc
+python3 tools/export_post.py <slug>      # e.g. sd-or-se or p-effect-size-ci; needs Google Chrome and pandoc
 ```
 
 The script renders the page in headless Chrome, saves each `<svg id="figN">` as drawn by
@@ -61,7 +61,7 @@ Markdown into the page's `<textarea id="pt-md">` for offline "Copy as Markdown",
 the PDF. Running it twice gives the same files. It prints the reading time; update the
 post's card in `blog/index.html` if that changes.
 
-The same markers work for a new hand-written post if it follows this post's page structure:
+The same markers work for a new hand-written post if it follows the page structure of these posts:
 the paper-style tokens on `:root` (the figure SVGs take their light-theme colours from every
 top-level `:root{…}` rule), an `<h1>` with an optional `<span>` subtitle, and optionally a
 `<div class="kicker">` and a `<div class="byline">Author<small>date</small></div>`. The PDF
