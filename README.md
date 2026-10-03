@@ -45,12 +45,12 @@ changes.
 
 ### Hand-written posts
 
-`blog/sd-or-se/` and `blog/p-effect-size-ci/` are written by hand: `index.html` is the source, and you
+`blog/sd-or-se/`, `blog/p-effect-size-ci/` and `blog/permutation-test/` are written by hand: `index.html` is the source, and you
 edit it directly. Their companion files (`index.md`, `fig*.svg`, `<slug>.pdf`) are derived from it by
 `tools/export_post.py`. After editing the page, re-run:
 
 ```sh
-python3 tools/export_post.py <slug>      # e.g. sd-or-se or p-effect-size-ci; needs Google Chrome and pandoc
+python3 tools/export_post.py <slug>      # e.g. sd-or-se, p-effect-size-ci or permutation-test; needs Google Chrome and pandoc
 ```
 
 The script renders the page in headless Chrome, saves each `<svg id="figN">` as drawn by

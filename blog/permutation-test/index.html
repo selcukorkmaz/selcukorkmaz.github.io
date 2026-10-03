@@ -1,0 +1,1612 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Hand-written post. index.md, fig*.svg and permutation-test.pdf are derived from this file by tools/export_post.py; re-run it after editing. -->
+<title>Where a p-value comes from — Selçuk Korkmaz</title>
+<meta name="description" content="Every p-value is a tail area of a null distribution. A permutation test builds that distribution by shuffling the group labels; three interactive figures show how, how the t distribution approximates it, and how the p-value itself varies from study to study.">
+<meta name="author" content="Selçuk Korkmaz">
+<link rel="canonical" href="https://selcukorkmaz.github.io/blog/permutation-test/">
+<link rel="alternate" type="text/markdown" href="index.md" title="Markdown version">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Selçuk Korkmaz">
+<meta property="og:title" content="Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself">
+<meta property="og:description" content="Every p-value is a tail area of a null distribution. A permutation test builds that distribution by shuffling the group labels; three interactive figures show how, how the t distribution approximates it, and how the p-value itself varies from study to study.">
+<meta property="og:url" content="https://selcukorkmaz.github.io/blog/permutation-test/">
+<meta property="og:image" content="https://selcukorkmaz.github.io/blog/permutation-test/card-figure1.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="Figure 1 of the post: the 20 participants of a pilot trial and the null distribution of the difference in means over all 184,756 ways of shuffling their group labels, with the observed 7.5 mmHg difference in its right tail.">
+<meta property="article:published_time" content="2026-10-03">
+<meta property="article:author" content="https://selcukorkmaz.github.io/">
+<meta property="article:tag" content="p-values">
+<meta property="article:tag" content="permutation tests">
+<meta property="article:tag" content="randomisation tests">
+<meta property="article:tag" content="null distribution">
+<meta property="article:tag" content="exchangeability">
+<meta property="article:tag" content="statistical power">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself">
+<meta name="twitter:description" content="Every p-value is a tail area of a null distribution. A permutation test builds that distribution by shuffling the group labels; three interactive figures show how, how the t distribution approximates it, and how the p-value itself varies from study to study.">
+<meta name="twitter:creator" content="@selcukorkmaz">
+<meta name="twitter:image" content="https://selcukorkmaz.github.io/blog/permutation-test/card-figure1.png">
+<meta name="twitter:image:alt" content="Figure 1 of the post: the 20 participants of a pilot trial and the null distribution of the difference in means over all 184,756 ways of shuffling their group labels, with the observed 7.5 mmHg difference in its right tail.">
+<meta name="color-scheme" content="light dark">
+<meta id="metaThemeColor" name="theme-color" content="#f6f7f5">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself",
+  "name": "Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself",
+  "description": "Every p-value is a tail area of a null distribution. A permutation test builds that distribution by shuffling the group labels; three interactive figures show how, how the t distribution approximates it, and how the p-value itself varies from study to study.",
+  "url": "https://selcukorkmaz.github.io/blog/permutation-test/",
+  "mainEntityOfPage": "https://selcukorkmaz.github.io/blog/permutation-test/",
+  "datePublished": "2026-10-03",
+  "inLanguage": "en",
+  "keywords": [
+    "p-values",
+    "permutation tests",
+    "randomisation tests",
+    "null distribution",
+    "exchangeability",
+    "statistical power"
+  ],
+  "image": "https://selcukorkmaz.github.io/blog/permutation-test/card-figure1.png",
+  "encoding": [
+    {
+      "@type": "MediaObject",
+      "encodingFormat": "application/pdf",
+      "contentUrl": "https://selcukorkmaz.github.io/blog/permutation-test/permutation-test.pdf"
+    },
+    {
+      "@type": "MediaObject",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "https://selcukorkmaz.github.io/blog/permutation-test/index.md"
+    }
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Trakya University",
+      "department": {
+        "@type": "Organization",
+        "name": "Trakya University Faculty of Medicine, Department of Biostatistics"
+      }
+    }
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/"
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Blog · Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/blog/"
+  }
+}
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') { root.classList.add(t); root.setAttribute('data-theme', t); }
+  } catch (e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f5; --panel:#ffffff; --ink:#17202b; --ink-2:#465262; --muted:#6a7584; --rule:#d9dee3; --soft:#eceff1;
+  --accent:#2d3e50; --sg:#12707a; --fm:#2f5f9e; --bl:#9a5a12; --leak:#b23a30; --ok:#23794f;
+  --s1:#2a78d6; --s2:#eb6834; --code:#eef1f3; --hl:rgba(178,58,48,.09);
+  --serif:"Literata",Georgia,"Times New Roman",serif; --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark;
+    --bg:#11161c; --panel:#161c23; --ink:#e5e9ed; --ink-2:#b8c1cb; --muted:#8a95a2; --rule:#2b343e; --soft:#1b222a;
+    --accent:#a9bfd6; --sg:#56b6bf; --fm:#80a9e2; --bl:#dda45c; --leak:#ee7d71; --ok:#5cc08b;
+    --s1:#3987e5; --s2:#d95926; --code:#1a2129; --hl:rgba(238,125,113,.12); }
+}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --bg:#11161c; --panel:#161c23; --ink:#e5e9ed; --ink-2:#b8c1cb; --muted:#8a95a2; --rule:#2b343e; --soft:#1b222a;
+  --accent:#a9bfd6; --sg:#56b6bf; --fm:#80a9e2; --bl:#dda45c; --leak:#ee7d71; --ok:#5cc08b;
+  --s1:#3987e5; --s2:#d95926; --code:#1a2129; --hl:rgba(238,125,113,.12); }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17.5px;line-height:1.62;margin:0;padding-inline:20px;padding-block:0 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px}
+@media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}.toc{display:none}}
+.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-top:64px;font-family:var(--sans);font-size:13.5px}
+.toc b{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:600}
+.toc a{display:block;color:var(--ink-2);text-decoration:none;padding:4px 0 4px 12px;border-left:2px solid var(--rule);line-height:1.35}
+.toc a:hover,.toc a:focus-visible{color:var(--ink);border-left-color:var(--accent)}
+main{min-width:0;max-width:940px}
+main p,main ul,main ol,main h2,main h3,main .box,main .algo,main pre,main .tw,main figure:not(.wide),header.title>*{max-width:760px}
+header.title{padding-top:56px;padding-bottom:28px;border-bottom:1px solid var(--rule)}
+.kicker{font-family:var(--sans);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--sans);font-weight:700;font-size:clamp(30px,4.4vw,44px);line-height:1.08;letter-spacing:-.02em;margin:14px 0 18px;text-wrap:balance}
+h1 span{color:var(--muted);font-weight:600}
+.byline{font-family:var(--sans);font-size:15px;color:var(--ink-2)}
+.byline small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.pkgs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;font-family:var(--mono);font-size:12.5px}
+.pkg{padding:3px 9px;border-radius:4px;border:1px solid var(--rule);background:var(--panel)}
+.pkg i{font-style:normal;display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:0}
+.abstract{margin:28px 0 8px;padding:22px 24px;background:var(--panel);border:1px solid var(--rule);border-radius:6px}
+.abstract h2{margin:0 0 8px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.abstract p{margin:0 0 10px;font-size:16.5px}
+.kw{font-family:var(--sans);font-size:13.5px;color:var(--muted);margin-top:10px}
+h2{font-family:var(--sans);font-weight:700;font-size:25px;letter-spacing:-.01em;line-height:1.2;margin:56px 0 12px;text-wrap:balance}
+h2 .n{color:var(--muted);font-weight:600;margin-right:10px}
+h3{font-family:var(--sans);font-weight:700;font-size:18.5px;margin:34px 0 8px;text-wrap:balance}
+h3 .n{color:var(--muted);font-weight:600;margin-right:8px}
+p{margin:0 0 16px}
+em{font-style:italic}
+a{color:var(--fm)}
+code,.m,pre,.algo{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+code,.m{font-family:var(--mono);font-size:.84em;background:var(--code);padding:1px 5px;border-radius:3px;word-break:break-word}
+pre{font-family:var(--mono);font-size:13.5px;line-height:1.6;background:var(--code);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;overflow-x:auto;margin:10px 0 22px}
+pre code{background:none;padding:0;font-size:inherit}
+pre .c{color:var(--muted);font-style:italic}
+pre .sg{color:var(--sg)} pre .fm{color:var(--fm)} pre .bl{color:var(--bl)}
+ul,ol{padding-left:22px;margin:0 0 16px} li{margin-bottom:6px}
+.eq{font-family:var(--serif);font-style:italic;text-align:center;margin:14px 0 18px;font-size:17px;overflow-x:auto}
+.eq sub,.eq sup{font-size:.7em}
+.box{border-left:3px solid var(--accent);background:var(--panel);padding:14px 18px;margin:18px 0 22px;border-radius:0 6px 6px 0;font-size:16px}
+.box b{font-family:var(--sans)}
+.algo{font-family:var(--mono);font-size:13.5px;line-height:1.7;background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 18px;margin:12px 0 22px;overflow-x:auto;white-space:pre}
+.algo b{font-family:var(--sans);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+figure{margin:28px 0 30px}
+figure.wide{max-width:940px}
+.fig{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:16px 16px 10px;overflow-x:auto}
+.fig svg{display:block;width:100%;height:auto}
+.fig.diagram svg{min-width:720px}
+figcaption{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-2);margin-top:10px}
+figcaption b{color:var(--ink)}
+.tw{overflow-x:auto;margin:14px 0 26px;border:1px solid var(--rule);border-radius:6px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14px;font-variant-numeric:tabular-nums}
+caption{caption-side:top;text-align:left;font-size:14px;color:var(--ink-2);padding:12px 14px 4px;line-height:1.45}
+caption b{color:var(--ink)}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+td.r,th.r{text-align:right}
+tr:last-child td{border-bottom:0}
+td .m{font-size:12.5px}
+.yes{color:var(--ok);font-weight:600}.no{color:var(--muted)}.warn{color:var(--leak);font-weight:600}
+.pos{color:var(--leak)} .neg{color:var(--ok)}
+tr.best td{background:var(--hl)}
+.cfg{font-family:var(--mono);font-size:12.5px;font-weight:500}
+.refs{font-size:15px;line-height:1.5;padding-left:0;list-style:none;counter-reset:r}
+.refs li{counter-increment:r;padding-left:34px;position:relative;margin-bottom:9px;overflow-wrap:anywhere}
+.refs li::before{content:"[" counter(r) "]";position:absolute;left:0;color:var(--muted);font-family:var(--sans);font-size:13px;top:2px}
+sup.cite{font-family:var(--sans);font-size:.68em;color:var(--muted)}
+sup.cite a{color:inherit;text-decoration:none}
+.tip{position:fixed;pointer-events:none;z-index:9;background:var(--ink);color:var(--bg);font-family:var(--sans);font-size:12.5px;line-height:1.35;padding:6px 9px;border-radius:5px;max-width:260px;opacity:0;transition:opacity .1s}
+.tip.on{opacity:1}
+svg text{font-family:var(--sans)}
+svg .t-ink{fill:var(--ink)} svg .t-2{fill:var(--ink-2)} svg .t-mu{fill:var(--muted)}
+svg .grid{stroke:var(--rule);stroke-width:1}
+svg .axis{stroke:var(--muted);stroke-width:1}
+[data-tip]{cursor:default}
+:focus-visible{outline:2px solid var(--fm);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:600px){body{font-size:16.5px}h2{font-size:22px}.abstract{padding:18px}}
+.fig.plain{background:#ffffff;padding:10px}
+.fig.plain img{display:block;width:100%;height:auto}
+main ul ul{margin:6px 0 4px}
+/* ---- this post: colours for the p-value and the null distribution, the arms, and the figure controls ---- */
+:root{ --pv:#9a5a12; --ef:#12707a; --ci:#2f5f9e }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --pv:#dda45c; --ef:#56b6bf; --ci:#80a9e2 } }
+:root[data-theme="dark"]{ --pv:#dda45c; --ef:#56b6bf; --ci:#80a9e2 }
+.fig svg{min-width:560px}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 10px;font-family:var(--sans);font-size:13px}
+.ctl .lab{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--panel)}
+.seg button{font:500 13px/1 var(--sans);padding:7px 11px;border:0;border-left:1px solid var(--rule);background:transparent;color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--ink);background:var(--soft)}
+.seg button[aria-pressed="true"]{background:var(--soft);color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+html:not(.js) .ctl{display:none}
+th.w{white-space:normal}
+.acts{display:inline-flex;flex-wrap:wrap;gap:6px}
+.acts button{font:500 13px/1 var(--sans);padding:7px 11px;border:1px solid var(--rule);border-radius:999px;background:var(--panel);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.acts button:hover{border-color:var(--accent);background:var(--soft)}
+.acts button:active{box-shadow:inset 0 -2px 0 var(--accent)}
+main p.readout{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-2);margin:10px 0 0;font-variant-numeric:tabular-nums;min-height:3em}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 5px 0 2px;vertical-align:0}
+.check{list-style:none;padding-left:0}
+.check li{position:relative;padding-left:28px}
+.check li::before{content:"";position:absolute;left:2px;top:.45em;width:14px;height:14px;border:1.5px solid var(--accent);border-radius:3px}
+.abstract h2{margin:0 0 8px}
+.nw{white-space:nowrap}
+/* √: neither Literata nor IBM Plex Sans has the glyph, so a font-drawn √ came from whatever fallback
+   the system had, and it had no bar over the radicand. Draw the sign (a mask, so it takes the text colour)
+   and the bar with CSS instead; the box's line-height puts the bar about .88em above the baseline in both
+   fonts. The visually hidden "√[ … ]" keeps the notation for screen readers, copying and index.md. */
+.rad{display:inline-block;position:relative;padding:0 .04em 0 .58em;margin-left:.03em;line-height:.89;vertical-align:baseline}
+.rad::before{content:"";position:absolute;left:0;top:0;bottom:-.14em;width:.58em;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%}
+.rad::after{content:"";position:absolute;left:.52em;right:0;top:0;border-top:.06em solid currentColor}
+table .rad, figcaption .rad, .readout .rad{line-height:1.01}
+.rad.tall{padding-top:.22em}  /* radicands with superscripts: lift the bar clear of them */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* x̄: the combining macron sits badly on italic x in Literata, and an overline follows the tall line box.
+   Draw the bar as a zero-height box anchored on the baseline and lifted just above the x-height
+   (about 0.5em in Literata, IBM Plex Sans, Georgia and Helvetica), shifted right for the italic slant. */
+.xbar::after{content:""; display:inline-block; vertical-align:baseline; position:relative; top:-.62em;
+  width:.4em; height:0; margin-left:-.41em; border-top:.065em solid currentColor}
+/* Light-theme muted text darkened slightly so small text meets WCAG AA (4.5:1) on the page, panels and soft fills. */
+:root{ --muted:#626d7b }
+.fig img{display:block;width:100%;height:auto;min-width:560px}
+html:not(.js) .fig svg, html:not(.js) p.readout{display:none}
+.eq > span{display:inline-block;margin:0 1.2em;white-space:nowrap}
+/* Room for the drawn radicals, which reach slightly above and below the text; never scroll vertically. */
+.eq{padding:.3em 0;overflow-y:hidden}
+</style>
+<style>
+/* ======== site bar, post tools, comments and print (same as the other posts) ======== */
+/* ---- site bar ---- */
+:root{ --sitebar-h:52px }
+html{ scroll-padding-top:calc(var(--sitebar-h) + env(safe-area-inset-top, 0px) + 12px) }
+.toc{ top:calc(env(safe-area-inset-top, 0px) + var(--sitebar-h)) }
+.sitebar{
+  position:sticky; top:0; z-index:8;
+  margin-inline:-20px; padding:env(safe-area-inset-top, 0px) 20px 0;
+  background:var(--bg); border-bottom:1px solid var(--rule);
+  font-family:var(--sans);
+}
+.sitebar-in{ max-width:1200px; margin:0 auto; height:var(--sitebar-h); display:flex; align-items:center; gap:12px }
+.sb-crumbs{ display:flex; align-items:center; gap:8px; min-width:0; font-size:14.5px; line-height:1.2 }
+.sb-crumbs a{ color:var(--ink); text-decoration:none; font-weight:600; white-space:nowrap; border-radius:4px }
+.sb-crumbs a.sb-blog{ color:var(--ink-2); font-weight:500 }
+.sb-crumbs a:hover{ text-decoration:underline; text-underline-offset:3px }
+.sb-sep{ color:var(--muted) }
+.sb-toggle{
+  margin-left:auto; flex:0 0 auto; display:inline-flex; align-items:center; gap:8px;
+  font:500 13px/1 var(--sans); padding:7px 12px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--rule); background:var(--panel); color:var(--ink);
+}
+.sb-toggle:hover{ border-color:var(--accent) }
+.sb-ico{ width:18px; height:18px; flex:0 0 18px }
+:root:not([data-theme="dark"]) .sb-moon{ display:none }
+:root[data-theme="dark"] .sb-sun{ display:none }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme]) .sb-sun{ display:none }
+  :root:not([data-theme]) .sb-moon{ display:inline }
+}
+html:not(.js) .sb-toggle, html:not(.js) [data-pt-copy-md], html:not(.js) .pt-row button{ display:none }
+.sb-skip{
+  position:fixed; left:12px; top:12px; z-index:20; font-family:var(--sans); font-size:14px;
+  background:var(--panel); color:var(--ink); border:1px solid var(--rule);
+  padding:8px 12px; border-radius:6px; transform:translateY(-200%);
+}
+.sb-skip:focus{ transform:translateY(0) }
+.sb-printurl{ display:none }
+@media (max-width:600px){ .sb-label{ display:none } .sb-toggle{ padding:7px 10px } }
+
+/* ---- post tools ---- */
+.pt{ font-family:var(--sans); font-size:14px; line-height:1.45; margin:22px 0 0; max-width:760px }
+.pt-end{ margin-top:56px; padding-top:18px; border-top:1px solid var(--rule) }
+.pt-lead{ margin:0 0 10px; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+.pt-row, .pt-links{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+.pt-btn{
+  display:inline-flex; align-items:center; gap:6px; font:500 13px/1.1 var(--sans);
+  padding:7px 11px; border-radius:999px; cursor:pointer; white-space:nowrap; text-decoration:none;
+  border:1px solid var(--rule); background:var(--panel); color:var(--ink);
+}
+.pt-btn:hover{ border-color:var(--accent) }
+.pt-btn[aria-expanded="true"]{ border-color:var(--accent); background:var(--soft) }
+.pt-btn[aria-expanded="true"] .pt-chev{ transform:rotate(180deg) }
+.pt-btn[hidden]{ display:none }
+.pt-quiet{ border-color:transparent; background:transparent; color:var(--ink-2); text-decoration:underline; text-underline-offset:3px; padding-inline:6px }
+.pt-quiet:hover{ color:var(--ink) }
+.pt-sm{ padding:5px 9px; font-size:12.5px }
+.pt-ico{ width:15px; height:15px; flex:0 0 15px }
+.pt-chev{ width:13px; height:13px; flex:0 0 13px; margin-left:-2px; color:var(--muted) }
+.pt-panel{ margin-top:10px; padding:14px 16px; background:var(--panel); border:1px solid var(--rule); border-radius:6px }
+.pt-panel[hidden]{ display:none }
+.pt-cite + .pt-cite{ margin-top:14px }
+.pt-cite-h{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px }
+.pt-cite-h b{ font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
+main pre.pt-code{ margin:0; padding:10px 12px; font-size:12.5px; white-space:pre-wrap; overflow-wrap:anywhere; max-width:none }
+main p.pt-apa{ margin:0; font-family:var(--serif); font-size:15px; overflow-wrap:anywhere; max-width:none }
+main p.pt-note{ margin:0 0 10px; color:var(--ink-2); font-size:13.5px; max-width:none }
+main p.pt-status{ margin:8px 0 0; min-height:1.2em; font-size:13px; color:var(--ok); max-width:none }
+.pt-status:empty{ margin:0; min-height:0 }
+.pt-ta{ position:absolute; left:-9999px; top:0; width:1px; height:1px; opacity:0 }
+.pt-ta.show{ position:static; left:auto; width:100%; height:12em; opacity:1; margin-top:8px; font:12.5px/1.5 var(--mono); color:var(--ink); background:var(--code); border:1px solid var(--rule); border-radius:6px; padding:8px }
+
+/* ---- comments ---- */
+.comments{ max-width:760px }
+main p.cm-note{ color:var(--muted); font-family:var(--sans); font-size:15px; margin:0 }
+
+/* ---- print (also used for the PDF) ---- */
+@media print{
+  @page{ size:A4; margin:16mm 15mm 18mm }
+  html:root[lang]{ color-scheme:light;
+    --bg:#f6f7f5; --panel:#ffffff; --ink:#17202b; --ink-2:#465262; --muted:#6a7584; --rule:#d9dee3; --soft:#eceff1;
+  --accent:#2d3e50; --sg:#12707a; --fm:#2f5f9e; --bl:#9a5a12; --leak:#b23a30; --ok:#23794f;
+  --s1:#2a78d6; --s2:#eb6834; --code:#eef1f3; --hl:rgba(178,58,48,.09);
+  --pv:#9a5a12; --ef:#12707a; --ci:#2f5f9e; --muted:#626d7b;
+  --serif:"Literata",Georgia,"Times New Roman",serif; --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact }
+  body{ background:#fff; padding:0; font-size:11pt; line-height:1.5 }
+  .sitebar, .sb-skip, .toc, .pt, .pt-ta, .comments, .tip, .ctl{ display:none !important }
+  main p.readout{ min-height:0 }
+  .fig svg{ min-width:0 }
+  .sb-printurl{ display:block; margin:0 0 6mm; font:9pt/1.3 var(--sans); color:var(--muted) }
+  .wrap{ display:block; max-width:none }
+  main{ max-width:none }
+  header.title{ padding-top:0; padding-bottom:18px }
+  .abstract{ break-inside:avoid }
+  .abstract p{ font-size:10.5pt }
+  h2{ margin:26px 0 10px; break-after:avoid }
+  h3{ margin:20px 0 6px; break-after:avoid }
+  p, li{ orphans:3; widows:3 }
+  figure, .tw, table, pre, .algo, .box, .eq{ break-inside:avoid }
+  tr, li{ break-inside:avoid }
+  p:has(+ .eq){ break-after:avoid }
+  figure{ margin:16px 0 18px }
+  .fig, .tw, pre, .algo, .eq{ overflow:visible }
+  .fig.diagram svg{ min-width:0 }
+  pre, .algo{ white-space:pre-wrap; overflow-wrap:anywhere; font-size:9pt }
+  table{ font-size:9pt }
+  th{ font-size:8pt }
+  figcaption, caption{ font-size:9pt }
+  .refs{ font-size:9.5pt }
+  .box{ font-size:10.5pt }
+  .refs li{ padding-left:34px; text-indent:-34px }
+  .refs li::before{ position:static; display:inline-block; width:34px; text-indent:0 }
+  a{ color:inherit; text-decoration:none }
+}
+</style>
+</head>
+<body>
+<a class="sb-skip" href="#main">Skip to content</a>
+<header class="sitebar">
+  <div class="sitebar-in">
+    <nav class="sb-crumbs" aria-label="Site">
+      <a href="../../">Selçuk Korkmaz</a>
+      <span class="sb-sep" aria-hidden="true">/</span>
+      <a class="sb-blog" href="../">Blog</a>
+    </nav>
+    <button class="sb-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
+      <svg class="sb-ico sb-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="sb-ico sb-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span class="sb-label">Theme</span>
+    </button>
+  </div>
+</header>
+<p class="sb-printurl">selcukorkmaz.github.io/blog/permutation-test/ · 3 October 2026</p>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <b>Contents</b>
+  <a href="#null">1 · A null distribution</a>
+  <a href="#shuffle">2 · Shuffling the labels</a>
+  <a href="#howmany">3 · How many shuffles</a>
+  <a href="#tdist">4 · The <i>t</i> shortcut</a>
+  <a href="#assume">5 · What a shuffle assumes</a>
+  <a href="#pdist">6 · The <i>p</i>-value's distribution</a>
+  <a href="#ci">7 · Intervals, bootstrap</a>
+  <a href="#report">8 · How to report</a>
+  <a href="#traps">9 · Five traps</a>
+  <a href="#checklist">10 · Checklist</a>
+  <a href="#refs">References</a>
+</nav>
+
+<main id="main">
+<header class="title">
+  <div class="kicker">Statistics note · Inference in biomedical research</div>
+  <h1>Where a <i>p</i>-value comes from <span>The permutation test, the null distribution and the distribution of the <i>p</i>-value itself</span></h1>
+  <div class="byline">Selçuk Korkmaz<small>3 October 2026</small></div>
+  <!--md-skip-->
+<div class="pt pt-top" data-md-skip>
+  <div class="pt-row" role="group" aria-label="Post tools">
+    <a class="pt-btn" href="permutation-test.pdf" download><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a>
+    <button class="pt-btn" type="button" data-pt-copy-md><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15V9l2.5 3L12 9v6M16 9v6M14 13l2 2 2-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy as Markdown</button>
+    <a class="pt-btn pt-quiet" href="index.md">View Markdown</a>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-cite"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6.8" cy="9.6" r="3.3" fill="currentColor"/><path d="M10.1 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.2" cy="9.6" r="3.3" fill="currentColor"/><path d="M20.5 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Cite<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-share"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-tr"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Translate<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="pt-panel" id="pt-top-cite" hidden>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>BibTeX</b><button class="pt-btn pt-sm" type="button" data-pt-copy="bibtex" data-pt-label="BibTeX"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <pre class="pt-code"><code>@misc{korkmaz2026where,
+  author       = {Korkmaz, Sel{\c{c}}uk},
+  title        = {Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself},
+  year         = {2026},
+  month        = oct,
+  date         = {2026-10-03},
+  howpublished = {\url{https://selcukorkmaz.github.io/blog/permutation-test/}},
+  url          = {https://selcukorkmaz.github.io/blog/permutation-test/},
+  note         = {Blog post}
+}</code></pre>
+    </div>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>APA</b><button class="pt-btn pt-sm" type="button" data-pt-copy="apa" data-pt-label="APA citation"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <p class="pt-apa">Korkmaz, S. (2026, October 3). <i>Where a p-value comes from: The permutation test, the null distribution and the distribution of the p-value itself</i> [Blog post]. https://selcukorkmaz.github.io/blog/permutation-test/</p>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-top-share" hidden>
+    <div class="pt-links">
+        <button class="pt-btn" type="button" data-pt-copy="link" data-pt-label="Link"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy link</button>
+        <button class="pt-btn" type="button" data-pt-native hidden><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share…</button>
+        <a class="pt-btn" href="https://x.com/intent/post?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F&amp;text=Where%20a%20p-value%20comes%20from%3A%20the%20permutation%20test%2C%20the%20null%20distribution%20and%20the%20distribution%20of%20the%20p-value%20itself" target="_blank" rel="noopener">X</a>
+        <a class="pt-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pt-btn" href="https://bsky.app/intent/compose?text=Where%20a%20p-value%20comes%20from%3A%20the%20permutation%20test%2C%20the%20null%20distribution%20and%20the%20distribution%20of%20the%20p-value%20itself%20https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener">Bluesky</a>
+        <a class="pt-btn" href="mailto:?subject=Where%20a%20p-value%20comes%20from%3A%20the%20permutation%20test%2C%20the%20null%20distribution%20and%20the%20distribution%20of%20the%20p-value%20itself&amp;body=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F">Email</a>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-top-tr" hidden>
+    <p class="pt-note">Opens this page in Google Translate (machine translation). It works once the post is public at its web address.</p>
+    <div class="pt-links">
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=tr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="tr" lang="tr">Türkçe</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=de&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="de" lang="de">Deutsch</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=fr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="fr" lang="fr">Français</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=es&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="es" lang="es">Español</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=ar&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="ar" lang="ar" dir="rtl">العربية</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=zh-CN&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </div>
+  </div>
+  <p class="pt-status" role="status" aria-live="polite"></p>
+</div>
+<!--/md-skip-->
+</header>
+<!--md-body-->
+<section class="abstract" aria-label="Summary">
+  <h2>In short</h2>
+  <p>Every <i>p</i>-value is a tail area of a null distribution: the distribution the test statistic would have if the null hypothesis, and the rest of the model, were true. Most tests take that distribution from a formula, such as the <i>t</i> distribution. A permutation test builds it from the data. If a treatment did nothing, the group labels in a randomised trial are arbitrary, so we can shuffle them, recompute the statistic each time, and count how often a shuffled result is at least as extreme as the real one. In a 20-person example, all 184,756 possible shuffles give <i>p</i> = 0.041 and the <i>t</i>-test gives <i>p</i> = 0.037: the <i>t</i> distribution is a smooth stand-in for the shuffle distribution.</p>
+  <p>Three interactive figures build the null distribution by shuffling, set it against the <i>t</i> distribution to show where the two part company, and show that the <i>p</i>-value itself has a distribution across repeated studies: flat when the null hypothesis is true, piled up near zero when it is not. Tables cover how many shuffles are enough, what a shuffle assumes, what to shuffle in each design and how shuffling differs from the bootstrap, and a checklist covers what to report.</p>
+  <div class="kw">Keywords: <i>p</i>-values · permutation tests · randomisation tests · null distribution · exchangeability · statistical power</div>
+</section>
+
+<h2 id="null"><span class="n">1</span>A <i>p</i>-value needs a null distribution</h2>
+<p>In an <a href="https://selcukorkmaz.github.io/blog/p-effect-size-ci/#pvalue">earlier note</a> I defined a <i>p</i>-value as the probability of getting a test statistic at least as extreme as the one observed, computed on the assumption that the null hypothesis and every other assumption of the statistical model are true <sup class="cite">[<a href="#ref-greenland2016">1</a>]</sup>. That sentence hides a step. A probability needs a distribution: the <em>null distribution</em>, which says how the test statistic would vary from study to study if the null hypothesis were true. The <i>p</i>-value is the area in its tail beyond the observed value.</p>
+<p>Take a small pilot trial. Twenty adults with raised blood pressure are randomised, 10 to a lifestyle programme and 10 to usual care, and the outcome is the fall in systolic blood pressure over 12 weeks (Table 1). The programme arm fell by 9.4 mmHg on average and the usual-care arm by 1.9 mmHg, a difference of 7.5 mmHg.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 1.</b> The pilot data: fall in systolic blood pressure over 12 weeks, in mmHg (negative values are rises). The data are made up for this note and used throughout.</caption>
+  <thead><tr><th>Arm</th><th>Fall in each participant</th><th class="r">Mean</th><th class="r">SD</th></tr></thead>
+  <tbody>
+    <tr><td>Programme (<i>n</i> = 10)</td><td>21, 17, 15, 14, 13, 7, 6, 2, 2, −3</td><td class="r">9.4</td><td class="r">7.7</td></tr>
+    <tr><td>Usual care (<i>n</i> = 10)</td><td>11, 10, 9, 5, 2, 1, 0, −1, −9, −9</td><td class="r">1.9</td><td class="r">7.1</td></tr>
+  </tbody>
+</table></div>
+
+<p>Student's two-sample <i>t</i>-test gives <i>t</i> = 2.25 on 18 degrees of freedom and <i>p</i> = 0.037, with a 95% confidence interval for the difference of 0.5 to 14.5 mmHg. The 0.037 is the area of the <i>t</i> distribution with 18 degrees of freedom beyond ±2.25. That distribution is the null distribution of the <i>t</i> statistic when the outcomes in both arms are independent draws from normal distributions with the same mean and the same standard deviation (SD). Those are assumptions about how the data arose, and the formula takes them on trust.</p>
+<p>A permutation test reaches a null distribution by a route that needs neither the normal distribution nor a formula.</p>
+
+<h2 id="shuffle"><span class="n">2</span>Shuffling the labels</h2>
+<p>Suppose the programme had no effect on anybody. Then each participant's fall in blood pressure would have been the same whichever arm the randomisation had put them in. The 20 numbers in Table 1 would be fixed, and the only thing chance decided was which 10 of them carried the label "programme". The randomisation could have picked any 10 of the 20; there are 184,756 ways to do that, all equally likely. For each one we can work out the difference in means we would have seen. Those 184,756 differences are the null distribution of the difference, and no theory was needed to get them.</p>
+<p>This null hypothesis, that the programme changed nobody's outcome, is the one a randomisation test examines directly <sup class="cite">[<a href="#ref-ernst2004">2</a>]</sup>, and it is stronger than "the two arms have the same mean". Fisher set out the idea in 1935 <sup class="cite">[<a href="#ref-fisher1935">3</a>]</sup>. The method goes by two names: a <em>randomisation test</em> when, as here, the shuffling mirrors a random allocation that really took place, and a <em>permutation test</em> when the groups are treated as samples from populations, though the two names are often used interchangeably <sup class="cite">[<a href="#ref-ernst2004">2</a>]</sup>. I use "permutation test" for both, as most software does, and "shuffle" for one rearrangement of the labels.</p>
+
+<div class="box"><b>Permutation test for two groups.</b>
+<ol>
+  <li>Compute the statistic with the real labels, <i>T</i><sub>obs</sub> (here the difference in means, 7.5 mmHg).</li>
+  <li>Shuffle the labels, keeping the group sizes, and recompute the statistic, <i>T</i>*.</li>
+  <li>Do step 2 for every possible allocation (an exact test) or for <i>B</i> random ones.</li>
+  <li>The two-sided <i>p</i> is the share of allocations with |<i>T</i>*| ≥ |<i>T</i><sub>obs</sub>|. With <i>B</i> random shuffles, <i>p</i> = (<i>b</i> + 1)/(<i>B</i> + 1), where <i>b</i> counts the shuffles that qualify.</li>
+</ol></div>
+
+<!--md-fig fig1-->
+<figure id="f1" class="wide">
+  <div class="ctl" data-md-skip>
+    <span class="lab">Shuffle</span>
+    <span class="acts" role="group" aria-label="Shuffle the labels" id="f1-acts"></span>
+  </div>
+  <div class="fig"><svg id="fig1" viewBox="0 0 760 500" role="img" aria-label="Figure 1. The 20 participants of the pilot trial and the null distribution of the difference in means built by shuffling their labels. The real difference of 7.5 mmHg lies in the right tail: 7,570 of the 184,756 possible allocations are at least as extreme, so p = 0.041."></svg><noscript><img src="fig1.svg" alt="Figure 1. The 20 participants of the pilot trial and the null distribution of the difference in means built by shuffling their labels. The real difference of 7.5 mmHg lies in the right tail: 7,570 of the 184,756 possible allocations are at least as extreme, so p = 0.041." width="760" height="500"></noscript></div>
+  <p class="readout" id="f1-read" aria-live="polite"></p>
+  <figcaption><b>Figure 1. Building the null distribution by shuffling the labels.</b> Top: the 20 participants of Table 1, placed by their fall in systolic blood pressure, in the arm that the allocation shown gives them. Colour and shape show the arm each participant was really in, and the vertical marks are the two arm means. Bottom: the difference in means (programme minus usual care) for every allocation counted so far, as a share of them, in 1 mmHg bins. Allocations at least 7.5 mmHg from zero in either direction are shaded. On the interactive page the buttons shuffle the labels once, 100 times or 1,000 times, or show all 184,756 allocations; the static copy shows all of them, with the real allocation at the top. Exactly 7,570 of the 184,756 allocations are at least as extreme as the real one, so the exact <i>p</i> = 0.041.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<p>Figure 1 lets you do it. Each shuffle is one alternative history of the trial in which the programme did nothing. Most give a difference within a few mmHg of zero, and the histogram they build is the null distribution. The real difference of 7.5 mmHg sits in its right tail: exactly 7,570 of the 184,756 possible allocations give a difference at least 7.5 mmHg from zero, in either direction, so</p>
+<div class="eq"><span><i>p</i> = 7,570 / 184,756 = 0.041.</span></div>
+<p>That is the most literal reading a <i>p</i>-value can have. If the programme did nothing, 4.1% of the ways the randomisation could have split these 20 people would have produced a gap at least as large as the one observed. It is not the probability that the programme did nothing, nor the probability that the result was produced by chance alone <sup class="cite">[<a href="#ref-asa2016">4</a>]</sup>; it is computed by assuming that the programme did nothing.</p>
+<p>Because the two arms are the same size, the shuffle distribution is symmetric about zero: swapping the two arms of any allocation turns its difference into minus that difference. Counting allocations with |<i>T</i>*| ≥ |<i>T</i><sub>obs</sub>| then gives exactly twice the one-sided count. With arms of different sizes the distribution need not be symmetric, and the absolute-value rule and doubling the one-sided <i>p</i> can disagree, so say which you used.</p>
+
+<h2 id="howmany"><span class="n">3</span>Every allocation, or a random sample of them?</h2>
+<p>Listing every allocation gives the <em>exact</em> permutation <i>p</i>-value. That is feasible here because 184,756 is a small number for a computer. With 30 participants per arm there are about 1.2 × 10<sup>17</sup> allocations, and with the 65 per arm of the earlier note about 9.5 × 10<sup>37</sup>, so in practice we draw <i>B</i> allocations at random and estimate <i>p</i> from them. This is a Monte Carlo permutation test, and two details matter.</p>
+<p><b>Count the real allocation.</b> Use <i>p</i> = (<i>b</i> + 1)/(<i>B</i> + 1), where <i>b</i> is the number of random shuffles at least as extreme as the real data. The real allocation is one of those the randomisation could have produced, and with the +1 the test rejects a true null hypothesis no more often than its stated level. The plain share <i>b</i>/<i>B</i> can be zero, and it is smaller than (<i>b</i> + 1)/(<i>B</i> + 1) whenever <i>b</i> &lt; <i>B</i>, so a test built on it can reject a true null hypothesis more often than stated <sup class="cite">[<a href="#ref-phipson2010">5</a>]</sup>. A permutation <i>p</i>-value can never really be zero <sup class="cite">[<a href="#ref-phipson2010">5</a>]</sup>, and the smallest value <i>B</i> shuffles can give is 1/(<i>B</i> + 1): 999 shuffles cannot give less than 0.001.</p>
+<p><b>Use enough shuffles.</b> A Monte Carlo <i>p</i>-value has its own sampling error, with a standard error of about <span class="nw"><span class="rad"><span class="vh">√[</span><i>p</i>(1 − <i>p</i>)/<i>B</i><span class="vh">]</span></span></span> (Table 2). With 999 shuffles, a test whose exact <i>p</i> is 0.041 will usually report something between 0.030 and 0.055, and about one run in eleven will report a value above 0.05. With 9,999 shuffles the range shrinks to 0.037 to 0.045. Choose <i>B</i> so that this error is small next to the precision you report. A sensible default for a single test is 9,999 shuffles, and far more are needed when <i>p</i>-values will be compared with a very small threshold, as after a correction for multiple testing.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 2.</b> How precise is a Monte Carlo permutation <i>p</i>-value? For the example's exact <i>p</i> = 0.041: the standard error <span class="nw"><span class="rad"><span class="vh">√[</span><i>p</i>(1 − <i>p</i>)/<i>B</i><span class="vh">]</span></span></span> of a <i>p</i>-value estimated from <i>B</i> random shuffles, the central range that holds at least 95% of estimates (from the binomial distribution of <i>b</i>, with the +1 included), and the smallest <i>p</i> that <i>B</i> shuffles can give, 1/(<i>B</i> + 1).</caption>
+  <thead><tr><th class="r">Random shuffles, <i>B</i></th><th class="r">Standard error</th><th>About 95% of estimates</th><th class="r">Smallest possible <i>p</i></th></tr></thead>
+  <tbody>
+    <tr><td class="r">99</td><td class="r">0.020</td><td>0.020 to 0.090</td><td class="r">0.01</td></tr>
+    <tr><td class="r">999</td><td class="r">0.0063</td><td>0.030 to 0.055</td><td class="r">0.001</td></tr>
+    <tr><td class="r">9,999</td><td class="r">0.0020</td><td>0.037 to 0.045</td><td class="r">0.0001</td></tr>
+    <tr><td class="r">99,999</td><td class="r">0.00063</td><td>0.040 to 0.042</td><td class="r">0.00001</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="tdist"><span class="n">4</span>The <i>t</i> distribution is a shortcut</h2>
+<p>The shuffle distribution in Figure 1 looks like a bell curve, and the comparison with the <i>t</i>-test is as old as the method. In <i>The Design of Experiments</i> Fisher applied the method to Darwin's data on 15 pairs of maize plants: he counted all 32,768 ways of flipping the signs of the within-pair differences, found that 5.3% of them were at least as extreme as the observed total, and noted that this was very nearly the result of Student's <i>t</i>-test <sup class="cite">[<a href="#ref-fisher1935">3</a>]</sup>. A year later he described an imagined two-group comparison as a shuffle of cards: write the statures of a sample of 100 Englishmen and 100 Frenchmen on cards, shuffle them without regard to nationality, and deal them into two new groups of 100. The statistician's conclusions, he wrote, have no justification beyond their agreement with what this elementary method would give <sup class="cite">[<a href="#ref-fisher1936">6</a>]</sup>. Pitman showed in 1937 how to build such tests with no assumption about the form of the populations sampled <sup class="cite">[<a href="#ref-pitman1937">7</a>]</sup>. Figure 2 overlays the shuffle distribution and the <i>t</i> distribution. The bars are the exact shuffle distribution of the difference in means. The curve is the null distribution that the <i>t</i>-test uses, drawn on the same scale: a <i>t</i> distribution with 18 degrees of freedom, stretched by the standard error of the difference (3.33 mmHg), so that its area beyond ±7.5 mmHg is the <i>t</i>-test's <i>p</i>-value.</p>
+
+<!--md-fig fig2-->
+<figure id="f2" class="wide">
+  <div class="ctl" data-md-skip>
+    <span class="lab">Data</span>
+    <span class="seg" role="group" aria-label="Data set" id="f2-data"></span>
+    <span class="lab">Statistic</span>
+    <span class="seg" role="group" aria-label="Test statistic" id="f2-stat"></span>
+  </div>
+  <div class="fig"><svg id="fig2" viewBox="0 0 760 400" role="img" aria-label="Figure 2. The exact shuffle distribution of the difference in means for the pilot data, with the t distribution used by the t-test drawn on the same scale. The two agree closely: p = 0.041 from the shuffles and 0.037 from the t distribution."></svg><noscript><img src="fig2.svg" alt="Figure 2. The exact shuffle distribution of the difference in means for the pilot data, with the t distribution used by the t-test drawn on the same scale. The two agree closely: p = 0.041 from the shuffles and 0.037 from the t distribution." width="760" height="400"></noscript></div>
+  <p class="readout" id="f2-read" aria-live="polite"></p>
+  <figcaption><b>Figure 2. The shuffle distribution and the <i>t</i> distribution.</b> Bars: the exact null distribution of the statistic over all 184,756 allocations, as a share of them in 1 mmHg bins (for medians, one bar for each possible value, 0.5 mmHg apart), with allocations at least as extreme as the observed value shaded. Curve (difference in means only): a <i>t</i> variable with 18 degrees of freedom multiplied by the standard error of the difference (3.33 mmHg for the data of Table 1; 4.80 mmHg with the 45 mmHg value), that is, its density stretched by that factor, so that its tail area beyond the dashed lines is the <i>t</i>-test's <i>p</i>-value. On the interactive page the buttons switch to a data set in which the largest fall in the programme arm is 45 mmHg instead of 21, and to the difference in medians, for which the shuffles work just as well but the <i>t</i>-test does not apply. The static copy shows the data of Table 1 and the difference in means. With the 45 mmHg value, the difference in means is 9.9 mmHg, the shuffle <i>p</i> = 0.039 and the <i>t</i>-test <i>p</i> = 0.054; the difference in medians is 8.5 mmHg with shuffle <i>p</i> = 0.067 in both data sets.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<p>For the pilot data the two agree well: <i>p</i> = 0.041 from the shuffles and 0.037 from the <i>t</i> distribution. The confidence intervals agree too, at 0.5 to 14.5 mmHg either way (Section 7). When the data look like these, the <i>t</i>-test is a quick and accurate approximation to the exact answer.</p>
+<p>They part company when the data do not fit the bell. Switch Figure 2 to the second data set, in which the largest fall in the programme arm is 45 mmHg instead of 21, say because one participant also started a blood pressure drug. The difference in means rises to 9.9 mmHg, but the SD of the programme arm rises from 7.7 to 13.4 mmHg, and the <i>t</i>-test gives <i>p</i> = 0.054 (Welch's version, 0.059). The shuffle distribution, by contrast, changes shape. The 45 lands in one arm or the other in every allocation and pushes the difference about 4 mmHg in that direction, so the distribution is wider than before but flat-topped, with short tails. Its exact <i>p</i>-value is 0.039. The <i>t</i> curve, a bell with longer tails, no longer describes what the randomisation could have produced.</p>
+<p>That is not an argument that shuffling rescues the mean. With the 45 in the data, the difference in means still depends heavily on one person, and a statistic that resists outliers may answer the question better. Switch the statistic to the difference in medians. The shuffles build its null distribution just as easily, and give <i>p</i> = 0.067 for both data sets, because the median ignores how far the largest value lies from the rest. Like any shuffle test, though, it examines whether the two groups are exchangeable: when their distributions differ in shape, its error rate as a test of equal medians can be far from the stated level, even with equal group sizes <sup class="cite">[<a href="#ref-romano1990">8</a>]</sup>. A permutation test lets you choose the statistic, so choose it before seeing the data: trying several and reporting the one with the smallest <i>p</i>-value makes that <i>p</i>-value misleading <sup class="cite">[<a href="#ref-greenland2016">1</a>,<a href="#ref-asa2016">4</a>]</sup>.</p>
+
+<h2 id="assume"><span class="n">5</span>What a shuffle assumes</h2>
+<p>Shuffling needs no normal distribution, but it is not assumption-free. Its essential assumption is <em>exchangeability</em>: if the null hypothesis is true, swapping the labels does not change the probability of the data <sup class="cite">[<a href="#ref-winkler2014">9</a>]</sup>. Where exchangeability comes from depends on how the data arose <sup class="cite">[<a href="#ref-ernst2004">2</a>]</sup>.</p>
+<ul>
+  <li><b>In a randomised trial, the randomisation supplies it.</b> Every allocation the randomisation could have made was equally likely, and under the null hypothesis that the treatment changed nobody's outcome the outcomes would have been the same under each, so the chance of a false positive is at most the stated level whatever the distribution of the outcome, with no assumption that the participants are a random sample from a population <sup class="cite">[<a href="#ref-ernst2004">2</a>]</sup>. That fits most biomedical experiments: in a survey of 252 comparative studies, Ludbrook and Dudley found groups formed by randomisation in 96% and by random sampling in only 4% <sup class="cite">[<a href="#ref-ludbrook1998">10</a>]</sup>. The conclusion then concerns the participants in the study <sup class="cite">[<a href="#ref-ernst2004">2</a>]</sup>; extending it to others is a judgement about how they were recruited. The guarantee is for the null hypothesis that nobody's outcome changed. If the programme could change the spread of outcomes without changing their average, a small <i>p</i>-value from the raw difference may reflect the spread when the arms differ in size. To test the average effect, shuffle a studentised statistic, described below, which does so approximately in large samples <sup class="cite">[<a href="#ref-wu2021">11</a>]</sup>; with equal arms, as in the pilot, it gives the same test as the raw difference.</li>
+  <li><b>In an observational comparison it is an assumption.</b> Nobody assigned the labels when men are compared with women or smokers with non-smokers. Exchangeability then rests on the null hypothesis that both groups were sampled from the same distribution: the same shape and the same spread, not only the same mean <sup class="cite">[<a href="#ref-ernst2004">2</a>]</sup>.</li>
+</ul>
+<p>The second point has a practical consequence. Suppose two groups have the same mean but different SDs. The null hypothesis of identical distributions is then false, the labels are not exchangeable, and a shuffle test of the difference in means can reject far more or far less often than its nominal 5%, just as Student's pooled <i>t</i>-test does (Table 3). Shuffling a <em>studentised</em> statistic, one that divides the difference by its own standard error, as Welch's <i>t</i> does, keeps the test exact when the groups are exchangeable and brings its error rate close to the nominal level in large samples when they are not <sup class="cite">[<a href="#ref-chung2013">12</a>,<a href="#ref-janssen1997">13</a>]</sup>. With equal group sizes, even the raw difference behaves well in large samples <sup class="cite">[<a href="#ref-romano1990">8</a>,<a href="#ref-chung2013">12</a>]</sup>.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 3.</b> How often each test gives <i>p</i> ≤ 0.05 when the two population means are equal (nominal 5%). Normal outcomes; 50,000 simulated data sets per row (simulation standard error about 0.1 percentage points near 5% and 0.2 near 21%); permutation tests with 999 random shuffles each and <i>p</i> = (<i>b</i> + 1)/(<i>B</i> + 1). In the first row Student's <i>t</i> and the shuffle tests have a size of exactly 5% in theory; the 5.2% is simulation error.</caption>
+  <thead><tr><th>Situation</th><th class="r w">Group sizes</th><th class="r">SDs</th><th class="r w">Student's <i>t</i></th><th class="r w">Welch's <i>t</i></th><th class="r w">Shuffle: difference in means</th><th class="r w">Shuffle: Welch's <i>t</i></th></tr></thead>
+  <tbody>
+    <tr><td>Same SD (reference)</td><td class="r nw">8 and 24</td><td class="r nw">1 and 1</td><td class="r">5.2%</td><td class="r">5.3%</td><td class="r">5.2%</td><td class="r">5.2%</td></tr>
+    <tr><td>Smaller group more variable</td><td class="r nw">8 and 24</td><td class="r nw">3 and 1</td><td class="r warn">21.5%</td><td class="r">5.2%</td><td class="r warn">21.7%</td><td class="r">6.6%</td></tr>
+    <tr><td>Larger group more variable</td><td class="r nw">8 and 24</td><td class="r nw">1 and 3</td><td class="r warn">0.4%</td><td class="r">5.0%</td><td class="r warn">0.4%</td><td class="r">4.0%</td></tr>
+    <tr><td>Equal sizes, different SDs</td><td class="r nw">16 and 16</td><td class="r nw">3 and 1</td><td class="r">5.6%</td><td class="r">5.0%</td><td class="r">5.7%</td><td class="r">5.7%</td></tr>
+  </tbody>
+</table></div>
+
+<p>When the smaller group is the more variable one, both Student's <i>t</i>-test and the shuffle test of the raw difference reject a true null hypothesis about one time in five; when the larger group is the more variable one, they almost never reject. Shuffling Welch's <i>t</i> brings the rates to 6.6% and 4.0%, close to but not at 5%, because with groups of 8 and 24 its protection is only approximate, and Welch's <i>t</i>-test with its own <i>t</i> distribution does slightly better here. Shuffling does not mend a statistic that ignores unequal spread. With equal group sizes, as in the last row and in the pilot, shuffling Welch's <i>t</i> gives exactly the same test as shuffling the raw difference: with equal group sizes Welch's <i>t</i> equals Student's <i>t</i>, and when only the labels change, Student's <i>t</i> rises steadily with the size of the difference.</p>
+<p>The design has a consequence too: shuffle only what was randomised, in the way it was randomised (Table 4). The set of allocations the test compares with should be the set the randomisation could actually have produced, each with the probability the randomisation gave it <sup class="cite">[<a href="#ref-winkler2014">9</a>,<a href="#ref-rosenberger2019">14</a>]</sup>.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 4.</b> Shuffle what was randomised.</caption>
+  <thead><tr><th>Design</th><th>What to shuffle</th></tr></thead>
+  <tbody>
+    <tr><td>Two independent groups, complete randomisation (or simple randomisation, conditioning on the group sizes)</td><td>the labels of all participants, keeping the group sizes</td></tr>
+    <tr><td>Matched pairs, treatment randomised within each pair</td><td>within each pair only: flip the sign of each within-pair difference, which gives 2<sup><i>n</i></sup> allocations for <i>n</i> pairs</td></tr>
+    <tr><td>Crossover trial</td><td>the sequence labels (AB or BA) of whole participants, as randomised; for example, compare the period 1 minus period 2 differences between the sequence groups</td></tr>
+    <tr><td>Before and after, nothing randomised</td><td>no randomisation to mirror; a sign-flip test can still be run, but it assumes each difference is symmetric about zero under the null hypothesis, which time trends and regression to the mean can break</td></tr>
+    <tr><td>Stratified or blocked randomisation</td><td>labels within each stratum or block, never across them</td></tr>
+    <tr><td>Cluster randomisation (practices, wards, schools)</td><td>the labels of whole clusters, never of individuals</td></tr>
+    <tr><td>Repeated measures over time</td><td>not individual observations, which are not exchangeable; shuffle whole participants, or use a scheme designed for the structure</td></tr>
+    <tr><td>Adjusting for covariates</td><td>in a randomised trial, shuffle the treatment labels as they were randomised and recompute the covariate-adjusted statistic; when the variable of interest was not randomised, use a method designed for it, such as permuting residuals (Freedman–Lane), which is approximate <sup class="cite">[<a href="#ref-winkler2014">9</a>]</sup></td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="pdist"><span class="n">6</span>The <i>p</i>-value has a distribution too</h2>
+<p>A null distribution describes the test statistic across imagined repetitions of a study. The <i>p</i>-value is computed from the statistic, so it also varies from one repetition to the next, and its distribution is the clearest way to see what a single <i>p</i>-value can tell you <sup class="cite">[<a href="#ref-murdoch2008">15</a>,<a href="#ref-halsey2015">16</a>]</sup>. Figure 3 runs the pilot trial 1,000 times on computer-generated data, with outcomes normally distributed with an SD of 8 mmHg, analyses every run with a permutation test of 999 shuffles, and plots the 1,000 <i>p</i>-values.</p>
+
+<!--md-fig fig3-->
+<figure id="f3" class="wide">
+  <div class="ctl" data-md-skip>
+    <span class="lab">True difference (right)</span>
+    <span class="seg" role="group" aria-label="True difference in the right-hand panel" id="f3-eff"></span>
+    <span class="lab">Per arm</span>
+    <span class="seg" role="group" aria-label="Participants per arm" id="f3-n"></span>
+  </div>
+  <div class="fig"><svg id="fig3" viewBox="0 0 760 360" role="img" aria-label="Figure 3. Histograms of 1,000 permutation p-values from simulated trials with 10 per arm. With no effect the p-values are spread evenly between 0 and 1; with a true difference of 8 mmHg they pile up near zero, and 53.7% fall at or below 0.05."></svg><noscript><img src="fig3.svg" alt="Figure 3. Histograms of 1,000 permutation p-values from simulated trials with 10 per arm. With no effect the p-values are spread evenly between 0 and 1; with a true difference of 8 mmHg they pile up near zero, and 53.7% fall at or below 0.05." width="760" height="360"></noscript></div>
+  <p class="readout" id="f3-read" aria-live="polite"></p>
+  <figcaption><b>Figure 3. The distribution of the <i>p</i>-value over 1,000 simulated runs of the trial.</b> Each run draws participants for both arms from normal distributions with an SD of 8 mmHg, differing in mean by the true difference, and computes a two-sided permutation <i>p</i>-value for the difference in means from 999 random shuffles. Bars show the share of runs in each 0.05-wide bin of <i>p</i>; the first bin, <i>p</i> ≤ 0.05, is shaded. The dashed line at 5% is what each bin holds on average when there is no effect. Left: no effect. Right: the true difference chosen with the buttons (4, 8 or 12 mmHg). On the interactive page the buttons also switch between 10 and 20 participants per arm; the static copy shows 8 mmHg and 10 per arm.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<ul>
+  <li><b>No effect.</b> The <i>p</i>-values are spread evenly between 0 and 1, and each 0.05-wide bin holds about 5% of the runs. That is what a valid test does: when the null hypothesis and the model are true and the test statistic is continuous, <i>p</i> is equally likely to fall anywhere between 0 and 1, so <i>p</i> ≤ 0.05 happens in about 5% of runs (4.3% in this simulation), which is all a 5% significance level promises <sup class="cite">[<a href="#ref-murdoch2008">15</a>,<a href="#ref-sackrowitz1999">17</a>]</sup>. For a Monte Carlo permutation test with continuous data, the real data's rank among the <i>B</i> + 1 values is then equally likely to be any of 1, …, <i>B</i> + 1, apart from the small chance that a random shuffle reproduces the real allocation or its mirror image (the two arms swapped), so (<i>b</i> + 1)/(<i>B</i> + 1) takes each of the values 1/(<i>B</i> + 1), 2/(<i>B</i> + 1), …, 1 with almost exactly equal probability.</li>
+  <li><b>A real effect.</b> The <i>p</i>-values pile up near zero <sup class="cite">[<a href="#ref-murdoch2008">15</a>]</sup>, and the share at or below 0.05 is, by definition, the power of the test for that effect <sup class="cite">[<a href="#ref-sackrowitz1999">17</a>]</sup>. With a true difference of 8 mmHg, one SD, and 10 participants per arm, the power is only about 56% (the 1,000 runs in Figure 3 give 53.7%, within simulation error): the same trial, repeated with the same true effect, would give <i>p</i> above 0.05 nearly half the time. In the long run the median <i>p</i> is about 0.04, close to the pilot's, but the middle 80% of <i>p</i>-values run from about 0.002 to about 0.35 (the 1,000 runs in Figure 3 give 0.002 to 0.38).</li>
+</ul>
+<p>The pilot's <i>p</i> = 0.041 is one draw from a distribution like the right-hand one. A repeat of the trial could easily give 0.3 or 0.002 <sup class="cite">[<a href="#ref-halsey2015">16</a>]</sup>. So a single <i>p</i>-value says little about whether a result will replicate, and the estimate and its confidence interval, which show the size of the effect and the precision of the study, carry more of what a reader needs.</p>
+
+<h2 id="ci"><span class="n">7</span>Intervals from shuffles, and the bootstrap</h2>
+<p>A permutation test answers a question about one hypothesis, but like any test it can be turned into a confidence interval. Assume a shift model, in which the programme lowers everyone's blood pressure by the same amount <i>δ</i>. For a candidate <i>δ</i>, subtract it from each programme value and run the shuffle test of "no effect" on the shifted data. The 95% interval is the set of <i>δ</i> values whose <i>p</i>-value is above 0.05 <sup class="cite">[<a href="#ref-ernst2004">2</a>]</sup>: the stretch where the <a href="https://selcukorkmaz.github.io/blog/p-effect-size-ci/#ci"><i>p</i>-value function</a> of the earlier note, built here from shuffles instead of from the <i>t</i> distribution, lies above 0.05. For the pilot data it runs from 0.5 to 14.5 mmHg, the same as the <i>t</i> interval to one decimal place. For the data with the 45 mmHg value it runs from 0.6 to 20.0 mmHg, where the <i>t</i> interval is −0.2 to 20.0.</p>
+<p>The bootstrap is the other resampling method in common use, and the two are easy to confuse. They answer different questions (Table 5).</p>
+
+<div class="tw"><table>
+  <caption><b>Table 5.</b> Shuffle or resample? Permutation tests and the bootstrap compared <sup class="cite">[<a href="#ref-ernst2004">2</a>,<a href="#ref-hesterberg2015">18</a>]</sup>.</caption>
+  <thead><tr><th></th><th>Permutation test</th><th>Bootstrap</th></tr></thead>
+  <tbody>
+    <tr><td><b>Question</b></td><td>Are the data compatible with a stated null hypothesis?</td><td>How much would the estimate vary from sample to sample?</td></tr>
+    <tr><td><b>What is resampled</b></td><td>the labels, rearranged without replacement, keeping the group sizes</td><td>the participants, drawn with replacement, usually within each group</td></tr>
+    <tr><td><b>Null hypothesis built in?</b></td><td>yes, by construction</td><td>no; a bootstrap test either inverts a confidence interval or resamples in a way consistent with the null hypothesis</td></tr>
+    <tr><td><b>Main output</b></td><td><i>p</i>-value; an interval by inversion under a shift model</td><td>standard error and confidence interval</td></tr>
+    <tr><td><b>Key assumption</b></td><td>exchangeability under the null hypothesis</td><td>the sample stands in for the population; percentile intervals tend to be too narrow in small samples</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="report"><span class="n">8</span>How to report a permutation test</h2>
+<div class="box"><b>Rule of thumb.</b> Name the statistic, say what was shuffled and within what, say whether the <i>p</i>-value comes from all allocations (an exact <i>p</i>-value) or from random shuffles (and how many), and report the estimate with its confidence interval as for any other test.</div>
+<p>A permutation <i>p</i>-value is still a <i>p</i>-value, and the <a href="https://selcukorkmaz.github.io/blog/p-effect-size-ci/#report">reporting advice of the earlier note</a> applies to it, starting with the estimate and its interval. The methods section needs enough extra detail for someone else to get the same number:</p>
+<ul>
+  <li><b>The statistic</b>, chosen in advance: difference in means, difference in medians, Welch's <i>t</i>, or another.</li>
+  <li><b>What was shuffled</b>, and within what: strata, blocks, pairs or clusters, matching the randomisation.</li>
+  <li><b>All allocations or random shuffles.</b> For random shuffles (a Monte Carlo test), the number of shuffles <i>B</i>, the formula (<i>b</i> + 1)/(<i>B</i> + 1), the software and the random seed.</li>
+  <li><b>The sidedness</b>, and for groups of different sizes, how the two-sided <i>p</i> was defined.</li>
+  <li><b>The estimate and its interval</b>, with the method for the interval: a <i>t</i> interval, a bootstrap interval, or one from inverting the permutation test.</li>
+</ul>
+
+<h3><span class="n">8.1</span>Sentences to adapt</h3>
+<ul>
+  <li><b>Methods, exact test.</b> "The difference in mean fall in systolic blood pressure (programme minus usual care) was tested with a two-sided exact permutation test, using all 184,756 ways of allocating the 20 participants to two groups of 10; the <i>p</i>-value was the proportion of allocations whose difference was at least as far from zero as the observed one."</li>
+  <li><b>Methods, Monte Carlo test.</b> "The difference in means was tested with a two-sided permutation test, using 9,999 random reallocations of the treatment labels (R 4.5.2, seed 2026), made within randomisation strata if the trial was stratified. The <i>p</i>-value was computed as (<i>b</i> + 1)/(<i>B</i> + 1), where <i>b</i> is the number of reallocations giving a difference at least as far from zero as the observed one and <i>B</i> = 9,999."</li>
+  <li><b>Results.</b> "Systolic blood pressure fell 7.5 mmHg more in the programme group than in the usual-care group (95% CI 0.5 to 14.5, from inverting the permutation test; exact permutation <i>p</i> = 0.041)."</li>
+</ul>
+<p>Base R does both versions in a few lines. The small tolerance in the comparisons keeps allocations whose difference equals the observed one, which rounding error could otherwise drop.</p>
+<pre class="r"><code>prog  &lt;- c(21, 17, 15, 14, 13, 7, 6, 2, 2, -3)
+usual &lt;- c(11, 10, 9, 5, 2, 1, 0, -1, -9, -9)
+x &lt;- c(prog, usual); n1 &lt;- length(prog); n2 &lt;- length(usual)
+obs &lt;- mean(prog) - mean(usual)                       <span class="c"># 7.5</span>
+
+<span class="c"># Exact: every choice of the 10 participants labelled "programme"</span>
+idx  &lt;- combn(n1 + n2, n1)                            <span class="c"># 184,756 allocations</span>
+sA   &lt;- colSums(matrix(x[idx], nrow = n1))
+diff &lt;- sA / n1 - (sum(x) - sA) / n2
+mean(abs(diff) &gt;= abs(obs) - 1e-8)                    <span class="c"># 0.04097 (7,570 of 184,756)</span>
+
+<span class="c"># Monte Carlo: B random shuffles, counting the real allocation</span>
+set.seed(2026)
+B   &lt;- 9999
+sim &lt;- replicate(B, { s &lt;- sample(x); mean(s[1:n1]) - mean(s[-(1:n1)]) })
+(sum(abs(sim) &gt;= abs(obs) - 1e-8) + 1) / (B + 1)      <span class="c"># 0.0421</span>
+
+t.test(prog, usual, var.equal = TRUE)                 <span class="c"># t = 2.253, df = 18, p = 0.03697</span></code></pre>
+
+<h2 id="traps"><span class="n">9</span>Five traps</h2>
+<h3><span class="n">9.1</span>Reporting <i>p</i> = 0</h3>
+<p>If none of 999 shuffles is as extreme as the real data, the <i>p</i>-value is (0 + 1)/(999 + 1) = 0.001, the smallest that 999 shuffles can give, not zero <sup class="cite">[<a href="#ref-phipson2010">5</a>]</sup>. Report it as <i>p</i> = 0.001 with the number of shuffles, or use more shuffles.</p>
+<h3><span class="n">9.2</span>Too few shuffles for the question</h3>
+<p>The Monte Carlo error in Table 2 matters most near a threshold and after a multiplicity correction. With 1,000 tests and a Bonferroni threshold of 0.05/1,000 = 0.00005, a test with 999 shuffles can never reach it, because its smallest possible <i>p</i> is 0.001. Reaching the threshold at all takes at least 19,999 shuffles, and estimating <i>p</i> well near it takes many more.</p>
+<h3><span class="n">9.3</span>Shuffling what was not randomised</h3>
+<p>Shuffling individuals in a cluster-randomised trial, or across strata in a stratified one, compares the data with allocations the randomisation could never have produced. Treating the participants of a cluster trial as independent pretends there are more independent units than there are, which usually makes the <i>p</i>-value too small. Follow Table 4.</p>
+<h3><span class="n">9.4</span>Reading "non-parametric" as "assumption-free"</h3>
+<p>A shuffle test of the difference in means compares the data with the null hypothesis that the two groups are exchangeable. In an observational comparison, or for a treatment that may change the spread of outcomes, that means identical distributions, so a small <i>p</i>-value can reflect a difference in spread or shape rather than in the means, and groups of unequal size and spread can make the error rate far from nominal (Table 3).</p>
+<h3><span class="n">9.5</span>Choosing the statistic after seeing the data</h3>
+<p>For the pilot data, the shuffle test gives <i>p</i> = 0.041 for the difference in means and 0.067 for the difference in medians. Both are legitimate, but only one was the plan. Name the statistic in the protocol or the analysis plan, and if you report others, say so and report them all <sup class="cite">[<a href="#ref-greenland2016">1</a>,<a href="#ref-asa2016">4</a>]</sup>.</p>
+
+<h2 id="checklist"><span class="n">10</span>A checklist for authors and reviewers</h2>
+<ul class="check">
+  <li>The statistic was chosen in advance and is named.</li>
+  <li>What was shuffled matches the design: individuals, pairs, clusters, and within which strata or blocks.</li>
+  <li>The methods say whether <i>p</i> comes from all allocations or from random shuffles; for random shuffles they give the number of shuffles, the formula (<i>b</i> + 1)/(<i>B</i> + 1), the software and the seed.</li>
+  <li>The number of shuffles is large enough for the precision reported and for any multiplicity threshold.</li>
+  <li>No <i>p</i>-value is reported as 0.</li>
+  <li>For a difference in means between groups of unequal size and spread, a studentised statistic was shuffled or Welch's test was used.</li>
+  <li>Two-sided <i>p</i>-values say how the two tails were counted when the groups differ in size.</li>
+  <li>The estimate and its confidence interval are reported alongside, with the method for the interval.</li>
+</ul>
+<p>A permutation test turns the null distribution into something you can watch being built. Every <i>p</i>-value has one, whether it comes from a formula or from shuffles, and a <i>p</i>-value means only as much as the null distribution behind it.</p>
+
+<section id="refs">
+<h2>References</h2>
+<ol class="refs">
+<li id="ref-greenland2016">Greenland S, Senn SJ, Rothman KJ, et al. Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations. <i>European Journal of Epidemiology</i>. 2016;31(4):337–350. doi:10.1007/s10654-016-0149-3</li>
+<li id="ref-ernst2004">Ernst MD. Permutation methods: a basis for exact inference. <i>Statistical Science</i>. 2004;19(4):676–685. doi:10.1214/088342304000000396</li>
+<li id="ref-fisher1935">Fisher RA. <i>The Design of Experiments</i>. Oliver and Boyd; 1935.</li>
+<li id="ref-asa2016">Wasserstein RL, Lazar NA. The ASA statement on <i>p</i>-values: context, process, and purpose. <i>The American Statistician</i>. 2016;70(2):129–133. doi:10.1080/00031305.2016.1154108</li>
+<li id="ref-phipson2010">Phipson B, Smyth GK. Permutation P-values should never be zero: calculating exact P-values when permutations are randomly drawn. <i>Statistical Applications in Genetics and Molecular Biology</i>. 2010;9(1):Article 39. doi:10.2202/1544-6115.1585</li>
+<li id="ref-fisher1936">Fisher RA. "The coefficient of racial likeness" and the future of craniometry. <i>Journal of the Royal Anthropological Institute of Great Britain and Ireland</i>. 1936;66:57–63. doi:10.2307/2844116</li>
+<li id="ref-pitman1937">Pitman EJG. Significance tests which may be applied to samples from any populations. <i>Supplement to the Journal of the Royal Statistical Society</i>. 1937;4(1):119–130. doi:10.2307/2984124</li>
+<li id="ref-romano1990">Romano JP. On the behavior of randomization tests without a group invariance assumption. <i>Journal of the American Statistical Association</i>. 1990;85(411):686–692. doi:10.1080/01621459.1990.10474928</li>
+<li id="ref-winkler2014">Winkler AM, Ridgway GR, Webster MA, Smith SM, Nichols TE. Permutation inference for the general linear model. <i>NeuroImage</i>. 2014;92:381–397. doi:10.1016/j.neuroimage.2014.01.060</li>
+<li id="ref-ludbrook1998">Ludbrook J, Dudley H. Why permutation tests are superior to <i>t</i> and <i>F</i> tests in biomedical research. <i>The American Statistician</i>. 1998;52(2):127–132. doi:10.1080/00031305.1998.10480551</li>
+<li id="ref-wu2021">Wu J, Ding P. Randomization tests for weak null hypotheses in randomized experiments. <i>Journal of the American Statistical Association</i>. 2021;116(536):1898–1913. doi:10.1080/01621459.2020.1750415</li>
+<li id="ref-chung2013">Chung E, Romano JP. Exact and asymptotically robust permutation tests. <i>The Annals of Statistics</i>. 2013;41(2):484–507. doi:10.1214/13-AOS1090</li>
+<li id="ref-janssen1997">Janssen A. Studentized permutation tests for non-i.i.d. hypotheses and the generalized Behrens–Fisher problem. <i>Statistics &amp; Probability Letters</i>. 1997;36(1):9–21. doi:10.1016/S0167-7152(97)00043-6</li>
+<li id="ref-rosenberger2019">Rosenberger WF, Uschner D, Wang Y. Randomization: the forgotten component of the randomized clinical trial. <i>Statistics in Medicine</i>. 2019;38(1):1–12. doi:10.1002/sim.7901</li>
+<li id="ref-murdoch2008">Murdoch DJ, Tsai YL, Adcock J. <i>P</i>-values are random variables. <i>The American Statistician</i>. 2008;62(3):242–245. doi:10.1198/000313008X332421</li>
+<li id="ref-halsey2015">Halsey LG, Curran-Everett D, Vowler SL, Drummond GB. The fickle <i>P</i> value generates irreproducible results. <i>Nature Methods</i>. 2015;12(3):179–185. doi:10.1038/nmeth.3288</li>
+<li id="ref-sackrowitz1999">Sackrowitz H, Samuel-Cahn E. <i>P</i> values as random variables—expected <i>P</i> values. <i>The American Statistician</i>. 1999;53(4):326–331. doi:10.1080/00031305.1999.10474484</li>
+<li id="ref-hesterberg2015">Hesterberg TC. What teachers should know about the bootstrap: resampling in the undergraduate statistics curriculum. <i>The American Statistician</i>. 2015;69(4):371–386. doi:10.1080/00031305.2015.1089789</li>
+</ol>
+</section>
+<!--/md-body-->
+
+<!--md-skip-->
+<div class="pt pt-end" data-md-skip>
+  <p class="pt-lead">Download, cite or share this post</p>
+  <div class="pt-row" role="group" aria-label="Post tools">
+    <a class="pt-btn" href="permutation-test.pdf" download><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a>
+    <button class="pt-btn" type="button" data-pt-copy-md><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15V9l2.5 3L12 9v6M16 9v6M14 13l2 2 2-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy as Markdown</button>
+    <a class="pt-btn pt-quiet" href="index.md">View Markdown</a>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-cite"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6.8" cy="9.6" r="3.3" fill="currentColor"/><path d="M10.1 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.2" cy="9.6" r="3.3" fill="currentColor"/><path d="M20.5 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Cite<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-share"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-tr"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Translate<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="pt-panel" id="pt-end-cite" hidden>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>BibTeX</b><button class="pt-btn pt-sm" type="button" data-pt-copy="bibtex" data-pt-label="BibTeX"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <pre class="pt-code"><code>@misc{korkmaz2026where,
+  author       = {Korkmaz, Sel{\c{c}}uk},
+  title        = {Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself},
+  year         = {2026},
+  month        = oct,
+  date         = {2026-10-03},
+  howpublished = {\url{https://selcukorkmaz.github.io/blog/permutation-test/}},
+  url          = {https://selcukorkmaz.github.io/blog/permutation-test/},
+  note         = {Blog post}
+}</code></pre>
+    </div>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>APA</b><button class="pt-btn pt-sm" type="button" data-pt-copy="apa" data-pt-label="APA citation"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <p class="pt-apa">Korkmaz, S. (2026, October 3). <i>Where a p-value comes from: The permutation test, the null distribution and the distribution of the p-value itself</i> [Blog post]. https://selcukorkmaz.github.io/blog/permutation-test/</p>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-end-share" hidden>
+    <div class="pt-links">
+        <button class="pt-btn" type="button" data-pt-copy="link" data-pt-label="Link"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy link</button>
+        <button class="pt-btn" type="button" data-pt-native hidden><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share…</button>
+        <a class="pt-btn" href="https://x.com/intent/post?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F&amp;text=Where%20a%20p-value%20comes%20from%3A%20the%20permutation%20test%2C%20the%20null%20distribution%20and%20the%20distribution%20of%20the%20p-value%20itself" target="_blank" rel="noopener">X</a>
+        <a class="pt-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pt-btn" href="https://bsky.app/intent/compose?text=Where%20a%20p-value%20comes%20from%3A%20the%20permutation%20test%2C%20the%20null%20distribution%20and%20the%20distribution%20of%20the%20p-value%20itself%20https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener">Bluesky</a>
+        <a class="pt-btn" href="mailto:?subject=Where%20a%20p-value%20comes%20from%3A%20the%20permutation%20test%2C%20the%20null%20distribution%20and%20the%20distribution%20of%20the%20p-value%20itself&amp;body=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F">Email</a>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-end-tr" hidden>
+    <p class="pt-note">Opens this page in Google Translate (machine translation). It works once the post is public at its web address.</p>
+    <div class="pt-links">
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=tr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="tr" lang="tr">Türkçe</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=de&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="de" lang="de">Deutsch</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=fr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="fr" lang="fr">Français</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=es&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="es" lang="es">Español</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=ar&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="ar" lang="ar" dir="rtl">العربية</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=zh-CN&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fpermutation-test%2F" target="_blank" rel="noopener" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </div>
+  </div>
+  <p class="pt-status" role="status" aria-live="polite"></p>
+</div>
+<section class="comments" id="comments" aria-labelledby="comments-h" data-md-skip>
+<h2 id="comments-h">Comments</h2>
+<div class="giscus"><p class="cm-note">Comments are coming soon.</p></div>
+</section>
+<textarea id="pt-md" class="pt-ta" readonly tabindex="-1" aria-hidden="true" data-md-skip># Where a p-value comes from
+
+*The permutation test, the null distribution and the distribution of the p-value itself*
+
+Statistics note · Inference in biomedical research
+
+&gt; Source: https://selcukorkmaz.github.io/blog/permutation-test/ · 3 October 2026
+
+Selçuk Korkmaz\
+3 October 2026
+
+## In short
+
+Every *p*-value is a tail area of a null distribution: the distribution the test statistic would have if the null hypothesis, and the rest of the model, were true. Most tests take that distribution from a formula, such as the *t* distribution. A permutation test builds it from the data. If a treatment did nothing, the group labels in a randomised trial are arbitrary, so we can shuffle them, recompute the statistic each time, and count how often a shuffled result is at least as extreme as the real one. In a 20-person example, all 184,756 possible shuffles give *p* = 0.041 and the *t*-test gives *p* = 0.037: the *t* distribution is a smooth stand-in for the shuffle distribution.
+
+Three interactive figures build the null distribution by shuffling, set it against the *t* distribution to show where the two part company, and show that the *p*-value itself has a distribution across repeated studies: flat when the null hypothesis is true, piled up near zero when it is not. Tables cover how many shuffles are enough, what a shuffle assumes, what to shuffle in each design and how shuffling differs from the bootstrap, and a checklist covers what to report.
+
+Keywords: *p*-values · permutation tests · randomisation tests · null distribution · exchangeability · statistical power
+
+## 1 A *p*-value needs a null distribution
+
+In an [earlier note](https://selcukorkmaz.github.io/blog/p-effect-size-ci/#pvalue) I defined a *p*-value as the probability of getting a test statistic at least as extreme as the one observed, computed on the assumption that the null hypothesis and every other assumption of the statistical model are true \[1\]. That sentence hides a step. A probability needs a distribution: the *null distribution*, which says how the test statistic would vary from study to study if the null hypothesis were true. The *p*-value is the area in its tail beyond the observed value.
+
+Take a small pilot trial. Twenty adults with raised blood pressure are randomised, 10 to a lifestyle programme and 10 to usual care, and the outcome is the fall in systolic blood pressure over 12 weeks (Table 1). The programme arm fell by 9.4 mmHg on average and the usual-care arm by 1.9 mmHg, a difference of 7.5 mmHg.
+
+**Table 1.** The pilot data: fall in systolic blood pressure over 12 weeks, in mmHg (negative values are rises). The data are made up for this note and used throughout.
+
+| Arm                   | Fall in each participant           | Mean | SD  |
+|-----------------------|------------------------------------|------|-----|
+| Programme (*n* = 10)  | 21, 17, 15, 14, 13, 7, 6, 2, 2, −3 | 9.4  | 7.7 |
+| Usual care (*n* = 10) | 11, 10, 9, 5, 2, 1, 0, −1, −9, −9  | 1.9  | 7.1 |
+
+Student's two-sample *t*-test gives *t* = 2.25 on 18 degrees of freedom and *p* = 0.037, with a 95% confidence interval for the difference of 0.5 to 14.5 mmHg. The 0.037 is the area of the *t* distribution with 18 degrees of freedom beyond ±2.25. That distribution is the null distribution of the *t* statistic when the outcomes in both arms are independent draws from normal distributions with the same mean and the same standard deviation (SD). Those are assumptions about how the data arose, and the formula takes them on trust.
+
+A permutation test reaches a null distribution by a route that needs neither the normal distribution nor a formula.
+
+## 2 Shuffling the labels
+
+Suppose the programme had no effect on anybody. Then each participant's fall in blood pressure would have been the same whichever arm the randomisation had put them in. The 20 numbers in Table 1 would be fixed, and the only thing chance decided was which 10 of them carried the label "programme". The randomisation could have picked any 10 of the 20; there are 184,756 ways to do that, all equally likely. For each one we can work out the difference in means we would have seen. Those 184,756 differences are the null distribution of the difference, and no theory was needed to get them.
+
+This null hypothesis, that the programme changed nobody's outcome, is the one a randomisation test examines directly \[2\], and it is stronger than "the two arms have the same mean". Fisher set out the idea in 1935 \[3\]. The method goes by two names: a *randomisation test* when, as here, the shuffling mirrors a random allocation that really took place, and a *permutation test* when the groups are treated as samples from populations, though the two names are often used interchangeably \[2\]. I use "permutation test" for both, as most software does, and "shuffle" for one rearrangement of the labels.
+
+**Permutation test for two groups.**
+
+1.  Compute the statistic with the real labels, *T*&lt;sub&gt;obs&lt;/sub&gt; (here the difference in means, 7.5 mmHg).
+2.  Shuffle the labels, keeping the group sizes, and recompute the statistic, *T*\*.
+3.  Do step 2 for every possible allocation (an exact test) or for *B* random ones.
+4.  The two-sided *p* is the share of allocations with \|*T*\*\| ≥ \|*T*&lt;sub&gt;obs&lt;/sub&gt;\|. With *B* random shuffles, *p* = (*b* + 1)/(*B* + 1), where *b* counts the shuffles that qualify.
+
+![The 20 participants of the pilot trial and the null distribution of the difference in means built by shuffling their labels. The real difference of 7.5 mmHg lies in the right tail: 7,570 of the 184,756 possible allocations are at least as extreme, so p = 0.041.](https://selcukorkmaz.github.io/blog/permutation-test/fig1.svg)
+
+**Figure 1. Building the null distribution by shuffling the labels.** Top: the 20 participants of Table 1, placed by their fall in systolic blood pressure, in the arm that the allocation shown gives them. Colour and shape show the arm each participant was really in, and the vertical marks are the two arm means. Bottom: the difference in means (programme minus usual care) for every allocation counted so far, as a share of them, in 1 mmHg bins. Allocations at least 7.5 mmHg from zero in either direction are shaded. On the interactive page the buttons shuffle the labels once, 100 times or 1,000 times, or show all 184,756 allocations; the static copy shows all of them, with the real allocation at the top. Exactly 7,570 of the 184,756 allocations are at least as extreme as the real one, so the exact *p* = 0.041.
+
+Figure 1 lets you do it. Each shuffle is one alternative history of the trial in which the programme did nothing. Most give a difference within a few mmHg of zero, and the histogram they build is the null distribution. The real difference of 7.5 mmHg sits in its right tail: exactly 7,570 of the 184,756 possible allocations give a difference at least 7.5 mmHg from zero, in either direction, so
+
+*p* = 7,570 / 184,756 = 0.041.
+
+That is the most literal reading a *p*-value can have. If the programme did nothing, 4.1% of the ways the randomisation could have split these 20 people would have produced a gap at least as large as the one observed. It is not the probability that the programme did nothing, nor the probability that the result was produced by chance alone \[4\]; it is computed by assuming that the programme did nothing.
+
+Because the two arms are the same size, the shuffle distribution is symmetric about zero: swapping the two arms of any allocation turns its difference into minus that difference. Counting allocations with \|*T*\*\| ≥ \|*T*&lt;sub&gt;obs&lt;/sub&gt;\| then gives exactly twice the one-sided count. With arms of different sizes the distribution need not be symmetric, and the absolute-value rule and doubling the one-sided *p* can disagree, so say which you used.
+
+## 3 Every allocation, or a random sample of them?
+
+Listing every allocation gives the *exact* permutation *p*-value. That is feasible here because 184,756 is a small number for a computer. With 30 participants per arm there are about 1.2 × 10&lt;sup&gt;17&lt;/sup&gt; allocations, and with the 65 per arm of the earlier note about 9.5 × 10&lt;sup&gt;37&lt;/sup&gt;, so in practice we draw *B* allocations at random and estimate *p* from them. This is a Monte Carlo permutation test, and two details matter.
+
+**Count the real allocation.** Use *p* = (*b* + 1)/(*B* + 1), where *b* is the number of random shuffles at least as extreme as the real data. The real allocation is one of those the randomisation could have produced, and with the +1 the test rejects a true null hypothesis no more often than its stated level. The plain share *b*/*B* can be zero, and it is smaller than (*b* + 1)/(*B* + 1) whenever *b* \&lt; *B*, so a test built on it can reject a true null hypothesis more often than stated \[5\]. A permutation *p*-value can never really be zero \[5\], and the smallest value *B* shuffles can give is 1/(*B* + 1): 999 shuffles cannot give less than 0.001.
+
+**Use enough shuffles.** A Monte Carlo *p*-value has its own sampling error, with a standard error of about √\[*p*(1 − *p*)/*B*\] (Table 2). With 999 shuffles, a test whose exact *p* is 0.041 will usually report something between 0.030 and 0.055, and about one run in eleven will report a value above 0.05. With 9,999 shuffles the range shrinks to 0.037 to 0.045. Choose *B* so that this error is small next to the precision you report. A sensible default for a single test is 9,999 shuffles, and far more are needed when *p*-values will be compared with a very small threshold, as after a correction for multiple testing.
+
+**Table 2.** How precise is a Monte Carlo permutation *p*-value? For the example's exact *p* = 0.041: the standard error √\[*p*(1 − *p*)/*B*\] of a *p*-value estimated from *B* random shuffles, the central range that holds at least 95% of estimates (from the binomial distribution of *b*, with the +1 included), and the smallest *p* that *B* shuffles can give, 1/(*B* + 1).
+
+| Random shuffles, *B* | Standard error | About 95% of estimates | Smallest possible *p* |
+|----|----|----|----|
+| 99 | 0.020 | 0.020 to 0.090 | 0.01 |
+| 999 | 0.0063 | 0.030 to 0.055 | 0.001 |
+| 9,999 | 0.0020 | 0.037 to 0.045 | 0.0001 |
+| 99,999 | 0.00063 | 0.040 to 0.042 | 0.00001 |
+
+## 4 The *t* distribution is a shortcut
+
+The shuffle distribution in Figure 1 looks like a bell curve, and the comparison with the *t*-test is as old as the method. In *The Design of Experiments* Fisher applied the method to Darwin's data on 15 pairs of maize plants: he counted all 32,768 ways of flipping the signs of the within-pair differences, found that 5.3% of them were at least as extreme as the observed total, and noted that this was very nearly the result of Student's *t*-test \[3\]. A year later he described an imagined two-group comparison as a shuffle of cards: write the statures of a sample of 100 Englishmen and 100 Frenchmen on cards, shuffle them without regard to nationality, and deal them into two new groups of 100. The statistician's conclusions, he wrote, have no justification beyond their agreement with what this elementary method would give \[6\]. Pitman showed in 1937 how to build such tests with no assumption about the form of the populations sampled \[7\]. Figure 2 overlays the shuffle distribution and the *t* distribution. The bars are the exact shuffle distribution of the difference in means. The curve is the null distribution that the *t*-test uses, drawn on the same scale: a *t* distribution with 18 degrees of freedom, stretched by the standard error of the difference (3.33 mmHg), so that its area beyond ±7.5 mmHg is the *t*-test's *p*-value.
+
+![The exact shuffle distribution of the difference in means for the pilot data, with the t distribution used by the t-test drawn on the same scale. The two agree closely: p = 0.041 from the shuffles and 0.037 from the t distribution.](https://selcukorkmaz.github.io/blog/permutation-test/fig2.svg)
+
+**Figure 2. The shuffle distribution and the *t* distribution.** Bars: the exact null distribution of the statistic over all 184,756 allocations, as a share of them in 1 mmHg bins (for medians, one bar for each possible value, 0.5 mmHg apart), with allocations at least as extreme as the observed value shaded. Curve (difference in means only): a *t* variable with 18 degrees of freedom multiplied by the standard error of the difference (3.33 mmHg for the data of Table 1; 4.80 mmHg with the 45 mmHg value), that is, its density stretched by that factor, so that its tail area beyond the dashed lines is the *t*-test's *p*-value. On the interactive page the buttons switch to a data set in which the largest fall in the programme arm is 45 mmHg instead of 21, and to the difference in medians, for which the shuffles work just as well but the *t*-test does not apply. The static copy shows the data of Table 1 and the difference in means. With the 45 mmHg value, the difference in means is 9.9 mmHg, the shuffle *p* = 0.039 and the *t*-test *p* = 0.054; the difference in medians is 8.5 mmHg with shuffle *p* = 0.067 in both data sets.
+
+For the pilot data the two agree well: *p* = 0.041 from the shuffles and 0.037 from the *t* distribution. The confidence intervals agree too, at 0.5 to 14.5 mmHg either way (Section 7). When the data look like these, the *t*-test is a quick and accurate approximation to the exact answer.
+
+They part company when the data do not fit the bell. Switch Figure 2 to the second data set, in which the largest fall in the programme arm is 45 mmHg instead of 21, say because one participant also started a blood pressure drug. The difference in means rises to 9.9 mmHg, but the SD of the programme arm rises from 7.7 to 13.4 mmHg, and the *t*-test gives *p* = 0.054 (Welch's version, 0.059). The shuffle distribution, by contrast, changes shape. The 45 lands in one arm or the other in every allocation and pushes the difference about 4 mmHg in that direction, so the distribution is wider than before but flat-topped, with short tails. Its exact *p*-value is 0.039. The *t* curve, a bell with longer tails, no longer describes what the randomisation could have produced.
+
+That is not an argument that shuffling rescues the mean. With the 45 in the data, the difference in means still depends heavily on one person, and a statistic that resists outliers may answer the question better. Switch the statistic to the difference in medians. The shuffles build its null distribution just as easily, and give *p* = 0.067 for both data sets, because the median ignores how far the largest value lies from the rest. Like any shuffle test, though, it examines whether the two groups are exchangeable: when their distributions differ in shape, its error rate as a test of equal medians can be far from the stated level, even with equal group sizes \[8\]. A permutation test lets you choose the statistic, so choose it before seeing the data: trying several and reporting the one with the smallest *p*-value makes that *p*-value misleading \[1,4\].
+
+## 5 What a shuffle assumes
+
+Shuffling needs no normal distribution, but it is not assumption-free. Its essential assumption is *exchangeability*: if the null hypothesis is true, swapping the labels does not change the probability of the data \[9\]. Where exchangeability comes from depends on how the data arose \[2\].
+
+- **In a randomised trial, the randomisation supplies it.** Every allocation the randomisation could have made was equally likely, and under the null hypothesis that the treatment changed nobody's outcome the outcomes would have been the same under each, so the chance of a false positive is at most the stated level whatever the distribution of the outcome, with no assumption that the participants are a random sample from a population \[2\]. That fits most biomedical experiments: in a survey of 252 comparative studies, Ludbrook and Dudley found groups formed by randomisation in 96% and by random sampling in only 4% \[10\]. The conclusion then concerns the participants in the study \[2\]; extending it to others is a judgement about how they were recruited. The guarantee is for the null hypothesis that nobody's outcome changed. If the programme could change the spread of outcomes without changing their average, a small *p*-value from the raw difference may reflect the spread when the arms differ in size. To test the average effect, shuffle a studentised statistic, described below, which does so approximately in large samples \[11\]; with equal arms, as in the pilot, it gives the same test as the raw difference.
+- **In an observational comparison it is an assumption.** Nobody assigned the labels when men are compared with women or smokers with non-smokers. Exchangeability then rests on the null hypothesis that both groups were sampled from the same distribution: the same shape and the same spread, not only the same mean \[2\].
+
+The second point has a practical consequence. Suppose two groups have the same mean but different SDs. The null hypothesis of identical distributions is then false, the labels are not exchangeable, and a shuffle test of the difference in means can reject far more or far less often than its nominal 5%, just as Student's pooled *t*-test does (Table 3). Shuffling a *studentised* statistic, one that divides the difference by its own standard error, as Welch's *t* does, keeps the test exact when the groups are exchangeable and brings its error rate close to the nominal level in large samples when they are not \[12,13\]. With equal group sizes, even the raw difference behaves well in large samples \[8,12\].
+
+**Table 3.** How often each test gives *p* ≤ 0.05 when the two population means are equal (nominal 5%). Normal outcomes; 50,000 simulated data sets per row (simulation standard error about 0.1 percentage points near 5% and 0.2 near 21%); permutation tests with 999 random shuffles each and *p* = (*b* + 1)/(*B* + 1). In the first row Student's *t* and the shuffle tests have a size of exactly 5% in theory; the 5.2% is simulation error.
+
+| Situation | Group sizes | SDs | Student's *t* | Welch's *t* | Shuffle: difference in means | Shuffle: Welch's *t* |
+|----|----|----|----|----|----|----|
+| Same SD (reference) | 8 and 24 | 1 and 1 | 5.2% | 5.3% | 5.2% | 5.2% |
+| Smaller group more variable | 8 and 24 | 3 and 1 | 21.5% | 5.2% | 21.7% | 6.6% |
+| Larger group more variable | 8 and 24 | 1 and 3 | 0.4% | 5.0% | 0.4% | 4.0% |
+| Equal sizes, different SDs | 16 and 16 | 3 and 1 | 5.6% | 5.0% | 5.7% | 5.7% |
+
+When the smaller group is the more variable one, both Student's *t*-test and the shuffle test of the raw difference reject a true null hypothesis about one time in five; when the larger group is the more variable one, they almost never reject. Shuffling Welch's *t* brings the rates to 6.6% and 4.0%, close to but not at 5%, because with groups of 8 and 24 its protection is only approximate, and Welch's *t*-test with its own *t* distribution does slightly better here. Shuffling does not mend a statistic that ignores unequal spread. With equal group sizes, as in the last row and in the pilot, shuffling Welch's *t* gives exactly the same test as shuffling the raw difference: with equal group sizes Welch's *t* equals Student's *t*, and when only the labels change, Student's *t* rises steadily with the size of the difference.
+
+The design has a consequence too: shuffle only what was randomised, in the way it was randomised (Table 4). The set of allocations the test compares with should be the set the randomisation could actually have produced, each with the probability the randomisation gave it \[9,14\].
+
+**Table 4.** Shuffle what was randomised.
+
+| Design | What to shuffle |
+|----|----|
+| Two independent groups, complete randomisation (or simple randomisation, conditioning on the group sizes) | the labels of all participants, keeping the group sizes |
+| Matched pairs, treatment randomised within each pair | within each pair only: flip the sign of each within-pair difference, which gives 2&lt;sup&gt;*n*&lt;/sup&gt; allocations for *n* pairs |
+| Crossover trial | the sequence labels (AB or BA) of whole participants, as randomised; for example, compare the period 1 minus period 2 differences between the sequence groups |
+| Before and after, nothing randomised | no randomisation to mirror; a sign-flip test can still be run, but it assumes each difference is symmetric about zero under the null hypothesis, which time trends and regression to the mean can break |
+| Stratified or blocked randomisation | labels within each stratum or block, never across them |
+| Cluster randomisation (practices, wards, schools) | the labels of whole clusters, never of individuals |
+| Repeated measures over time | not individual observations, which are not exchangeable; shuffle whole participants, or use a scheme designed for the structure |
+| Adjusting for covariates | in a randomised trial, shuffle the treatment labels as they were randomised and recompute the covariate-adjusted statistic; when the variable of interest was not randomised, use a method designed for it, such as permuting residuals (Freedman–Lane), which is approximate \[9\] |
+
+## 6 The *p*-value has a distribution too
+
+A null distribution describes the test statistic across imagined repetitions of a study. The *p*-value is computed from the statistic, so it also varies from one repetition to the next, and its distribution is the clearest way to see what a single *p*-value can tell you \[15,16\]. Figure 3 runs the pilot trial 1,000 times on computer-generated data, with outcomes normally distributed with an SD of 8 mmHg, analyses every run with a permutation test of 999 shuffles, and plots the 1,000 *p*-values.
+
+![Histograms of 1,000 permutation p-values from simulated trials with 10 per arm. With no effect the p-values are spread evenly between 0 and 1; with a true difference of 8 mmHg they pile up near zero, and 53.7% fall at or below 0.05.](https://selcukorkmaz.github.io/blog/permutation-test/fig3.svg)
+
+**Figure 3. The distribution of the *p*-value over 1,000 simulated runs of the trial.** Each run draws participants for both arms from normal distributions with an SD of 8 mmHg, differing in mean by the true difference, and computes a two-sided permutation *p*-value for the difference in means from 999 random shuffles. Bars show the share of runs in each 0.05-wide bin of *p*; the first bin, *p* ≤ 0.05, is shaded. The dashed line at 5% is what each bin holds on average when there is no effect. Left: no effect. Right: the true difference chosen with the buttons (4, 8 or 12 mmHg). On the interactive page the buttons also switch between 10 and 20 participants per arm; the static copy shows 8 mmHg and 10 per arm.
+
+- **No effect.** The *p*-values are spread evenly between 0 and 1, and each 0.05-wide bin holds about 5% of the runs. That is what a valid test does: when the null hypothesis and the model are true and the test statistic is continuous, *p* is equally likely to fall anywhere between 0 and 1, so *p* ≤ 0.05 happens in about 5% of runs (4.3% in this simulation), which is all a 5% significance level promises \[15,17\]. For a Monte Carlo permutation test with continuous data, the real data's rank among the *B* + 1 values is then equally likely to be any of 1, …, *B* + 1, apart from the small chance that a random shuffle reproduces the real allocation or its mirror image (the two arms swapped), so (*b* + 1)/(*B* + 1) takes each of the values 1/(*B* + 1), 2/(*B* + 1), …, 1 with almost exactly equal probability.
+- **A real effect.** The *p*-values pile up near zero \[15\], and the share at or below 0.05 is, by definition, the power of the test for that effect \[17\]. With a true difference of 8 mmHg, one SD, and 10 participants per arm, the power is only about 56% (the 1,000 runs in Figure 3 give 53.7%, within simulation error): the same trial, repeated with the same true effect, would give *p* above 0.05 nearly half the time. In the long run the median *p* is about 0.04, close to the pilot's, but the middle 80% of *p*-values run from about 0.002 to about 0.35 (the 1,000 runs in Figure 3 give 0.002 to 0.38).
+
+The pilot's *p* = 0.041 is one draw from a distribution like the right-hand one. A repeat of the trial could easily give 0.3 or 0.002 \[16\]. So a single *p*-value says little about whether a result will replicate, and the estimate and its confidence interval, which show the size of the effect and the precision of the study, carry more of what a reader needs.
+
+## 7 Intervals from shuffles, and the bootstrap
+
+A permutation test answers a question about one hypothesis, but like any test it can be turned into a confidence interval. Assume a shift model, in which the programme lowers everyone's blood pressure by the same amount *δ*. For a candidate *δ*, subtract it from each programme value and run the shuffle test of "no effect" on the shifted data. The 95% interval is the set of *δ* values whose *p*-value is above 0.05 \[2\]: the stretch where the [*p*-value function](https://selcukorkmaz.github.io/blog/p-effect-size-ci/#ci) of the earlier note, built here from shuffles instead of from the *t* distribution, lies above 0.05. For the pilot data it runs from 0.5 to 14.5 mmHg, the same as the *t* interval to one decimal place. For the data with the 45 mmHg value it runs from 0.6 to 20.0 mmHg, where the *t* interval is −0.2 to 20.0.
+
+The bootstrap is the other resampling method in common use, and the two are easy to confuse. They answer different questions (Table 5).
+
+**Table 5.** Shuffle or resample? Permutation tests and the bootstrap compared \[2,18\].
+
+|  | Permutation test | Bootstrap |
+|----|----|----|
+| **Question** | Are the data compatible with a stated null hypothesis? | How much would the estimate vary from sample to sample? |
+| **What is resampled** | the labels, rearranged without replacement, keeping the group sizes | the participants, drawn with replacement, usually within each group |
+| **Null hypothesis built in?** | yes, by construction | no; a bootstrap test either inverts a confidence interval or resamples in a way consistent with the null hypothesis |
+| **Main output** | *p*-value; an interval by inversion under a shift model | standard error and confidence interval |
+| **Key assumption** | exchangeability under the null hypothesis | the sample stands in for the population; percentile intervals tend to be too narrow in small samples |
+
+## 8 How to report a permutation test
+
+**Rule of thumb.** Name the statistic, say what was shuffled and within what, say whether the *p*-value comes from all allocations (an exact *p*-value) or from random shuffles (and how many), and report the estimate with its confidence interval as for any other test.
+
+A permutation *p*-value is still a *p*-value, and the [reporting advice of the earlier note](https://selcukorkmaz.github.io/blog/p-effect-size-ci/#report) applies to it, starting with the estimate and its interval. The methods section needs enough extra detail for someone else to get the same number:
+
+- **The statistic**, chosen in advance: difference in means, difference in medians, Welch's *t*, or another.
+- **What was shuffled**, and within what: strata, blocks, pairs or clusters, matching the randomisation.
+- **All allocations or random shuffles.** For random shuffles (a Monte Carlo test), the number of shuffles *B*, the formula (*b* + 1)/(*B* + 1), the software and the random seed.
+- **The sidedness**, and for groups of different sizes, how the two-sided *p* was defined.
+- **The estimate and its interval**, with the method for the interval: a *t* interval, a bootstrap interval, or one from inverting the permutation test.
+
+### 8.1 Sentences to adapt
+
+- **Methods, exact test.** "The difference in mean fall in systolic blood pressure (programme minus usual care) was tested with a two-sided exact permutation test, using all 184,756 ways of allocating the 20 participants to two groups of 10; the *p*-value was the proportion of allocations whose difference was at least as far from zero as the observed one."
+- **Methods, Monte Carlo test.** "The difference in means was tested with a two-sided permutation test, using 9,999 random reallocations of the treatment labels (R 4.5.2, seed 2026), made within randomisation strata if the trial was stratified. The *p*-value was computed as (*b* + 1)/(*B* + 1), where *b* is the number of reallocations giving a difference at least as far from zero as the observed one and *B* = 9,999."
+- **Results.** "Systolic blood pressure fell 7.5 mmHg more in the programme group than in the usual-care group (95% CI 0.5 to 14.5, from inverting the permutation test; exact permutation *p* = 0.041)."
+
+Base R does both versions in a few lines. The small tolerance in the comparisons keeps allocations whose difference equals the observed one, which rounding error could otherwise drop.
+
+``` r
+prog  &lt;- c(21, 17, 15, 14, 13, 7, 6, 2, 2, -3)
+usual &lt;- c(11, 10, 9, 5, 2, 1, 0, -1, -9, -9)
+x &lt;- c(prog, usual); n1 &lt;- length(prog); n2 &lt;- length(usual)
+obs &lt;- mean(prog) - mean(usual)                       # 7.5
+
+# Exact: every choice of the 10 participants labelled "programme"
+idx  &lt;- combn(n1 + n2, n1)                            # 184,756 allocations
+sA   &lt;- colSums(matrix(x[idx], nrow = n1))
+diff &lt;- sA / n1 - (sum(x) - sA) / n2
+mean(abs(diff) &gt;= abs(obs) - 1e-8)                    # 0.04097 (7,570 of 184,756)
+
+# Monte Carlo: B random shuffles, counting the real allocation
+set.seed(2026)
+B   &lt;- 9999
+sim &lt;- replicate(B, { s &lt;- sample(x); mean(s[1:n1]) - mean(s[-(1:n1)]) })
+(sum(abs(sim) &gt;= abs(obs) - 1e-8) + 1) / (B + 1)      # 0.0421
+
+t.test(prog, usual, var.equal = TRUE)                 # t = 2.253, df = 18, p = 0.03697
+```
+
+## 9 Five traps
+
+### 9.1 Reporting *p* = 0
+
+If none of 999 shuffles is as extreme as the real data, the *p*-value is (0 + 1)/(999 + 1) = 0.001, the smallest that 999 shuffles can give, not zero \[5\]. Report it as *p* = 0.001 with the number of shuffles, or use more shuffles.
+
+### 9.2 Too few shuffles for the question
+
+The Monte Carlo error in Table 2 matters most near a threshold and after a multiplicity correction. With 1,000 tests and a Bonferroni threshold of 0.05/1,000 = 0.00005, a test with 999 shuffles can never reach it, because its smallest possible *p* is 0.001. Reaching the threshold at all takes at least 19,999 shuffles, and estimating *p* well near it takes many more.
+
+### 9.3 Shuffling what was not randomised
+
+Shuffling individuals in a cluster-randomised trial, or across strata in a stratified one, compares the data with allocations the randomisation could never have produced. Treating the participants of a cluster trial as independent pretends there are more independent units than there are, which usually makes the *p*-value too small. Follow Table 4.
+
+### 9.4 Reading "non-parametric" as "assumption-free"
+
+A shuffle test of the difference in means compares the data with the null hypothesis that the two groups are exchangeable. In an observational comparison, or for a treatment that may change the spread of outcomes, that means identical distributions, so a small *p*-value can reflect a difference in spread or shape rather than in the means, and groups of unequal size and spread can make the error rate far from nominal (Table 3).
+
+### 9.5 Choosing the statistic after seeing the data
+
+For the pilot data, the shuffle test gives *p* = 0.041 for the difference in means and 0.067 for the difference in medians. Both are legitimate, but only one was the plan. Name the statistic in the protocol or the analysis plan, and if you report others, say so and report them all \[1,4\].
+
+## 10 A checklist for authors and reviewers
+
+- The statistic was chosen in advance and is named.
+- What was shuffled matches the design: individuals, pairs, clusters, and within which strata or blocks.
+- The methods say whether *p* comes from all allocations or from random shuffles; for random shuffles they give the number of shuffles, the formula (*b* + 1)/(*B* + 1), the software and the seed.
+- The number of shuffles is large enough for the precision reported and for any multiplicity threshold.
+- No *p*-value is reported as 0.
+- For a difference in means between groups of unequal size and spread, a studentised statistic was shuffled or Welch's test was used.
+- Two-sided *p*-values say how the two tails were counted when the groups differ in size.
+- The estimate and its confidence interval are reported alongside, with the method for the interval.
+
+A permutation test turns the null distribution into something you can watch being built. Every *p*-value has one, whether it comes from a formula or from shuffles, and a *p*-value means only as much as the null distribution behind it.
+
+## References
+
+1.  Greenland S, Senn SJ, Rothman KJ, et al. Statistical tests, P values, confidence intervals, and power: a guide to misinterpretations. *European Journal of Epidemiology*. 2016;31(4):337–350. doi:10.1007/s10654-016-0149-3
+2.  Ernst MD. Permutation methods: a basis for exact inference. *Statistical Science*. 2004;19(4):676–685. doi:10.1214/088342304000000396
+3.  Fisher RA. *The Design of Experiments*. Oliver and Boyd; 1935.
+4.  Wasserstein RL, Lazar NA. The ASA statement on *p*-values: context, process, and purpose. *The American Statistician*. 2016;70(2):129–133. doi:10.1080/00031305.2016.1154108
+5.  Phipson B, Smyth GK. Permutation P-values should never be zero: calculating exact P-values when permutations are randomly drawn. *Statistical Applications in Genetics and Molecular Biology*. 2010;9(1):Article 39. doi:10.2202/1544-6115.1585
+6.  Fisher RA. "The coefficient of racial likeness" and the future of craniometry. *Journal of the Royal Anthropological Institute of Great Britain and Ireland*. 1936;66:57–63. doi:10.2307/2844116
+7.  Pitman EJG. Significance tests which may be applied to samples from any populations. *Supplement to the Journal of the Royal Statistical Society*. 1937;4(1):119–130. doi:10.2307/2984124
+8.  Romano JP. On the behavior of randomization tests without a group invariance assumption. *Journal of the American Statistical Association*. 1990;85(411):686–692. doi:10.1080/01621459.1990.10474928
+9.  Winkler AM, Ridgway GR, Webster MA, Smith SM, Nichols TE. Permutation inference for the general linear model. *NeuroImage*. 2014;92:381–397. doi:10.1016/j.neuroimage.2014.01.060
+10. Ludbrook J, Dudley H. Why permutation tests are superior to *t* and *F* tests in biomedical research. *The American Statistician*. 1998;52(2):127–132. doi:10.1080/00031305.1998.10480551
+11. Wu J, Ding P. Randomization tests for weak null hypotheses in randomized experiments. *Journal of the American Statistical Association*. 2021;116(536):1898–1913. doi:10.1080/01621459.2020.1750415
+12. Chung E, Romano JP. Exact and asymptotically robust permutation tests. *The Annals of Statistics*. 2013;41(2):484–507. doi:10.1214/13-AOS1090
+13. Janssen A. Studentized permutation tests for non-i.i.d. hypotheses and the generalized Behrens–Fisher problem. *Statistics &amp; Probability Letters*. 1997;36(1):9–21. doi:10.1016/S0167-7152(97)00043-6
+14. Rosenberger WF, Uschner D, Wang Y. Randomization: the forgotten component of the randomized clinical trial. *Statistics in Medicine*. 2019;38(1):1–12. doi:10.1002/sim.7901
+15. Murdoch DJ, Tsai YL, Adcock J. *P*-values are random variables. *The American Statistician*. 2008;62(3):242–245. doi:10.1198/000313008X332421
+16. Halsey LG, Curran-Everett D, Vowler SL, Drummond GB. The fickle *P* value generates irreproducible results. *Nature Methods*. 2015;12(3):179–185. doi:10.1038/nmeth.3288
+17. Sackrowitz H, Samuel-Cahn E. *P* values as random variables—expected *P* values. *The American Statistician*. 1999;53(4):326–331. doi:10.1080/00031305.1999.10474484
+18. Hesterberg TC. What teachers should know about the bootstrap: resampling in the undergraduate statistics curriculum. *The American Statistician*. 2015;69(4):371–386. doi:10.1080/00031305.2015.1089789
+</textarea>
+<!--/md-skip-->
+</main>
+</div>
+
+<script>
+(function () {
+'use strict';
+var NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) {
+  var e = document.createElementNS(NS, tag);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function clear(svg) { while (svg.firstChild) svg.removeChild(svg.firstChild); }
+
+/* ---------- random numbers (seeded, so the page renders the same way every time) ---------- */
+function rng(seed) {
+  var a = seed >>> 0;
+  return function () {
+    a = (a + 0x6D2B79F5) >>> 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function normal(r) { var u = 0; while (u === 0) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
+
+/* ---------- the t distribution ---------- */
+function lgamma(x) {
+  var c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059,
+    12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  if (x < 0.5) return Math.log(Math.PI / Math.abs(Math.sin(Math.PI * x))) - lgamma(1 - x);
+  x -= 1; var a = c[0], t = x + 7.5;
+  for (var i = 1; i < 9; i++) a += c[i] / (x + i);
+  return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+}
+function betacf(a, b, x) {
+  var TINY = 1e-300, qab = a + b, qap = a + 1, qam = a - 1, c = 1, d = 1 - qab * x / qap;
+  if (Math.abs(d) < TINY) d = TINY; d = 1 / d; var h = d;
+  for (var m = 1; m <= 300; m++) {
+    var m2 = 2 * m, aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d; h *= d * c;
+    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+    d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d;
+    var del = d * c; h *= del; if (Math.abs(del - 1) < 3e-14) break;
+  }
+  return h;
+}
+function ibeta(x, a, b) {
+  if (x <= 0) return 0; if (x >= 1) return 1;
+  var bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+  return x < (a + 1) / (a + b + 2) ? bt * betacf(a, b, x) / a : 1 - bt * betacf(b, a, 1 - x) / b;
+}
+/* Two-sided p for a t statistic, and the t density. */
+function tp(t, df) { return ibeta(df / (df + t * t), df / 2, 0.5); }
+function tdens(t, df) { return Math.exp(lgamma((df + 1) / 2) - lgamma(df / 2) - 0.5 * Math.log(df * Math.PI) - (df + 1) / 2 * Math.log(1 + t * t / df)); }
+
+/* p for display: three decimals here, since the post compares p-values that differ in the third
+   (0.037 and 0.041), and never rounded up to 0.05 from below. */
+function fp(p) {
+  if (p < 0.001) return '< 0.001';
+  var d = 3, s = p.toFixed(d);
+  while (p < 0.05 && +s >= 0.05) s = p.toFixed(++d);
+  return '= ' + s;
+}
+function neg(x, d) { return (x < 0 ? '−' : '') + Math.abs(x).toFixed(d == null ? 1 : d); }
+function big(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+function pct(x) { return (100 * x).toFixed(1) + '%'; }
+
+/* A row of toggle buttons that behaves like a radio group. */
+function segmented(host, options, value, onChange) {
+  var buttons = options.map(function (o) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = o.label; b.setAttribute('aria-pressed', String(o.value === value));
+    b.addEventListener('click', function () {
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      onChange(o.value);
+    });
+    host.appendChild(b); return b;
+  });
+}
+/* Nice upper limit and step for a share axis. */
+function shareAxis(max) {
+  var steps = [0.02, 0.04, 0.05, 0.1, 0.2, 0.25];
+  for (var i = 0; i < steps.length; i++) { var s = steps[i]; if (max <= 4 * s) return { top: Math.max(s, Math.ceil(max / s - 1e-9) * s), step: s }; }
+  return { top: 1, step: 0.25 };
+}
+
+/* ---------- the pilot data (Table 1): fall in systolic blood pressure, mmHg ---------- */
+var PROG = [21, 17, 15, 14, 13, 7, 6, 2, 2, -3], USUAL = [11, 10, 9, 5, 2, 1, 0, -1, -9, -9];
+var N1 = 10, N2 = 10;
+
+/* Exact null distribution over all C(20,10) = 184,756 allocations.
+   stat 'mean': the difference in means, kept as an integer 2*sA - total (= 10 × the difference) so ties compare exactly.
+   stat 'median': the difference in medians, kept as an integer (sum of the two middle values in each arm, A minus B = 2 × the difference). */
+function exact(prog, usual, stat) {
+  var x = prog.concat(usual), N = x.length, out = [], total = 0, i;
+  for (i = 0; i < N; i++) total += x[i];
+  if (stat === 'mean') {
+    (function rec(start, left, s) {
+      if (left === 0) { out.push(2 * s - total); return; }
+      for (var j = start; j <= N - left; j++) rec(j + 1, left - 1, s + x[j]);
+    })(0, N1, 0);
+    var obs = 0; for (i = 0; i < N1; i++) obs += prog[i];
+    return { v: out, obs: 2 * obs - total, scale: 1 / N1 };
+  }
+  var v = x.slice().sort(function (a, b) { return a - b; }), pick = new Array(N1), used = new Array(N);
+  (function rec(start, left) {
+    if (left === 0) {
+      var k = 0, b4 = 0, b5 = 0;
+      for (var j = 0; j < N; j++) if (!used[j]) { if (k === 4) b4 = v[j]; else if (k === 5) { b5 = v[j]; break; } k++; }
+      out.push(v[pick[4]] + v[pick[5]] - b4 - b5); return;
+    }
+    for (var m = start; m <= N - left; m++) { pick[N1 - left] = m; used[m] = true; rec(m + 1, left - 1); used[m] = false; }
+  })(0, N1);
+  var sp = prog.slice().sort(function (a, b) { return a - b; }), su = usual.slice().sort(function (a, b) { return a - b; });
+  return { v: out, obs: sp[4] + sp[5] - su[4] - su[5], scale: 0.5 };
+}
+function tail(d) { var c = 0, o = Math.abs(d.obs); for (var i = 0; i < d.v.length; i++) if (Math.abs(d.v[i]) >= o) c++; return c; }
+/* Bins for the histograms. A difference in means here is always an odd number of tenths (the 20 values sum to an odd
+   number), so 1 mmHg bins with edges at the integers, [k, k + 1), each hold five possible values and are symmetric about 0.
+   A difference in medians is a multiple of 0.5, so it gets one bar per possible value: bins [k − 0.25, k + 0.25) × 0.5. */
+var MEAN_BINS = { w: 1, off: 0, key: function (v) { return Math.floor(v); } };
+var MEDIAN_BINS = { w: 0.5, off: -0.5, key: function (v) { return Math.round(v / 0.5); } };
+
+/* A histogram of shares, extreme part shaded. bins: {k: [count, extremeCount]}, bin k covering [(k + off)w, (k + off + 1)w). */
+function drawHist(svg, bins, total, X, Y, color, B) {
+  Object.keys(bins).forEach(function (key) {
+    var k = +key, c = bins[key], a = (k + B.off) * B.w, x0 = X(a) + 0.6, w = X(a + B.w) - X(a) - 1.2;
+    var hAll = c[0] / total, hExt = c[1] / total;
+    if (hAll - hExt > 0) el('rect', { x: x0, y: Y(hAll), width: w, height: Y(hExt) - Y(hAll), style: 'fill:' + color }, svg);
+    if (hExt > 0) el('rect', { x: x0, y: Y(hExt), width: w, height: Y(0) - Y(hExt), style: 'fill:var(--pv)' }, svg);
+  });
+}
+function shareTicks(svg, ax, xa, xb, Y, label) {
+  for (var s = 0; s <= ax.top + 1e-9; s += ax.step) {
+    el('line', { x1: xa, x2: xb, y1: Y(s), y2: Y(s), 'class': 'grid' }, svg);
+    el('text', { x: xa - 8, y: Y(s) + 4, 'text-anchor': 'end', 'class': 't-mu', 'font-size': 11.5 }, svg, Math.round(s * 100) + '%');
+  }
+  if (label) el('text', { x: 0, y: Y(ax.top) - 26, 'class': 't-mu', 'font-size': 12 }, svg, label);
+}
+
+/* ================= Figure 1: building the null distribution by shuffling ================= */
+(function () {
+  var svg = document.getElementById('fig1');
+  if (!svg) return;
+  var PEOPLE = PROG.map(function (v) { return { v: v, arm: 1 }; }).concat(USUAL.map(function (v) { return { v: v, arm: 0 }; }));
+  var TOTAL = 0; PEOPLE.forEach(function (p) { TOTAL += p.v; });
+  var EX = exact(PROG, USUAL, 'mean'), M = EX.v.length, EXT = tail(EX), OBS = Math.abs(EX.obs);   /* integers: 10 × difference */
+  var exactBins = {};
+  EX.v.forEach(function (w) { var k = MEAN_BINS.key(w / 10), b = exactBins[k] || (exactBins[k] = [0, 0]); b[0]++; if (Math.abs(w) >= OBS) b[1]++; });
+  var r = rng(20261003);
+  var state = { mode: 'exact', labels: PEOPLE.map(function (p) { return p.arm; }), n: 0, ext: 0, bins: {}, last: null };
+
+  var xa = 120, xb = 700;
+  var dl = -12, dh = 24, DX = function (v) { return xa + (v - dl) / (dh - dl) * (xb - xa); };     /* top: data */
+  var hl = -14.5, hh = 14.5, HX = function (v) { return xa + (v - hl) / (hh - hl) * (xb - xa); };  /* bottom: differences */
+  var ROW = { 1: 66, 0: 122 }, hy0 = 450, hy1 = 268;
+
+  function shuffle() {
+    /* a uniformly random choice of 10 of the 20 to label "programme" (partial Fisher–Yates) */
+    var idx = PEOPLE.map(function (_, i) { return i; }), lab = PEOPLE.map(function () { return 0; }), s = 0;
+    for (var i = 0; i < N1; i++) { var j = i + Math.floor(r() * (idx.length - i)), t = idx[i]; idx[i] = idx[j]; idx[j] = t; lab[idx[i]] = 1; s += PEOPLE[idx[i]].v; }
+    var w = 2 * s - TOTAL, k = MEAN_BINS.key(w / 10), b = state.bins[k] || (state.bins[k] = [0, 0]);
+    b[0]++; state.n++;
+    if (Math.abs(w) >= OBS) { b[1]++; state.ext++; }
+    state.labels = lab; state.last = w / 10;
+  }
+  function act(what) {
+    if (what === 'reset' || what === 'exact' || state.mode === 'exact') {
+      state.mode = what === 'exact' ? 'exact' : 'random'; state.n = 0; state.ext = 0; state.bins = {}; state.last = null;
+      state.labels = PEOPLE.map(function (p) { return p.arm; });
+    }
+    var times = { one: 1, hundred: 100, thousand: 1000 }[what] || 0;
+    for (var i = 0; i < times; i++) shuffle();
+    draw();
+  }
+
+  function draw() {
+    clear(svg);
+    /* legend */
+    el('circle', { cx: 6, cy: 14, r: 5.5, style: 'fill:var(--s2)' }, svg);
+    el('text', { x: 18, y: 18, 'class': 't-2', 'font-size': 12 }, svg, 'really in the programme arm');
+    el('rect', { x: 206, y: 9, width: 10, height: 10, style: 'fill:var(--s1)' }, svg);
+    el('text', { x: 224, y: 18, 'class': 't-2', 'font-size': 12 }, svg, 'really in the usual-care arm');
+    var real = state.last === null, head = real ? 'The real allocation' : 'Shuffle ' + big(state.n) + ': labels reassigned at random';
+    el('text', { x: xb, y: 18, 'text-anchor': 'end', 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, head);
+
+    /* top panel: participants in the arm the current allocation gives them */
+    [1, 0].forEach(function (a) {
+      el('text', { x: 0, y: ROW[a] + 4, 'class': 't-ink', 'font-size': 13, 'font-weight': 600 }, svg, a ? 'Programme' : 'Usual care');
+      el('line', { x1: xa, x2: xb, y1: ROW[a], y2: ROW[a], 'class': 'grid' }, svg);
+    });
+    var seen = {}, sums = { 0: 0, 1: 0 };
+    PEOPLE.forEach(function (p, i) { var a = state.labels[i], key = a + ':' + p.v; (seen[key] = seen[key] || []).push(i); sums[a] += p.v; });
+    PEOPLE.forEach(function (p, i) {
+      var a = state.labels[i], grp = seen[a + ':' + p.v], m = grp.indexOf(i), y = ROW[a] + (m - (grp.length - 1) / 2) * 13, x = DX(p.v);
+      if (p.arm) el('circle', { cx: x, cy: y, r: 6, style: 'fill:var(--s2);stroke:var(--panel)', 'stroke-width': 1.2 }, svg);
+      else el('rect', { x: x - 5.5, y: y - 5.5, width: 11, height: 11, style: 'fill:var(--s1);stroke:var(--panel)', 'stroke-width': 1.2 }, svg);
+    });
+    var mean1 = sums[1] / N1, mean0 = sums[0] / N2;
+    [[1, mean1], [0, mean0]].forEach(function (q) {
+      var x = DX(q[1]);
+      el('line', { x1: x, x2: x, y1: ROW[q[0]] - 19, y2: ROW[q[0]] + 19, style: 'stroke:var(--ink)', 'stroke-width': 2 }, svg);
+      el('text', { x: x, y: ROW[q[0]] - 24, 'text-anchor': 'middle', 'class': 't-ink', 'font-size': 11.5 }, svg, 'mean ' + neg(q[1]));
+    });
+    var ay = 166;
+    el('line', { x1: xa, x2: xb, y1: ay, y2: ay, 'class': 'axis' }, svg);
+    for (var t = -10; t <= 20; t += 5) {
+      el('line', { x1: DX(t), x2: DX(t), y1: ay, y2: ay + 5, 'class': 'axis' }, svg);
+      el('text', { x: DX(t), y: ay + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, neg(t, 0));
+    }
+    el('text', { x: (xa + xb) / 2, y: ay + 36, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Fall in systolic blood pressure (mmHg)');
+    el('text', { x: 0, y: ay + 18, 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, 'Difference');
+    el('text', { x: 0, y: ay + 34, 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, neg(mean1 - mean0) + ' mmHg');
+
+    /* bottom panel: the differences so far */
+    var bins = state.mode === 'exact' ? exactBins : state.bins, total = state.mode === 'exact' ? M : state.n, mx = 0;
+    Object.keys(bins).forEach(function (k) { mx = Math.max(mx, bins[k][0] / Math.max(1, total)); });
+    var ax = shareAxis(Math.max(mx, 0.1)), Y = function (s) { return hy0 - s / ax.top * (hy0 - hy1); };
+    shareTicks(svg, ax, xa, xb, Y, state.mode === 'exact' ? 'Share of all 184,756 allocations' : 'Share of the ' + big(state.n) + ' shuffles so far');
+    if (total > 0) drawHist(svg, bins, total, HX, Y, 'color-mix(in srgb, var(--ci) 45%, transparent)', MEAN_BINS);
+    [-1, 1].forEach(function (s) {
+      var x = HX(s * OBS / 10);
+      el('line', { x1: x, x2: x, y1: hy1 - 6, y2: hy0, style: 'stroke:var(--pv)', 'stroke-width': 1.4, 'stroke-dasharray': '4 3' }, svg);
+      el('text', { x: x, y: hy1 - 10, 'text-anchor': 'middle', style: 'fill:var(--pv)', 'font-size': 11.5, 'font-weight': 600 }, svg, s > 0 ? 'observed 7.5' : '−7.5');
+    });
+    if (!real) {
+      var lx = HX(Math.max(hl, Math.min(hh, state.last)));
+      el('path', { d: 'M' + lx + ',' + (hy0 + 4) + 'l-5,9h10z', style: 'fill:var(--ink)' }, svg);
+    }
+    el('line', { x1: xa, x2: xb, y1: hy0, y2: hy0, 'class': 'axis' }, svg);
+    for (t = -12; t <= 12; t += 4) {
+      el('line', { x1: HX(t), x2: HX(t), y1: hy0, y2: hy0 + 5, 'class': 'axis' }, svg);
+      el('text', { x: HX(t), y: hy0 + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, neg(t, 0));
+    }
+    el('text', { x: (xa + xb) / 2, y: hy0 + 40, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Difference in means if the labels were shuffled (programme − usual care, mmHg)');
+
+    var msg;
+    if (state.mode === 'exact') {
+      msg = 'All 184,756 allocations: ' + big(EXT) + ' give a difference at least 7.5 mmHg from zero in either direction, so the exact <i>p</i> = ' +
+        big(EXT) + ' / ' + big(M) + ' = ' + (EXT / M).toFixed(3) + '. The top panel shows the real allocation.';
+    } else if (state.n === 0) {
+      msg = 'No shuffles yet. The top panel shows the real allocation, with a difference of 7.5 mmHg. Shuffle to build the null distribution.';
+    } else {
+      var pm = (state.ext + 1) / (state.n + 1);
+      msg = big(state.n) + (state.n === 1 ? ' shuffle' : ' shuffles') + ' so far (the last gave ' + neg(state.last) + ' mmHg). ' + big(state.ext) +
+        (state.ext === 1 ? ' was' : ' were') + ' at least 7.5 mmHg from zero, so <i>p</i> = (' + big(state.ext) + ' + 1) / (' + big(state.n) + ' + 1) = ' +
+        pm.toFixed(3) + '. The exact value, from all 184,756 allocations, is ' + (EXT / M).toFixed(3) + '.';
+    }
+    document.getElementById('f1-read').innerHTML = msg;
+  }
+
+  var host = document.getElementById('f1-acts');
+  [['one', 'Once'], ['hundred', '100 times'], ['thousand', '1,000 times'], ['exact', 'All 184,756'], ['reset', 'Start again']].forEach(function (b) {
+    var btn = document.createElement('button');
+    btn.type = 'button'; btn.textContent = b[1];
+    btn.addEventListener('click', function () { act(b[0]); });
+    host.appendChild(btn);
+  });
+  draw();
+})();
+
+/* ================= Figure 2: the shuffle distribution and the t distribution ================= */
+(function () {
+  var svg = document.getElementById('fig2');
+  if (!svg) return;
+  var DATA = { table: PROG, outlier: [45].concat(PROG.slice(1)) }, cache = {};
+  var state = { data: 'table', stat: 'mean' };
+  var xa = 70, xb = 720, lo = -18.5, hi = 18.5, X = function (v) { return xa + (v - lo) / (hi - lo) * (xb - xa); };
+  var y0 = 320, y1 = 70;
+  function mean(a) { var s = 0; a.forEach(function (v) { s += v; }); return s / a.length; }
+  function vr(a) { var m = mean(a), s = 0; a.forEach(function (v) { s += (v - m) * (v - m); }); return s / (a.length - 1); }
+
+  function get(key, stat) {
+    var id = key + ':' + stat;
+    if (!cache[id]) { var d = exact(DATA[key], USUAL, stat); d.ext = tail(d); cache[id] = d; }
+    return cache[id];
+  }
+  function draw() {
+    clear(svg);
+    var prog = DATA[state.data], d = get(state.data, state.stat), M = d.v.length, obs = d.obs * (state.stat === 'mean' ? 0.1 : 0.5);
+    var unit = state.stat === 'mean' ? 0.1 : 0.5, O = Math.abs(d.obs), bins = {}, mx = 0, BB = state.stat === 'mean' ? MEAN_BINS : MEDIAN_BINS;
+    d.v.forEach(function (w) { var k = BB.key(w * unit), b = bins[k] || (bins[k] = [0, 0]); b[0]++; if (Math.abs(w) >= O) b[1]++; });
+    Object.keys(bins).forEach(function (k) { mx = Math.max(mx, bins[k][0] / M); });
+    var D = mean(prog) - mean(USUAL), sp2 = (9 * vr(prog) + 9 * vr(USUAL)) / 18, se = Math.sqrt(sp2 * (1 / N1 + 1 / N2)), tobs = D / se;
+    var welchSe = Math.sqrt(vr(prog) / N1 + vr(USUAL) / N2), a1 = vr(prog) / N1, a2 = vr(USUAL) / N2;
+    var wdf = (a1 + a2) * (a1 + a2) / (a1 * a1 / (N1 - 1) + a2 * a2 / (N2 - 1)), pw = tp(D / welchSe, wdf), pt = tp(tobs, 18);
+    if (state.stat === 'mean') mx = Math.max(mx, tdens(0, 18) / se);
+    var ax = shareAxis(Math.max(mx, 0.08)), Y = function (s) { return y0 - s / ax.top * (y0 - y1); };
+    shareTicks(svg, ax, xa, xb, Y, 'Share of all 184,756 allocations, per ' + (state.stat === 'mean' ? '1 mmHg' : '0.5 mmHg (one bar per possible value)'));
+    drawHist(svg, bins, M, X, Y, 'color-mix(in srgb, var(--ci) 45%, transparent)', BB);
+    if (state.stat === 'mean') {
+      var c = [];
+      for (var v = lo; v <= hi + 1e-9; v += 0.1) c.push((c.length ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(tdens(v / se, 18) / se).toFixed(1));
+      el('path', { d: c.join(' '), style: 'fill:none;stroke:var(--ink)', 'stroke-width': 2, 'stroke-linejoin': 'round' }, svg);
+    }
+    [-1, 1].forEach(function (s) {
+      var x = X(s * Math.abs(obs));
+      el('line', { x1: x, x2: x, y1: y1 - 4, y2: y0, style: 'stroke:var(--pv)', 'stroke-width': 1.4, 'stroke-dasharray': '4 3' }, svg);
+      el('text', { x: x, y: y1 - 9, 'text-anchor': 'middle', style: 'fill:var(--pv)', 'font-size': 11.5, 'font-weight': 600 }, svg, s > 0 ? 'observed ' + Math.abs(obs).toFixed(1) : '−' + Math.abs(obs).toFixed(1));
+    });
+    el('line', { x1: xa, x2: xb, y1: y0, y2: y0, 'class': 'axis' }, svg);
+    for (var t = -16; t <= 16; t += 4) {
+      el('line', { x1: X(t), x2: X(t), y1: y0, y2: y0 + 5, 'class': 'axis' }, svg);
+      el('text', { x: X(t), y: y0 + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, neg(t, 0));
+    }
+    el('text', { x: (xa + xb) / 2, y: y0 + 40, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg,
+      'Difference in ' + (state.stat === 'mean' ? 'means' : 'medians') + ' under shuffling (programme − usual care, mmHg)');
+    /* legend */
+    el('rect', { x: xa, y: 6, width: 14, height: 10, style: 'fill:color-mix(in srgb, var(--ci) 45%, transparent)' }, svg);
+    el('text', { x: xa + 20, y: 15, 'class': 't-2', 'font-size': 12 }, svg, 'shuffle distribution');
+    el('rect', { x: xa + 150, y: 6, width: 14, height: 10, style: 'fill:var(--pv)' }, svg);
+    el('text', { x: xa + 170, y: 15, 'class': 't-2', 'font-size': 12 }, svg, 'at least as extreme as observed');
+    if (state.stat === 'mean') {
+      el('line', { x1: xa + 380, x2: xa + 400, y1: 11, y2: 11, style: 'stroke:var(--ink)', 'stroke-width': 2 }, svg);
+      el('text', { x: xa + 406, y: 15, 'class': 't-2', 'font-size': 12 }, svg, 't distribution × SE (' + se.toFixed(2) + ' mmHg)');
+    } else {
+      el('text', { x: xa + 380, y: 15, 'class': 't-mu', 'font-size': 12 }, svg, 'no t curve: the t-test is for means');
+    }
+
+    var lab = state.data === 'table' ? 'Data of Table 1' : 'Largest fall 45 mmHg', msg;
+    if (state.stat === 'mean') {
+      msg = lab + ': difference in means ' + D.toFixed(1) + ' mmHg. <span class="sw" style="background:var(--pv)"></span>Shuffles: exact <i>p</i> = ' + (d.ext / M).toFixed(3) +
+        ' (' + big(d.ext) + ' of 184,756). <span class="sw" style="background:var(--ink)"></span><i>t</i>-test: <i>t</i> = ' + tobs.toFixed(2) + ' on 18 df, <i>p</i> ' + fp(pt) +
+        ' (Welch <i>p</i> ' + fp(pw) + '); SD of the programme arm ' + Math.sqrt(vr(prog)).toFixed(1) + ' mmHg.';
+    } else {
+      msg = lab + ': difference in medians ' + obs.toFixed(1) + ' mmHg. <span class="sw" style="background:var(--pv)"></span>Shuffles: exact <i>p</i> = ' + (d.ext / M).toFixed(3) +
+        ' (' + big(d.ext) + ' of 184,756). The median ignores how far the largest value lies from the rest, so both data sets give the same answer.';
+    }
+    var aria = 'Figure 2. The exact shuffle distribution of the difference in ' + (state.stat === 'mean' ? 'means' : 'medians') + ' for the ' +
+      (state.data === 'table' ? 'pilot data' : 'data with a 45 mmHg value') + (state.stat === 'mean' ? ', with the t distribution used by the t-test drawn on the same scale. Shuffle p = ' +
+      (d.ext / M).toFixed(3) + ', t-test p ' + fp(pt) + '.' : '. Shuffle p = ' + (d.ext / M).toFixed(3) + '.');
+    if (state.data === 'table' && state.stat === 'mean') aria = 'Figure 2. The exact shuffle distribution of the difference in means for the pilot data, with the t distribution used by the t-test drawn on the same scale. The two agree closely: p = 0.041 from the shuffles and 0.037 from the t distribution.';
+    svg.setAttribute('aria-label', aria);
+    document.getElementById('f2-read').innerHTML = msg;
+  }
+  segmented(document.getElementById('f2-data'), [{ label: 'Table 1', value: 'table' }, { label: 'Largest fall 45 mmHg', value: 'outlier' }], state.data, function (v) { state.data = v; draw(); });
+  segmented(document.getElementById('f2-stat'), [{ label: 'Difference in means', value: 'mean' }, { label: 'Difference in medians', value: 'median' }], state.stat, function (v) { state.stat = v; draw(); });
+  draw();
+})();
+
+/* ================= Figure 3: the distribution of the p-value ================= */
+(function () {
+  var svg = document.getElementById('fig3');
+  if (!svg) return;
+  var SD = 8, RUNS = 1000, B = 999, state = { eff: 8, n: 10 }, cache = {};
+  /* RUNS simulated trials, each analysed with a Monte Carlo permutation test of the difference in means. */
+  function simulate(eff, n) {
+    var id = eff + ':' + n;
+    if (cache[id]) return cache[id];
+    var r = rng(7000 + 100 * n + eff), x = new Array(2 * n), ps = [];
+    for (var run = 0; run < RUNS; run++) {
+      var total = 0, sA = 0, i;
+      for (i = 0; i < 2 * n; i++) { x[i] = (i < n ? eff : 0) + SD * normal(r); total += x[i]; if (i < n) sA += x[i]; }
+      var obs = Math.abs(2 * sA - total) - 1e-9, b = 0;
+      for (var k = 0; k < B; k++) {
+        var s = 0;
+        for (i = 0; i < n; i++) { var j = i + Math.floor(r() * (2 * n - i)), t = x[i]; x[i] = x[j]; x[j] = t; s += x[i]; }
+        if (Math.abs(2 * s - total) >= obs) b++;
+      }
+      ps.push((b + 1) / (B + 1));
+    }
+    ps.sort(function (a, b) { return a - b; });
+    return (cache[id] = ps);
+  }
+  function hist(ps) { var h = []; for (var i = 0; i < 20; i++) h.push(0); ps.forEach(function (p) { h[Math.min(19, Math.ceil(p / 0.05 - 1e-9) - 1)]++; }); return h; }
+  function q(ps, f) { return ps[Math.min(ps.length - 1, Math.floor(f * ps.length))]; }
+
+  function draw() {
+    clear(svg);
+    var P0 = simulate(0, state.n), P1 = simulate(state.eff, state.n), H0 = hist(P0), H1 = hist(P1);
+    var mx = Math.max.apply(null, H0.concat(H1)) / RUNS, ax = shareAxis(Math.max(mx, 0.1));
+    var y0 = 270, y1 = 60, Y = function (s) { return y0 - s / ax.top * (y0 - y1); };
+    [[H0, 60, 'No effect'], [H1, 420, 'True difference ' + state.eff + ' mmHg']].forEach(function (pan, pi) {
+      var H = pan[0], xa = pan[1], xb = xa + 300, X = function (p) { return xa + p * (xb - xa); };
+      el('text', { x: (xa + xb) / 2, y: 22, 'text-anchor': 'middle', 'class': 't-ink', 'font-size': 13, 'font-weight': 600 }, svg, pan[2] + ', ' + state.n + ' per arm');
+      for (var s = 0; s <= ax.top + 1e-9; s += ax.step) {
+        el('line', { x1: xa, x2: xb, y1: Y(s), y2: Y(s), 'class': 'grid' }, svg);
+        el('text', { x: xa - 8, y: Y(s) + 4, 'text-anchor': 'end', 'class': 't-mu', 'font-size': 11.5 }, svg, Math.round(s * 100) + '%');
+      }
+      H.forEach(function (c, i) {
+        var h = c / RUNS;
+        if (h > 0) el('rect', { x: X(i * 0.05) + 0.7, y: Y(h), width: X(0.05) - X(0) - 1.4, height: y0 - Y(h), style: 'fill:' + (i === 0 ? 'var(--pv)' : 'color-mix(in srgb, var(--ci) 45%, transparent)') }, svg);
+      });
+      el('line', { x1: xa, x2: xb, y1: Y(0.05), y2: Y(0.05), style: 'stroke:var(--ink-2)', 'stroke-width': 1.2, 'stroke-dasharray': '4 3' }, svg);
+      el('line', { x1: xa, x2: xb, y1: y0, y2: y0, 'class': 'axis' }, svg);
+      [0, 0.25, 0.5, 0.75, 1].forEach(function (t) {
+        el('line', { x1: X(t), x2: X(t), y1: y0, y2: y0 + 5, 'class': 'axis' }, svg);
+        el('text', { x: X(t), y: y0 + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, String(t));
+      });
+      el('text', { x: (xa + xb) / 2, y: y0 + 40, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'p-value');
+      var share = H[0] / RUNS;
+      el('text', { x: xb, y: y1 + 14, 'text-anchor': 'end', style: 'fill:var(--pv)', 'font-size': 12, 'font-weight': 600 }, svg, pct(share) + ' of runs at p ≤ 0.05');
+    });
+    el('text', { x: 0, y: 44, 'class': 't-mu', 'font-size': 12 }, svg, 'Share of 1,000 runs');
+    el('text', { x: 360, y: Y(0.05) - 5, 'text-anchor': 'middle', 'class': 't-2', 'font-size': 11 }, svg, '5%');
+
+    var s0 = H0[0] / RUNS, s1 = H1[0] / RUNS;
+    document.getElementById('f3-read').innerHTML = 'No effect: ' + pct(s0) + ' of runs gave <i>p</i> ≤ 0.05, and the 20 bins hold between ' +
+      pct(Math.min.apply(null, H0) / RUNS) + ' and ' + pct(Math.max.apply(null, H0) / RUNS) + ' each. True difference ' + state.eff + ' mmHg: ' + pct(s1) +
+      ' gave <i>p</i> ≤ 0.05 (an estimate of the power), the median <i>p</i> was ' + q(P1, 0.5).toFixed(3) + ', and the middle 80% ran from ' + q(P1, 0.1).toFixed(3) + ' to ' + q(P1, 0.9).toFixed(3) + '.';
+    svg.setAttribute('aria-label', 'Figure 3. Histograms of 1,000 permutation p-values from simulated trials with ' + state.n + ' per arm. With no effect the p-values are spread evenly between 0 and 1; with a true difference of ' +
+      state.eff + ' mmHg they pile up near zero, and ' + pct(s1) + ' fall at or below 0.05.');
+  }
+  segmented(document.getElementById('f3-eff'), [4, 8, 12].map(function (v) { return { label: v + ' mmHg', value: v }; }), state.eff, function (v) { state.eff = v; draw(); });
+  segmented(document.getElementById('f3-n'), [10, 20].map(function (v) { return { label: String(v), value: v }; }), state.n, function (v) { state.n = v; draw(); });
+  draw();
+})();
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+
+  /* ================= giscus comments: the one place to configure them =================
+     Comments load only when both "category" and "categoryId" are filled in.
+     Same settings as the other posts (see README.md, "Comments (giscus)"). */
+  var GISCUS = {
+      "repo": "selcukorkmaz/selcukorkmaz.github.io",
+      "repoId": "R_kgDOPupOnA",
+      "category": "Announcements",
+      "categoryId": "DIC_kwDOPupOnM4DGb_J",
+      "mapping": "pathname",
+      "strict": "1",
+      "reactionsEnabled": "1",
+      "emitMetadata": "0",
+      "inputPosition": "top",
+      "lang": "en",
+      "loading": "lazy",
+      "themeLight": "light",
+      "themeDark": "dark"
+  };
+
+  var root = document.documentElement;
+  var meta = document.getElementById('metaThemeColor');
+  var COLORS = {"light": "#f6f7f5", "dark": "#11161c"};
+  var URL = "https://selcukorkmaz.github.io/blog/permutation-test/";
+
+  /* ---------------- theme (shared with the main site) ---------------- */
+  function current() {
+    var t = root.getAttribute('data-theme');
+    if (t === 'dark' || t === 'light') return t;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function label(t) {
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+      b.setAttribute('title', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    });
+  }
+  function giscusTheme(t) { return t === 'dark' ? GISCUS.themeDark : GISCUS.themeLight; }
+  function apply(t) {
+    root.classList.remove('light', 'dark');
+    root.classList.add(t);                 /* the main site's convention */
+    root.setAttribute('data-theme', t);    /* the paper's convention */
+    if (meta) meta.setAttribute('content', COLORS[t]);
+    try { localStorage.setItem('theme', t); } catch (e) {}
+    label(t);
+    var frame = document.querySelector('iframe.giscus-frame');
+    if (frame && frame.contentWindow) {
+      frame.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme(t) } } }, 'https://giscus.app');
+    }
+  }
+  if (meta) meta.setAttribute('content', COLORS[current()]);
+  label(current());
+  document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () { apply(current() === 'dark' ? 'light' : 'dark'); });
+  });
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onScheme = function () { if (!root.getAttribute('data-theme')) apply(current()); };
+    if (mq.addEventListener) mq.addEventListener('change', onScheme);
+  }
+
+  /* ---------------- comments ---------------- */
+  (function () {
+    var slot = document.querySelector('#comments .giscus');
+    if (!slot || !GISCUS.category || !GISCUS.categoryId) return;   /* keep the "coming soon" note */
+    slot.innerHTML = '';
+    var s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    var data = { repo: GISCUS.repo, 'repo-id': GISCUS.repoId, category: GISCUS.category,
+      'category-id': GISCUS.categoryId, mapping: GISCUS.mapping, strict: GISCUS.strict,
+      'reactions-enabled': GISCUS.reactionsEnabled, 'emit-metadata': GISCUS.emitMetadata,
+      'input-position': GISCUS.inputPosition, theme: giscusTheme(current()), lang: GISCUS.lang,
+      loading: GISCUS.loading };
+    Object.keys(data).forEach(function (k) { s.setAttribute('data-' + k, data[k]); });
+    s.setAttribute('crossorigin', 'anonymous');
+    s.async = true;
+    slot.appendChild(s);
+  })();
+
+  /* ---------------- post tools ---------------- */
+  var TEXT = {"bibtex": "@misc{korkmaz2026where,\n  author       = {Korkmaz, Sel{\\c{c}}uk},\n  title        = {Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself},\n  year         = {2026},\n  month        = oct,\n  date         = {2026-10-03},\n  howpublished = {\\url{https://selcukorkmaz.github.io/blog/permutation-test/}},\n  url          = {https://selcukorkmaz.github.io/blog/permutation-test/},\n  note         = {Blog post}\n}", "apa": "Korkmaz, S. (2026, October 3). Where a p-value comes from: The permutation test, the null distribution and the distribution of the p-value itself [Blog post]. https://selcukorkmaz.github.io/blog/permutation-test/", "link": "https://selcukorkmaz.github.io/blog/permutation-test/"};
+  var mdCache = null;
+
+  function status(bar, msg) {
+    var el = bar && bar.querySelector('.pt-status');
+    if (!el) return;
+    el.textContent = msg;
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.textContent = ''; }, 3000);
+  }
+  function legacyCopy(ta) {
+    ta.removeAttribute('hidden');
+    ta.focus({ preventScroll: true });
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    return ok;
+  }
+  function copy(bar, text, what, ta) {
+    var fallback = function () {
+      var own = !ta;
+      if (own) { ta = document.createElement('textarea'); ta.className = 'pt-ta'; ta.value = text; bar.appendChild(ta); }
+      if (legacyCopy(ta)) { status(bar, what + ' copied'); if (own) bar.removeChild(ta); return; }
+      /* Last resort: show the text selected so it can be copied by hand. */
+      if (!own) bar.appendChild(ta);
+      ta.classList.add('show'); ta.removeAttribute('aria-hidden'); ta.removeAttribute('tabindex');
+      ta.focus(); ta.select();
+      status(bar, 'Press ' + (/Mac|iP/.test(navigator.platform) ? '⌘C' : 'Ctrl+C') + ' to copy the selected text');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { status(bar, what + ' copied'); }, fallback);
+    } else { fallback(); }
+  }
+
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.pt'));
+  bars.forEach(function (bar) {
+    var toggles = Array.prototype.slice.call(bar.querySelectorAll('.pt-row [aria-controls]'));
+    function close(btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      document.getElementById(btn.getAttribute('aria-controls')).hidden = true;
+    }
+    toggles.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        toggles.forEach(close);
+        if (!open) {
+          btn.setAttribute('aria-expanded', 'true');
+          document.getElementById(btn.getAttribute('aria-controls')).hidden = false;
+        }
+      });
+    });
+    bar.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var openBtn = toggles.filter(function (b) { return b.getAttribute('aria-expanded') === 'true'; })[0];
+      if (openBtn) { close(openBtn); openBtn.focus(); }
+    });
+    bar.querySelectorAll('[data-pt-copy]').forEach(function (b) {
+      b.addEventListener('click', function () { copy(bar, TEXT[b.getAttribute('data-pt-copy')], b.getAttribute('data-pt-label')); });
+    });
+    var nativeBtn = bar.querySelector('[data-pt-native]');
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener('click', function () {
+        navigator.share({ title: document.title, text: "Where a p-value comes from: the permutation test, the null distribution and the distribution of the p-value itself", url: URL }).catch(function () {});
+      });
+    }
+    var mdBtn = bar.querySelector('[data-pt-copy-md]');
+    if (mdBtn) mdBtn.addEventListener('click', function () {
+      var ta = document.getElementById('pt-md');
+      var done = function (text) { mdCache = text; copy(bar, text, 'Markdown', ta); };
+      if (mdCache) return done(mdCache);
+      fetch('index.md', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then(done, function () { done(ta.value); });   /* offline or file://: use the copy embedded in the page */
+    });
+  });
+
+  /* ---------------- opened from disk (file://) ---------------- */
+  // "../" would show a directory listing; point folder links at index.html instead.
+  if (location.protocol === 'file:') {
+    document.querySelectorAll('.sitebar a[href]').forEach(function (a) {
+      var h = a.getAttribute('href'), m = h.match(/^([^#?]*)(.*)$/);
+      if (!/^[a-z][a-z0-9+.-]*:|^\/|^#/i.test(h) && m[1].slice(-1) === '/') a.setAttribute('href', m[1] + 'index.html' + m[2]);
+    });
+  }
+})();
+</script>
+</body>
+</html>
