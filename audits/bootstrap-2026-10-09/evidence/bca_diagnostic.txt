@@ -1,0 +1,2 @@
+10 {'perc': np.float64(89.5), 'bc': np.float64(88.3), 'bca': np.float64(85.0)} sd z0 0.064 sd acc 0.059 mean|acc| 0.048
+20 {'perc': np.float64(91.9), 'bc': np.float64(90.4), 'bca': np.float64(86.7)} sd z0 0.06 sd acc 0.053 mean|acc| 0.042

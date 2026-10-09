@@ -1,0 +1,73 @@
+--- exported Markdown
++++ current HTML source
+@@ -70,9 +70,9 @@
+ 
+ ## 4 Better bootstrap intervals
+ 
+-The percentile interval is the simplest of several ways to turn a bootstrap distribution into an interval \[3\]. Two others are widely available, for example in R's boot package, which implements the methods of Davison and Hinkley \[4\]:
+-
+-- **BCa** (bias-corrected and accelerated), introduced by Efron in 1987 \[5\]. It reads the interval off the bootstrap distribution, but at shifted percentiles. A bias correction comes from the share of the bootstrap distribution below the estimate, and an acceleration constant adjusts for skewness \[2,5\]. It has no adjustment for the narrowness described in Section 3 \[2\]. For the pilot data the shifts are tiny, and BCa gives 1.3 to 13.7 mmHg again.
++The percentile interval is the simplest of several ways to turn a bootstrap distribution into an interval \[2,3\]. Two others are widely available, for example in R's boot package, which implements the methods of Davison and Hinkley \[4\]:
++
++- **BCa** (bias-corrected and accelerated), introduced by Efron in 1987 \[5\]. It reads the interval off the bootstrap distribution, but at shifted percentiles. A bias correction comes from the share of the bootstrap distribution below the estimate, and an acceleration constant allows for a standard error that changes with the true value, which shows up as skewness \[2,5\]. It has no adjustment for the narrowness described in Section 3 \[2\]. For the pilot data the shifts are tiny, and BCa gives 1.3 to 13.7 mmHg again.
+ - **Bootstrap-*t*** (the studentised bootstrap). Instead of the difference itself, it bootstraps a *t* statistic: each resample's difference minus the observed one, divided by that resample's own standard error. The 2.5th and 97.5th percentiles of these values take the place of ±2.10 from the *t* table \[2\]. Because every resample estimates its own standard error, the method sees how uncertain the standard error is, as the *t* interval does. For the pilot data it gives 0.5 to 14.6 mmHg, close to the *t* interval.
+ 
+ ![The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg.](https://selcukorkmaz.github.io/blog/bootstrap/fig2.svg)
+@@ -94,7 +94,7 @@
+ 
+ Now switch Figure 2 to the second data set, in which the largest fall in the programme arm is 45 mmHg instead of 21. The bootstrap distribution becomes skewed to the right. In 35% of resamples the 45 is not drawn at all, in 39% it is drawn once, and in 26% twice or more, and each copy adds about 3.7 mmHg to the difference. The percentile and BCa intervals follow the skew and move to the right, and the bootstrap-*t* stretches its upper limit to 23.7 mmHg. Across the six methods the upper limit now ranges from 19.5 to 23.7 mmHg. Each method makes its own guess about how far the upper tail of the population reaches, and ten participants, one of whom carries much of the information about that tail, cannot settle the question. As in the previous note, the honest reading is that the difference in means rests heavily on one person.
+ 
+-Switch the statistic to the difference in medians, for which there is no simple standard-error formula: the situation the bootstrap is often recommended for. Its bootstrap distribution is lumpy. The median of 10 resampled values is the average of the 5th and 6th smallest, so for the data of Table 1 the difference in medians can take only 85 values, and the most likely one, 5.0 mmHg, carries 4.5% of the distribution. The percentile interval runs from −2.5 to 15.5 mmHg in both data sets, because the median ignores how far the largest value lies from the rest. The bootstrap tends not to work well for medians and other quantiles in small samples, which depend heavily on a few observations near the middle, though it does better in large samples \[2\].
++Switch the statistic to the difference in medians, for which there is no simple standard-error formula: the situation the bootstrap is often recommended for. Its bootstrap distribution is lumpy. The median of 10 resampled values is the average of the 5th and 6th smallest, so for the data of Table 1 the difference in medians can take only 85 values, and the most likely one, 5.0 mmHg, carries 4.5% of the distribution. The percentile interval runs from −2.5 to 15.5 mmHg in both data sets, because the median ignores how far the largest value lies from the rest. The bootstrap tends not to work well for medians and other quantiles in small samples, which depend heavily on a few observations near the middle, though it does better in large samples, and percentile intervals for a median can still be reasonable \[2\].
+ 
+ ## 5 How often do the intervals cover the truth?
+ 
+@@ -120,7 +120,7 @@
+ - **Normal outcomes.** The *t* interval covers 95% of the time at every size, as theory says it should. The percentile interval covers 88% of the time with 5 per arm, 92% with 10 and 94% with 20 or 40, as Section 3 predicts, and BCa does no better in these scenarios. The bootstrap-*t* covers about 95% throughout, but with 5 per arm its intervals are on average wider than the *t* interval's (25.8 against 22.5 mmHg). Hesterberg's simulations for a single mean tell the same story: the percentile interval does poorly in small normal samples and the bootstrap-*t* does very well \[2\].
+ - **Skewed outcomes.** The *t* interval is, if anything, conservative, at 96% to 97%. The percentile interval covers 87% to 93%, BCa only 83% to 89%, and the bootstrap-*t* 97% with 5 per arm, where its intervals are on average almost twice as wide as the *t* interval's (34.2 against 18.3 mmHg), then 91% to 92%.
+ 
+-One feature of this setting helps to read the skewed rows. When both arms have the same shape and the same size, the sampling distribution of the difference in means is exactly symmetric, however skewed each arm is: the errors in the two arm means have the same distribution, and the difference of two such errors is as likely to be positive as negative. So the true bias correction and acceleration that BCa estimates are both zero here, and any asymmetry that BCa or the bootstrap-*t* builds into an interval comes from the sample alone. With strongly skewed outcomes and 10 or 20 per arm, those sample-based estimates vary a lot from trial to trial. In a further check with 3,000 trials at each of these two sizes, the bias correction alone lowered coverage by 1 to 1.5 percentage points below the percentile interval's, and the acceleration by about 3.5 more. That is a finding about these simulated scenarios, not a general verdict on BCa: where the sampling distribution really is skewed, as for a single mean from a skewed population, adjusting for skewness is the point of the method, though that problem is much harder for every method \[2\].
++One feature of this setting helps to read the skewed rows. When both arms have the same shape and the same size, the sampling distribution of the difference in means is exactly symmetric, however skewed each arm is: the errors in the two arm means have the same distribution, and the difference of two such errors is as likely to be positive as negative. So the true bias correction and acceleration that BCa estimates are both zero here, and any asymmetry that BCa or the bootstrap-*t* builds into an interval comes from the sample alone. With strongly skewed outcomes and 10 or 20 per arm, those sample-based estimates vary a lot from trial to trial. In a further check with 3,000 trials at each of these two sizes, the bias correction alone lowered coverage by 1 to 1.5 percentage points below the percentile interval's, and the acceleration by about 3.5 more. That is a finding about these simulated scenarios, not a general verdict on BCa: where the sampling distribution really is skewed, as for a single mean from a skewed population, adjusting for skewness is the point of the method, though in Hesterberg's simulations that problem was much harder for every method he tried \[2\].
+ 
+ So in these scenarios, a difference in means between two equal arms of the same shape, the *t* interval is hard to beat, the percentile interval is too narrow with 10 per arm, and the bootstrap is no remedy for a small sample. Its strengths lie elsewhere.
+ 
+@@ -128,9 +128,9 @@
+ 
+ The bootstrap needs no normal distribution, but it is not assumption-free. Its essential assumption is that the sample can stand in for the population. That needs observations, or units of resampling, that are independent of one another, and enough of them for their spread and shape to resemble the population's. With 10 per arm, the sample's tails say little about the population's tails, as the 45 mmHg example showed.
+ 
+-Where those conditions hold, the bootstrap earns its keep with statistics that have no easy standard-error formula: a median in a large sample, a ratio, a correlation, an area under a ROC curve, or a summary of a whole analysis. It is also a useful sensitivity check on a formula-based interval: compute both and compare them \[2\]. Agreement can be reassuring, but it does not show that either interval has its nominal coverage, because both rest on the same sample and neither can see tails that the sample does not contain. Disagreement is a reason to find out why.
+-
+-The general rule for what to resample is to resample in the way the data were drawn, keeping fixed what the design fixed, such as the size of each group \[2\]. Table 4 applies it to common designs. It mirrors the rule of the previous note, to shuffle only what was randomised. The entries are starting points, not guarantees: with few clusters, complex survey designs or long-range dependence, the resampling scheme needs more care, and whether a scheme gives consistent standard errors can depend on the model assumed for the data \[6\].
++Where those conditions hold, the bootstrap earns its keep with statistics that have no easy standard-error formula: a median in a large sample, a ratio, a correlation, an area under a ROC curve, or a summary of a whole analysis. It is also a useful check on a formula-based interval: compute both and compare them \[2\]. Agreement can be reassuring, but it does not show that either interval has its nominal coverage, because both rest on the same sample and neither can see tails that the sample does not contain. Disagreement is a reason to find out why.
++
++The general rule for what to resample is to resample in the way the data were drawn, but conditioning on what was observed: each group keeps its observed size, even if the sampling could have produced other sizes \[2\]. Table 4 applies it to common designs. It mirrors the rule of the previous note, to shuffle only what was randomised. The entries are starting points, not guarantees: with few clusters, complex survey designs or long-range dependence, the resampling scheme needs more care. Even for simple clustered data, whether a scheme gives consistent variance estimates depends on the model assumed for the data \[6\].
+ 
+ **Table 4.** Resample what was sampled.
+ 
+@@ -142,7 +142,7 @@
+ | Clustered data (practices, wards, schools) | whole clusters, with all their members \[6\] |
+ | Repeated measures over time | whole participants, with all their measurements |
+ | A time series | blocks of consecutive observations, not single observations \[7\] |
+-| Regression | whole rows (cases); or residuals, added back to the fitted values, when the *x* values were fixed by design \[2\] |
++| Regression | whole rows (cases); or residuals added back to the fitted values, which keeps the *x* values fixed: natural when they were fixed by design, and safer when rare categories could drop out of a resample, provided the model fits and the variance is constant \[2\] |
+ | Any analysis with data-driven steps (variable selection, tuning, imputation, outlier removal) | the raw data, rerunning every step in each resample |
+ 
+ ## 7 How many resamples?
+@@ -210,7 +210,7 @@
+ 
+ ### 9.3 Leaving steps out of the resampling
+ 
+-If the analysis made choices with the data, such as selecting variables, tuning a model, removing outliers or imputing missing values, each resample must make them again. Otherwise the bootstrap measures the variability of a simpler procedure than the one that was used, and the interval is too narrow. The same applies to bootstrap estimates of a prediction model's performance, where leaving steps out leaks information from the evaluation into the fitting (see my [note on leakage](https://selcukorkmaz.github.io/blog/leakage-defence-in-layers/)).
++If the analysis made choices with the data, such as selecting variables, tuning a model, removing outliers or imputing missing values, each resample must make them again. Otherwise the bootstrap measures the variability of a simpler procedure than the one that was used, and the interval is too narrow. The same applies to bootstrap estimates of a prediction model's performance, where leaving steps out leaks information from the evaluation into the fitting (see my [note on leakage](https://selcukorkmaz.github.io/blog/leakage-defence-in-layers/), which treats the same problem in cross-validation).
+ 
+ ### 9.4 "A bootstrap 95% CI" without saying which
+ 
+@@ -235,7 +235,7 @@
+ ## References
+ 
+ 1.  Efron B. Bootstrap methods: another look at the jackknife. *The Annals of Statistics*. 1979;7(1):1–26. doi:10.1214/aos/1176344552
+-2.  Hesterberg TC. What teachers should know about the bootstrap: resampling in the undergraduate statistics curriculum. *The American Statistician*. 2015;69(4):371–386. doi:10.1080/00031305.2015.1089789
++2.  Hesterberg TC. What teachers should know about the bootstrap: resampling in the undergraduate statistics curriculum. *The American Statistician*. 2015;69(4):371–386. doi:10.1080/00031305.2015.1089789. Extended version: arXiv:1411.5279, 2014.
+ 3.  DiCiccio TJ, Efron B. Bootstrap confidence intervals. *Statistical Science*. 1996;11(3):189–228. doi:10.1214/ss/1032280214
+ 4.  Davison AC, Hinkley DV. *Bootstrap Methods and Their Application*. Cambridge University Press; 1997. doi:10.1017/CBO9780511802843
+ 5.  Efron B. Better bootstrap confidence intervals. *Journal of the American Statistical Association*. 1987;82(397):171–185. doi:10.1080/01621459.1987.10478410

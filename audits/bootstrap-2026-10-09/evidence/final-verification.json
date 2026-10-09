@@ -1,0 +1,8 @@
+{
+  "findings": 5,
+  "source_hashes_unchanged": true,
+  "coverage_table_and_report_agree": true,
+  "exact_js_python_agree": true,
+  "offline_copy_failure_confirmed": true,
+  "final_full_scope_round": "no new findings; recorded article findings remain open"
+}

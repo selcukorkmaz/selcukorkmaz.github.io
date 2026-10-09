@@ -1,0 +1,92 @@
+{
+  "runtime": {
+    "python": "3.9.6 (default, Apr 30 2025, 02:07:17) \n[Clang 17.0.0 (clang-1700.0.13.5)]",
+    "numpy": "2.0.2",
+    "scipy": "1.13.1"
+  },
+  "t": [
+    {
+      "means": [
+        9.4,
+        1.9
+      ],
+      "sds": [
+        7.73448267321236,
+        7.14065045278712
+      ],
+      "se": 3.3288302917257755,
+      "student": [
+        0.5063870718915737,
+        14.493612928108426
+      ],
+      "welch": [
+        0.5032001996772681,
+        14.496799800322732
+      ],
+      "df_welch": 17.886340923339965
+    },
+    {
+      "means": [
+        11.8,
+        1.9
+      ],
+      "sds": [
+        13.389880092401459,
+        7.14065045278712
+      ],
+      "se": 4.7987266829626565,
+      "student": [
+        -0.18175065332863838,
+        19.98175065332864
+      ],
+      "welch": [
+        -0.41083001575172773,
+        20.21083001575173
+      ],
+      "df_welch": 13.736057396586938
+    }
+  ],
+  "ratios": {
+    "5": 0.7602089928593967,
+    "10": 0.8850328861800255,
+    "20": 0.9436584150009906,
+    "40": 0.9721034821799691
+  },
+  "mcse_percentage_points": {
+    "0.95": 0.21794494717703375,
+    "0.85": 0.3570714214271425
+  },
+  "lognormal_skewness": 6.184877138632554,
+  "paired_counterexample": {
+    "n_pairs": 10,
+    "marginal_variance": 1,
+    "correlation": 0.8,
+    "true_variance_of_mean_difference": 0.039999999999999994,
+    "independent_variance_of_mean_difference": 0.2,
+    "independent_to_paired_se_ratio": 2.23606797749979
+  },
+  "residual_counterexample": {
+    "x": [
+      -2.0,
+      -1.0,
+      1.0,
+      2.0
+    ],
+    "conditional_error_variances": [
+      100.0,
+      1.0,
+      1.0,
+      100.0
+    ],
+    "true_slope_variance": 8.02,
+    "pooled_error_variance_slope_approximation": 5.05
+  },
+  "input_sha256": {
+    "blog/bootstrap/index.html": "0d3227aae919204e8ff00c19d45a40cf86d483100a53d72b90eb33433291cb90",
+    "blog/bootstrap/index.md": "f8c405bdfb804640dff0807e9817b9784576f20b3c981f3fa5eb1a8c984027bf",
+    "blog/bootstrap/bootstrap.pdf": "ddc6ea1cedc59274ab04ed69cc1b176b0a87b812e47072fa247110bd32b7e1c9",
+    "blog/bootstrap/fig1.svg": "35adf807c25dba8c2ee897ad9a500b268c2917c0f2fe180b2721fec6614438e7",
+    "blog/bootstrap/fig2.svg": "a304d583f4577b4033c5c5002a3cc11b4d0869238ac52239db7a3881594be5b9",
+    "blog/bootstrap/fig3.svg": "6923ffd4924fcc1aa64396d8727abe6d9b613a72fba62679eb96d48e6ab19fb9"
+  }
+}

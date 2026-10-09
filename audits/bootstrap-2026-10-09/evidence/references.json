@@ -1,0 +1,302 @@
+[
+  {
+    "DOI": "10.1214/aos/1176344552",
+    "title": [
+      "Bootstrap Methods: Another Look at the Jackknife"
+    ],
+    "author": [
+      {
+        "given": "B.",
+        "family": "Efron",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "The Annals of Statistics"
+    ],
+    "volume": "7",
+    "issue": "1",
+    "page": null,
+    "published": {
+      "date-parts": [
+        [
+          1979,
+          1,
+          1
+        ]
+      ]
+    },
+    "publisher": "Institute of Mathematical Statistics",
+    "abstract": null
+  },
+  {
+    "DOI": "10.1080/00031305.2015.1089789",
+    "title": [
+      "What Teachers Should Know About the Bootstrap: Resampling in the Undergraduate Statistics Curriculum"
+    ],
+    "author": [
+      {
+        "given": "Tim C.",
+        "family": "Hesterberg",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "The American Statistician"
+    ],
+    "volume": "69",
+    "issue": "4",
+    "page": "371-386",
+    "published": {
+      "date-parts": [
+        [
+          2015,
+          10,
+          2
+        ]
+      ]
+    },
+    "publisher": "Informa UK Limited",
+    "abstract": null
+  },
+  {
+    "DOI": "10.1214/ss/1032280214",
+    "title": [
+      "Bootstrap confidence intervals"
+    ],
+    "author": [
+      {
+        "given": "Thomas J.",
+        "family": "DiCiccio",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "Bradley",
+        "family": "Efron",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "Statistical Science"
+    ],
+    "volume": "11",
+    "issue": "3",
+    "page": null,
+    "published": {
+      "date-parts": [
+        [
+          1996,
+          9,
+          1
+        ]
+      ]
+    },
+    "publisher": "Institute of Mathematical Statistics",
+    "abstract": null
+  },
+  {
+    "DOI": "10.1017/cbo9780511802843",
+    "title": [
+      "Bootstrap Methods and their Application"
+    ],
+    "author": [
+      {
+        "given": "A. C.",
+        "family": "Davison",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "D. V.",
+        "family": "Hinkley",
+        "sequence": "additional",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [],
+    "volume": null,
+    "issue": null,
+    "page": null,
+    "published": {
+      "date-parts": [
+        [
+          1997,
+          10,
+          28
+        ]
+      ]
+    },
+    "publisher": "Cambridge University Press",
+    "abstract": null
+  },
+  {
+    "DOI": "10.1080/01621459.1987.10478410",
+    "title": [
+      "Better Bootstrap Confidence Intervals"
+    ],
+    "author": [
+      {
+        "given": "Bradley",
+        "family": "Efron",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "Journal of the American Statistical Association"
+    ],
+    "volume": "82",
+    "issue": "397",
+    "page": "171-185",
+    "published": {
+      "date-parts": [
+        [
+          1987,
+          3
+        ]
+      ]
+    },
+    "publisher": "Informa UK Limited",
+    "abstract": null
+  },
+  {
+    "DOI": "10.1111/j.1467-9868.2007.00593.x",
+    "title": [
+      "Bootstrapping Clustered Data"
+    ],
+    "author": [
+      {
+        "given": "C. A.",
+        "family": "Field",
+        "sequence": "first",
+        "affiliation": [
+          {
+            "name": "Dalhousie University , Halifax , Canada"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      },
+      {
+        "given": "A. H.",
+        "family": "Welsh",
+        "sequence": "additional",
+        "affiliation": [
+          {
+            "name": "Australian National University , Canberra , Australia"
+          }
+        ],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "Journal of the Royal Statistical Society Series B: Statistical Methodology"
+    ],
+    "volume": "69",
+    "issue": "3",
+    "page": "369-390",
+    "published": {
+      "date-parts": [
+        [
+          2007,
+          5,
+          22
+        ]
+      ]
+    },
+    "publisher": "Oxford University Press (OUP)",
+    "abstract": "<jats:title>Summary</jats:title>\n                  <jats:p>Various bootstraps have been proposed for bootstrapping clustered data from one-way arrays. The simulation results in the literature suggest that some of these methods work quite well in practice; the theoretical results are limited and more mixed in their conclusions. For example, McCullagh reached negative conclusions about the use of non-parametric bootstraps for one-way arrays. The purpose of this paper is to extend our understanding of the issues by discussing the effect of different ways of modelling clustered data, the criteria for successful bootstraps used in the literature and extending the theory from functions of the sample mean to include functions of the between and within sums of squares and non-parametric bootstraps to include model-based bootstraps. We determine that the consistency of variance estimates for a bootstrap method depends on the choice of model with the residual bootstrap giving consistency under the transformation model whereas the cluster bootstrap gives consistent estimates under both the transformation and the random-effect model. In addition we note that the criteria based on the distribution of the bootstrap observations are not really useful in assessing consistency.</jats:p>"
+  },
+  {
+    "DOI": "10.1214/aos/1176347265",
+    "title": [
+      "The Jackknife and the Bootstrap for General Stationary Observations"
+    ],
+    "author": [
+      {
+        "given": "Hans R.",
+        "family": "Kunsch",
+        "sequence": "first",
+        "affiliation": [],
+        "role": [
+          {
+            "vocabulary": "crossref",
+            "role": "author"
+          }
+        ]
+      }
+    ],
+    "container-title": [
+      "The Annals of Statistics"
+    ],
+    "volume": "17",
+    "issue": "3",
+    "page": null,
+    "published": {
+      "date-parts": [
+        [
+          1989,
+          9,
+          1
+        ]
+      ]
+    },
+    "publisher": "Institute of Mathematical Statistics",
+    "abstract": null
+  }
+]

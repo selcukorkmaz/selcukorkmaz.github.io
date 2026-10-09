@@ -1,0 +1,285 @@
+{
+  "375": {
+    "states": {
+      "f1-initial": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f2-initial": {
+        "aria": "Figure 2. The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-initial": {
+        "aria": "Figure 3. Normal outcomes, 10 per arm: the first 100 of 1,000 simulated percentile intervals, 4 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 94.4%, percentile 90.6%, BCa 90.4%, bootstrap-t 95.1%.",
+        "clipped": [],
+        "overlapping": []
+      }
+    },
+    "errors": [],
+    "overflow": {
+      "client": 375,
+      "scroll": 375
+    }
+  },
+  "1280": {
+    "states": {
+      "f1-initial": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f2-initial": {
+        "aria": "Figure 2. The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg.",
+        "clipped": [],
+        "overlapping": [
+          [
+            "0%",
+            "−10"
+          ]
+        ]
+      },
+      "f3-initial": {
+        "aria": "Figure 3. Normal outcomes, 10 per arm: the first 100 of 1,000 simulated percentile intervals, 4 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 94.4%, percentile 90.6%, BCa 90.4%, bootstrap-t 95.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f1-once": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f1-twice": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f1-hundred": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f1-thousand": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f1-ideal": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f1-reset": {
+        "aria": "Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f2-0-0": {
+        "aria": "Figure 2. The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg.",
+        "clipped": [],
+        "overlapping": [
+          [
+            "0%",
+            "−10"
+          ]
+        ]
+      },
+      "f2-0-1": {
+        "aria": "Figure 2. The ideal bootstrap distribution of the difference in medians for the pilot data. Percentile interval −2.5 to 15.5 mmHg.",
+        "clipped": [],
+        "overlapping": [
+          [
+            "0%",
+            "−10"
+          ]
+        ]
+      },
+      "f2-1-0": {
+        "aria": "Figure 2. The ideal bootstrap distribution of the difference in means for the data with a 45 mmHg value, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.8 to 19.5, BCa 2.8 to 21.5, t interval −0.2 to 20.0 mmHg.",
+        "clipped": [],
+        "overlapping": [
+          [
+            "0%",
+            "−10"
+          ]
+        ]
+      },
+      "f2-1-1": {
+        "aria": "Figure 2. The ideal bootstrap distribution of the difference in medians for the data with a 45 mmHg value. Percentile interval −2.5 to 15.5 mmHg.",
+        "clipped": [],
+        "overlapping": [
+          [
+            "0%",
+            "−10"
+          ]
+        ]
+      },
+      "f3-0-5-0": {
+        "aria": "Figure 3. Normal outcomes, 5 per arm: the first 100 of 1,000 simulated t intervals, 6 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 88.7%, BCa 88.1%, bootstrap-t 95.2%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-5-1": {
+        "aria": "Figure 3. Normal outcomes, 5 per arm: the first 100 of 1,000 simulated percentile intervals, 12 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 88.7%, BCa 88.1%, bootstrap-t 95.2%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-5-2": {
+        "aria": "Figure 3. Normal outcomes, 5 per arm: the first 100 of 1,000 simulated BCa intervals, 13 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 88.7%, BCa 88.1%, bootstrap-t 95.2%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-5-3": {
+        "aria": "Figure 3. Normal outcomes, 5 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 5 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 88.7%, BCa 88.1%, bootstrap-t 95.2%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-10-0": {
+        "aria": "Figure 3. Normal outcomes, 10 per arm: the first 100 of 1,000 simulated t intervals, 4 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 94.4%, percentile 90.6%, BCa 90.4%, bootstrap-t 95.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-10-1": {
+        "aria": "Figure 3. Normal outcomes, 10 per arm: the first 100 of 1,000 simulated percentile intervals, 4 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 94.4%, percentile 90.6%, BCa 90.4%, bootstrap-t 95.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-10-2": {
+        "aria": "Figure 3. Normal outcomes, 10 per arm: the first 100 of 1,000 simulated BCa intervals, 6 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 94.4%, percentile 90.6%, BCa 90.4%, bootstrap-t 95.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-10-3": {
+        "aria": "Figure 3. Normal outcomes, 10 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 4 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 94.4%, percentile 90.6%, BCa 90.4%, bootstrap-t 95.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-20-0": {
+        "aria": "Figure 3. Normal outcomes, 20 per arm: the first 100 of 1,000 simulated t intervals, 9 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.6%, percentile 94.3%, BCa 94.6%, bootstrap-t 95.5%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-20-1": {
+        "aria": "Figure 3. Normal outcomes, 20 per arm: the first 100 of 1,000 simulated percentile intervals, 10 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.6%, percentile 94.3%, BCa 94.6%, bootstrap-t 95.5%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-20-2": {
+        "aria": "Figure 3. Normal outcomes, 20 per arm: the first 100 of 1,000 simulated BCa intervals, 9 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.6%, percentile 94.3%, BCa 94.6%, bootstrap-t 95.5%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-20-3": {
+        "aria": "Figure 3. Normal outcomes, 20 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 8 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.6%, percentile 94.3%, BCa 94.6%, bootstrap-t 95.5%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-40-0": {
+        "aria": "Figure 3. Normal outcomes, 40 per arm: the first 100 of 1,000 simulated t intervals, 4 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 95.3%, BCa 95.1%, bootstrap-t 95.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-40-1": {
+        "aria": "Figure 3. Normal outcomes, 40 per arm: the first 100 of 1,000 simulated percentile intervals, 5 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 95.3%, BCa 95.1%, bootstrap-t 95.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-40-2": {
+        "aria": "Figure 3. Normal outcomes, 40 per arm: the first 100 of 1,000 simulated BCa intervals, 4 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 95.3%, BCa 95.1%, bootstrap-t 95.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-0-40-3": {
+        "aria": "Figure 3. Normal outcomes, 40 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 6 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 95.7%, percentile 95.3%, BCa 95.1%, bootstrap-t 95.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-5-0": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 5 per arm: the first 100 of 1,000 simulated t intervals, 3 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.7%, percentile 86.9%, BCa 83.6%, bootstrap-t 96.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-5-1": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 5 per arm: the first 100 of 1,000 simulated percentile intervals, 16 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.7%, percentile 86.9%, BCa 83.6%, bootstrap-t 96.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-5-2": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 5 per arm: the first 100 of 1,000 simulated BCa intervals, 19 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.7%, percentile 86.9%, BCa 83.6%, bootstrap-t 96.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-5-3": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 5 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 5 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.7%, percentile 86.9%, BCa 83.6%, bootstrap-t 96.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-10-0": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 10 per arm: the first 100 of 1,000 simulated t intervals, 0 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.8%, percentile 90.7%, BCa 85.2%, bootstrap-t 92.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-10-1": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 10 per arm: the first 100 of 1,000 simulated percentile intervals, 7 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.8%, percentile 90.7%, BCa 85.2%, bootstrap-t 92.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-10-2": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 10 per arm: the first 100 of 1,000 simulated BCa intervals, 14 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.8%, percentile 90.7%, BCa 85.2%, bootstrap-t 92.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-10-3": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 10 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 5 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.8%, percentile 90.7%, BCa 85.2%, bootstrap-t 92.9%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-20-0": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 20 per arm: the first 100 of 1,000 simulated t intervals, 2 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.1%, percentile 91.9%, BCa 86.8%, bootstrap-t 90.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-20-1": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 20 per arm: the first 100 of 1,000 simulated percentile intervals, 9 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.1%, percentile 91.9%, BCa 86.8%, bootstrap-t 90.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-20-2": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 20 per arm: the first 100 of 1,000 simulated BCa intervals, 15 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.1%, percentile 91.9%, BCa 86.8%, bootstrap-t 90.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-20-3": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 20 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 10 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.1%, percentile 91.9%, BCa 86.8%, bootstrap-t 90.7%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-40-0": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 40 per arm: the first 100 of 1,000 simulated t intervals, 3 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.0%, percentile 93.6%, BCa 89.6%, bootstrap-t 92.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-40-1": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 40 per arm: the first 100 of 1,000 simulated percentile intervals, 8 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.0%, percentile 93.6%, BCa 89.6%, bootstrap-t 92.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-40-2": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 40 per arm: the first 100 of 1,000 simulated BCa intervals, 10 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.0%, percentile 93.6%, BCa 89.6%, bootstrap-t 92.1%.",
+        "clipped": [],
+        "overlapping": []
+      },
+      "f3-1-40-3": {
+        "aria": "Figure 3. Right-skewed (log-normal) outcomes, 40 per arm: the first 100 of 1,000 simulated bootstrap-t intervals, 10 of which miss the true difference, and the coverage of each method over all 1,000 trials: t interval 96.0%, percentile 93.6%, BCa 89.6%, bootstrap-t 92.1%.",
+        "clipped": [],
+        "overlapping": []
+      }
+    },
+    "errors": [],
+    "overflow": {
+      "client": 1280,
+      "scroll": 1280
+    }
+  }
+}

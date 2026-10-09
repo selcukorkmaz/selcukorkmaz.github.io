@@ -1,0 +1,1476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Hand-written post. index.md, fig*.svg and bootstrap.pdf are derived from this file by tools/export_post.py; re-run it after editing. -->
+<title>Where a confidence interval comes from — Selçuk Korkmaz</title>
+<meta name="description" content="A confidence interval is read off a sampling distribution. The bootstrap estimates that distribution by resampling the data; three interactive figures show how, why the simplest bootstrap interval is too narrow in small samples, and how often each interval covers the truth.">
+<meta name="author" content="Selçuk Korkmaz">
+<link rel="canonical" href="https://selcukorkmaz.github.io/blog/bootstrap/">
+<link rel="alternate" type="text/markdown" href="index.md" title="Markdown version">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Selçuk Korkmaz">
+<meta property="og:title" content="Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples">
+<meta property="og:description" content="A confidence interval is read off a sampling distribution. The bootstrap estimates that distribution by resampling the data; three interactive figures show how, why the simplest bootstrap interval is too narrow in small samples, and how often each interval covers the truth.">
+<meta property="og:url" content="https://selcukorkmaz.github.io/blog/bootstrap/">
+<meta property="og:image" content="https://selcukorkmaz.github.io/blog/bootstrap/card-figure1.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="Figure 1 of the post: the 20 participants of a pilot trial and the ideal bootstrap distribution of the difference in means, with its 95% percentile interval of 1.3 to 13.7 mmHg.">
+<meta property="article:published_time" content="2026-10-08">
+<meta property="article:author" content="https://selcukorkmaz.github.io/">
+<meta property="article:tag" content="bootstrap">
+<meta property="article:tag" content="confidence intervals">
+<meta property="article:tag" content="standard error">
+<meta property="article:tag" content="sampling distribution">
+<meta property="article:tag" content="resampling">
+<meta property="article:tag" content="small samples">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples">
+<meta name="twitter:description" content="A confidence interval is read off a sampling distribution. The bootstrap estimates that distribution by resampling the data; three interactive figures show how, why the simplest bootstrap interval is too narrow in small samples, and how often each interval covers the truth.">
+<meta name="twitter:creator" content="@selcukorkmaz">
+<meta name="twitter:image" content="https://selcukorkmaz.github.io/blog/bootstrap/card-figure1.png">
+<meta name="twitter:image:alt" content="Figure 1 of the post: the 20 participants of a pilot trial and the ideal bootstrap distribution of the difference in means, with its 95% percentile interval of 1.3 to 13.7 mmHg.">
+<meta name="color-scheme" content="light dark">
+<meta id="metaThemeColor" name="theme-color" content="#f6f7f5">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples",
+  "name": "Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples",
+  "description": "A confidence interval is read off a sampling distribution. The bootstrap estimates that distribution by resampling the data; three interactive figures show how, why the simplest bootstrap interval is too narrow in small samples, and how often each interval covers the truth.",
+  "url": "https://selcukorkmaz.github.io/blog/bootstrap/",
+  "mainEntityOfPage": "https://selcukorkmaz.github.io/blog/bootstrap/",
+  "datePublished": "2026-10-08",
+  "inLanguage": "en",
+  "keywords": [
+    "bootstrap",
+    "confidence intervals",
+    "standard error",
+    "sampling distribution",
+    "resampling",
+    "small samples"
+  ],
+  "image": "https://selcukorkmaz.github.io/blog/bootstrap/card-figure1.png",
+  "encoding": [
+    {
+      "@type": "MediaObject",
+      "encodingFormat": "application/pdf",
+      "contentUrl": "https://selcukorkmaz.github.io/blog/bootstrap/bootstrap.pdf"
+    },
+    {
+      "@type": "MediaObject",
+      "encodingFormat": "text/markdown",
+      "contentUrl": "https://selcukorkmaz.github.io/blog/bootstrap/index.md"
+    }
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/",
+    "affiliation": {
+      "@type": "Organization",
+      "name": "Trakya University",
+      "department": {
+        "@type": "Organization",
+        "name": "Trakya University Faculty of Medicine, Department of Biostatistics"
+      }
+    }
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/"
+  },
+  "isPartOf": {
+    "@type": "Blog",
+    "name": "Blog · Selçuk Korkmaz",
+    "url": "https://selcukorkmaz.github.io/blog/"
+  }
+}
+</script>
+<script>
+(function () {
+  var root = document.documentElement;
+  root.classList.add('js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t === 'dark' || t === 'light') { root.classList.add(t); root.setAttribute('data-theme', t); }
+  } catch (e) {}
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f5; --panel:#ffffff; --ink:#17202b; --ink-2:#465262; --muted:#6a7584; --rule:#d9dee3; --soft:#eceff1;
+  --accent:#2d3e50; --sg:#12707a; --fm:#2f5f9e; --bl:#9a5a12; --leak:#b23a30; --ok:#23794f;
+  --s1:#2a78d6; --s2:#eb6834; --code:#eef1f3; --hl:rgba(178,58,48,.09);
+  --serif:"Literata",Georgia,"Times New Roman",serif; --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ color-scheme:dark;
+    --bg:#11161c; --panel:#161c23; --ink:#e5e9ed; --ink-2:#b8c1cb; --muted:#8a95a2; --rule:#2b343e; --soft:#1b222a;
+    --accent:#a9bfd6; --sg:#56b6bf; --fm:#80a9e2; --bl:#dda45c; --leak:#ee7d71; --ok:#5cc08b;
+    --s1:#3987e5; --s2:#d95926; --code:#1a2129; --hl:rgba(238,125,113,.12); }
+}
+:root[data-theme="dark"]{ color-scheme:dark;
+  --bg:#11161c; --panel:#161c23; --ink:#e5e9ed; --ink-2:#b8c1cb; --muted:#8a95a2; --rule:#2b343e; --soft:#1b222a;
+  --accent:#a9bfd6; --sg:#56b6bf; --fm:#80a9e2; --bl:#dda45c; --leak:#ee7d71; --ok:#5cc08b;
+  --s1:#3987e5; --s2:#d95926; --code:#1a2129; --hl:rgba(238,125,113,.12); }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17.5px;line-height:1.62;margin:0;padding-inline:20px;padding-block:0 80px;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:200px minmax(0,1fr);gap:56px}
+@media (max-width:980px){.wrap{grid-template-columns:minmax(0,1fr);gap:0}.toc{display:none}}
+.toc{position:sticky;top:env(safe-area-inset-top,0px);align-self:start;padding-top:64px;font-family:var(--sans);font-size:13.5px}
+.toc b{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;font-weight:600}
+.toc a{display:block;color:var(--ink-2);text-decoration:none;padding:4px 0 4px 12px;border-left:2px solid var(--rule);line-height:1.35}
+.toc a:hover,.toc a:focus-visible{color:var(--ink);border-left-color:var(--accent)}
+main{min-width:0;max-width:940px}
+main p,main ul,main ol,main h2,main h3,main .box,main .algo,main pre,main .tw,main figure:not(.wide),header.title>*{max-width:760px}
+header.title{padding-top:56px;padding-bottom:28px;border-bottom:1px solid var(--rule)}
+.kicker{font-family:var(--sans);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:600}
+h1{font-family:var(--sans);font-weight:700;font-size:clamp(30px,4.4vw,44px);line-height:1.08;letter-spacing:-.02em;margin:14px 0 18px;text-wrap:balance}
+h1 span{color:var(--muted);font-weight:600}
+.byline{font-family:var(--sans);font-size:15px;color:var(--ink-2)}
+.byline small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.pkgs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;font-family:var(--mono);font-size:12.5px}
+.pkg{padding:3px 9px;border-radius:4px;border:1px solid var(--rule);background:var(--panel)}
+.pkg i{font-style:normal;display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:0}
+.abstract{margin:28px 0 8px;padding:22px 24px;background:var(--panel);border:1px solid var(--rule);border-radius:6px}
+.abstract h2{margin:0 0 8px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.abstract p{margin:0 0 10px;font-size:16.5px}
+.kw{font-family:var(--sans);font-size:13.5px;color:var(--muted);margin-top:10px}
+h2{font-family:var(--sans);font-weight:700;font-size:25px;letter-spacing:-.01em;line-height:1.2;margin:56px 0 12px;text-wrap:balance}
+h2 .n{color:var(--muted);font-weight:600;margin-right:10px}
+h3{font-family:var(--sans);font-weight:700;font-size:18.5px;margin:34px 0 8px;text-wrap:balance}
+h3 .n{color:var(--muted);font-weight:600;margin-right:8px}
+p{margin:0 0 16px}
+em{font-style:italic}
+a{color:var(--fm)}
+code,.m,pre,.algo{font-variant-ligatures:none;font-feature-settings:"liga" 0,"calt" 0}
+code,.m{font-family:var(--mono);font-size:.84em;background:var(--code);padding:1px 5px;border-radius:3px;word-break:break-word}
+pre{font-family:var(--mono);font-size:13.5px;line-height:1.6;background:var(--code);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;overflow-x:auto;margin:10px 0 22px}
+pre code{background:none;padding:0;font-size:inherit}
+pre .c{color:var(--muted);font-style:italic}
+pre .sg{color:var(--sg)} pre .fm{color:var(--fm)} pre .bl{color:var(--bl)}
+ul,ol{padding-left:22px;margin:0 0 16px} li{margin-bottom:6px}
+.eq{font-family:var(--serif);font-style:italic;text-align:center;margin:14px 0 18px;font-size:17px;overflow-x:auto}
+.eq sub,.eq sup{font-size:.7em}
+.box{border-left:3px solid var(--accent);background:var(--panel);padding:14px 18px;margin:18px 0 22px;border-radius:0 6px 6px 0;font-size:16px}
+.box b{font-family:var(--sans)}
+.algo{font-family:var(--mono);font-size:13.5px;line-height:1.7;background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:14px 18px;margin:12px 0 22px;overflow-x:auto;white-space:pre}
+.algo b{font-family:var(--sans);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+figure{margin:28px 0 30px}
+figure.wide{max-width:940px}
+.fig{background:var(--panel);border:1px solid var(--rule);border-radius:6px;padding:16px 16px 10px;overflow-x:auto}
+.fig svg{display:block;width:100%;height:auto}
+.fig.diagram svg{min-width:720px}
+figcaption{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-2);margin-top:10px}
+figcaption b{color:var(--ink)}
+.tw{overflow-x:auto;margin:14px 0 26px;border:1px solid var(--rule);border-radius:6px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;font-family:var(--sans);font-size:14px;font-variant-numeric:tabular-nums}
+caption{caption-side:top;text-align:left;font-size:14px;color:var(--ink-2);padding:12px 14px 4px;line-height:1.45}
+caption b{color:var(--ink)}
+th,td{padding:8px 12px;text-align:left;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+td.r,th.r{text-align:right}
+tr:last-child td{border-bottom:0}
+td .m{font-size:12.5px}
+.yes{color:var(--ok);font-weight:600}.no{color:var(--muted)}.warn{color:var(--leak);font-weight:600}
+.pos{color:var(--leak)} .neg{color:var(--ok)}
+tr.best td{background:var(--hl)}
+.cfg{font-family:var(--mono);font-size:12.5px;font-weight:500}
+.refs{font-size:15px;line-height:1.5;padding-left:0;list-style:none;counter-reset:r}
+.refs li{counter-increment:r;padding-left:34px;position:relative;margin-bottom:9px;overflow-wrap:anywhere}
+.refs li::before{content:"[" counter(r) "]";position:absolute;left:0;color:var(--muted);font-family:var(--sans);font-size:13px;top:2px}
+sup.cite{font-family:var(--sans);font-size:.68em;color:var(--muted)}
+sup.cite a{color:inherit;text-decoration:none}
+.tip{position:fixed;pointer-events:none;z-index:9;background:var(--ink);color:var(--bg);font-family:var(--sans);font-size:12.5px;line-height:1.35;padding:6px 9px;border-radius:5px;max-width:260px;opacity:0;transition:opacity .1s}
+.tip.on{opacity:1}
+svg text{font-family:var(--sans)}
+svg .t-ink{fill:var(--ink)} svg .t-2{fill:var(--ink-2)} svg .t-mu{fill:var(--muted)}
+svg .grid{stroke:var(--rule);stroke-width:1}
+svg .axis{stroke:var(--muted);stroke-width:1}
+[data-tip]{cursor:default}
+:focus-visible{outline:2px solid var(--fm);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:600px){body{font-size:16.5px}h2{font-size:22px}.abstract{padding:18px}}
+.fig.plain{background:#ffffff;padding:10px}
+.fig.plain img{display:block;width:100%;height:auto}
+main ul ul{margin:6px 0 4px}
+/* ---- this post: colours for the p-value and the null distribution, the arms, and the figure controls ---- */
+:root{ --pv:#9a5a12; --ef:#12707a; --ci:#2f5f9e }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --pv:#dda45c; --ef:#56b6bf; --ci:#80a9e2 } }
+:root[data-theme="dark"]{ --pv:#dda45c; --ef:#56b6bf; --ci:#80a9e2 }
+.fig svg{min-width:560px}
+.ctl{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0 0 10px;font-family:var(--sans);font-size:13px}
+.ctl .lab{color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--panel)}
+.seg button{font:500 13px/1 var(--sans);padding:7px 11px;border:0;border-left:1px solid var(--rule);background:transparent;color:var(--ink-2);cursor:pointer;font-variant-numeric:tabular-nums}
+.seg button:first-child{border-left:0}
+.seg button:hover{color:var(--ink);background:var(--soft)}
+.seg button[aria-pressed="true"]{background:var(--soft);color:var(--ink);font-weight:600;box-shadow:inset 0 -2px 0 var(--accent)}
+html:not(.js) .ctl{display:none}
+th.w{white-space:normal}
+.acts{display:inline-flex;flex-wrap:wrap;gap:6px}
+.acts button{font:500 13px/1 var(--sans);padding:7px 11px;border:1px solid var(--rule);border-radius:999px;background:var(--panel);color:var(--ink);cursor:pointer;font-variant-numeric:tabular-nums}
+.acts button:hover{border-color:var(--accent);background:var(--soft)}
+.acts button:active{box-shadow:inset 0 -2px 0 var(--accent)}
+main p.readout{font-family:var(--sans);font-size:14px;line-height:1.5;color:var(--ink-2);margin:10px 0 0;font-variant-numeric:tabular-nums;min-height:3em}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 5px 0 2px;vertical-align:0}
+.check{list-style:none;padding-left:0}
+.check li{position:relative;padding-left:28px}
+.check li::before{content:"";position:absolute;left:2px;top:.45em;width:14px;height:14px;border:1.5px solid var(--accent);border-radius:3px}
+.abstract h2{margin:0 0 8px}
+.nw{white-space:nowrap}
+/* √: neither Literata nor IBM Plex Sans has the glyph, so a font-drawn √ came from whatever fallback
+   the system had, and it had no bar over the radicand. Draw the sign (a mask, so it takes the text colour)
+   and the bar with CSS instead; the box's line-height puts the bar about .88em above the baseline in both
+   fonts. The visually hidden "√[ … ]" keeps the notation for screen readers, copying and index.md. */
+.rad{display:inline-block;position:relative;padding:0 .04em 0 .58em;margin-left:.03em;line-height:.89;vertical-align:baseline}
+.rad::before{content:"";position:absolute;left:0;top:0;bottom:-.14em;width:.58em;background:currentColor;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%;mask:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2056%20100'%20preserveAspectRatio='none'%3E%3Cpath%20d='M1%2063L12%2055L27%2087L50%200H56V6L31%20100H25L9%2063L4%2066Z'/%3E%3C/svg%3E") no-repeat 0 0/100% 100%}
+.rad::after{content:"";position:absolute;left:.52em;right:0;top:0;border-top:.06em solid currentColor}
+table .rad, figcaption .rad, .readout .rad{line-height:1.01}
+.rad.tall{padding-top:.22em}  /* radicands with superscripts: lift the bar clear of them */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* x̄: the combining macron sits badly on italic x in Literata, and an overline follows the tall line box.
+   Draw the bar as a zero-height box anchored on the baseline and lifted just above the x-height
+   (about 0.5em in Literata, IBM Plex Sans, Georgia and Helvetica), shifted right for the italic slant. */
+.xbar::after{content:""; display:inline-block; vertical-align:baseline; position:relative; top:-.62em;
+  width:.4em; height:0; margin-left:-.41em; border-top:.065em solid currentColor}
+/* Light-theme muted text darkened slightly so small text meets WCAG AA (4.5:1) on the page, panels and soft fills. */
+:root{ --muted:#626d7b }
+.fig img{display:block;width:100%;height:auto;min-width:560px}
+html:not(.js) .fig svg, html:not(.js) p.readout{display:none}
+.eq > span{display:inline-block;margin:0 1.2em;white-space:nowrap}
+/* Room for the drawn radicals, which reach slightly above and below the text; never scroll vertically. */
+.eq{padding:.3em 0;overflow-y:hidden}
+</style>
+<style>
+/* ======== site bar, post tools, comments and print (same as the other posts) ======== */
+/* ---- site bar ---- */
+:root{ --sitebar-h:52px }
+html{ scroll-padding-top:calc(var(--sitebar-h) + env(safe-area-inset-top, 0px) + 12px) }
+.toc{ top:calc(env(safe-area-inset-top, 0px) + var(--sitebar-h)) }
+.sitebar{
+  position:sticky; top:0; z-index:8;
+  margin-inline:-20px; padding:env(safe-area-inset-top, 0px) 20px 0;
+  background:var(--bg); border-bottom:1px solid var(--rule);
+  font-family:var(--sans);
+}
+.sitebar-in{ max-width:1200px; margin:0 auto; height:var(--sitebar-h); display:flex; align-items:center; gap:12px }
+.sb-crumbs{ display:flex; align-items:center; gap:8px; min-width:0; font-size:14.5px; line-height:1.2 }
+.sb-crumbs a{ color:var(--ink); text-decoration:none; font-weight:600; white-space:nowrap; border-radius:4px }
+.sb-crumbs a.sb-blog{ color:var(--ink-2); font-weight:500 }
+.sb-crumbs a:hover{ text-decoration:underline; text-underline-offset:3px }
+.sb-sep{ color:var(--muted) }
+.sb-toggle{
+  margin-left:auto; flex:0 0 auto; display:inline-flex; align-items:center; gap:8px;
+  font:500 13px/1 var(--sans); padding:7px 12px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--rule); background:var(--panel); color:var(--ink);
+}
+.sb-toggle:hover{ border-color:var(--accent) }
+.sb-ico{ width:18px; height:18px; flex:0 0 18px }
+:root:not([data-theme="dark"]) .sb-moon{ display:none }
+:root[data-theme="dark"] .sb-sun{ display:none }
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme]) .sb-sun{ display:none }
+  :root:not([data-theme]) .sb-moon{ display:inline }
+}
+html:not(.js) .sb-toggle, html:not(.js) [data-pt-copy-md], html:not(.js) .pt-row button{ display:none }
+.sb-skip{
+  position:fixed; left:12px; top:12px; z-index:20; font-family:var(--sans); font-size:14px;
+  background:var(--panel); color:var(--ink); border:1px solid var(--rule);
+  padding:8px 12px; border-radius:6px; transform:translateY(-200%);
+}
+.sb-skip:focus{ transform:translateY(0) }
+.sb-printurl{ display:none }
+@media (max-width:600px){ .sb-label{ display:none } .sb-toggle{ padding:7px 10px } }
+
+/* ---- post tools ---- */
+.pt{ font-family:var(--sans); font-size:14px; line-height:1.45; margin:22px 0 0; max-width:760px }
+.pt-end{ margin-top:56px; padding-top:18px; border-top:1px solid var(--rule) }
+.pt-lead{ margin:0 0 10px; font-size:12.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); font-weight:600 }
+.pt-row, .pt-links{ display:flex; flex-wrap:wrap; gap:8px; align-items:center }
+.pt-btn{
+  display:inline-flex; align-items:center; gap:6px; font:500 13px/1.1 var(--sans);
+  padding:7px 11px; border-radius:999px; cursor:pointer; white-space:nowrap; text-decoration:none;
+  border:1px solid var(--rule); background:var(--panel); color:var(--ink);
+}
+.pt-btn:hover{ border-color:var(--accent) }
+.pt-btn[aria-expanded="true"]{ border-color:var(--accent); background:var(--soft) }
+.pt-btn[aria-expanded="true"] .pt-chev{ transform:rotate(180deg) }
+.pt-btn[hidden]{ display:none }
+.pt-quiet{ border-color:transparent; background:transparent; color:var(--ink-2); text-decoration:underline; text-underline-offset:3px; padding-inline:6px }
+.pt-quiet:hover{ color:var(--ink) }
+.pt-sm{ padding:5px 9px; font-size:12.5px }
+.pt-ico{ width:15px; height:15px; flex:0 0 15px }
+.pt-chev{ width:13px; height:13px; flex:0 0 13px; margin-left:-2px; color:var(--muted) }
+.pt-panel{ margin-top:10px; padding:14px 16px; background:var(--panel); border:1px solid var(--rule); border-radius:6px }
+.pt-panel[hidden]{ display:none }
+.pt-cite + .pt-cite{ margin-top:14px }
+.pt-cite-h{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:6px }
+.pt-cite-h b{ font-size:12.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted) }
+main pre.pt-code{ margin:0; padding:10px 12px; font-size:12.5px; white-space:pre-wrap; overflow-wrap:anywhere; max-width:none }
+main p.pt-apa{ margin:0; font-family:var(--serif); font-size:15px; overflow-wrap:anywhere; max-width:none }
+main p.pt-note{ margin:0 0 10px; color:var(--ink-2); font-size:13.5px; max-width:none }
+main p.pt-status{ margin:8px 0 0; min-height:1.2em; font-size:13px; color:var(--ok); max-width:none }
+.pt-status:empty{ margin:0; min-height:0 }
+.pt-ta{ position:absolute; left:-9999px; top:0; width:1px; height:1px; opacity:0 }
+.pt-ta.show{ position:static; left:auto; width:100%; height:12em; opacity:1; margin-top:8px; font:12.5px/1.5 var(--mono); color:var(--ink); background:var(--code); border:1px solid var(--rule); border-radius:6px; padding:8px }
+
+/* ---- comments ---- */
+.comments{ max-width:760px }
+main p.cm-note{ color:var(--muted); font-family:var(--sans); font-size:15px; margin:0 }
+
+/* ---- print (also used for the PDF) ---- */
+@media print{
+  @page{ size:A4; margin:16mm 15mm 18mm }
+  html:root[lang]{ color-scheme:light;
+    --bg:#f6f7f5; --panel:#ffffff; --ink:#17202b; --ink-2:#465262; --muted:#6a7584; --rule:#d9dee3; --soft:#eceff1;
+  --accent:#2d3e50; --sg:#12707a; --fm:#2f5f9e; --bl:#9a5a12; --leak:#b23a30; --ok:#23794f;
+  --s1:#2a78d6; --s2:#eb6834; --code:#eef1f3; --hl:rgba(178,58,48,.09);
+  --pv:#9a5a12; --ef:#12707a; --ci:#2f5f9e; --muted:#626d7b;
+  --serif:"Literata",Georgia,"Times New Roman",serif; --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; }
+  *{ -webkit-print-color-adjust:exact; print-color-adjust:exact }
+  body{ background:#fff; padding:0; font-size:11pt; line-height:1.5 }
+  .sitebar, .sb-skip, .toc, .pt, .pt-ta, .comments, .tip, .ctl{ display:none !important }
+  main p.readout{ min-height:0 }
+  .fig svg{ min-width:0 }
+  .sb-printurl{ display:block; margin:0 0 6mm; font:9pt/1.3 var(--sans); color:var(--muted) }
+  .wrap{ display:block; max-width:none }
+  main{ max-width:none }
+  header.title{ padding-top:0; padding-bottom:18px }
+  .abstract{ break-inside:avoid }
+  .abstract p{ font-size:10.5pt }
+  h2{ margin:26px 0 10px; break-after:avoid }
+  h3{ margin:20px 0 6px; break-after:avoid }
+  p, li{ orphans:3; widows:3 }
+  figure, .tw, table, pre, .algo, .box, .eq{ break-inside:avoid }
+  tr, li{ break-inside:avoid }
+  p:has(+ .eq){ break-after:avoid }
+  figure{ margin:16px 0 18px }
+  .fig, .tw, pre, .algo, .eq{ overflow:visible }
+  .fig.diagram svg{ min-width:0 }
+  pre, .algo{ white-space:pre-wrap; overflow-wrap:anywhere; font-size:9pt }
+  table{ font-size:9pt }
+  th{ font-size:8pt }
+  figcaption, caption{ font-size:9pt }
+  .refs{ font-size:9.5pt }
+  .box{ font-size:10.5pt }
+  .refs li{ padding-left:34px; text-indent:-34px }
+  .refs li::before{ position:static; display:inline-block; width:34px; text-indent:0 }
+  a{ color:inherit; text-decoration:none }
+}
+</style>
+</head>
+<body>
+<a class="sb-skip" href="#main">Skip to content</a>
+<header class="sitebar">
+  <div class="sitebar-in">
+    <nav class="sb-crumbs" aria-label="Site">
+      <a href="../../">Selçuk Korkmaz</a>
+      <span class="sb-sep" aria-hidden="true">/</span>
+      <a class="sb-blog" href="../">Blog</a>
+    </nav>
+    <button class="sb-toggle" data-theme-toggle type="button" aria-label="Switch colour theme">
+      <svg class="sb-ico sb-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="sb-ico sb-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <span class="sb-label">Theme</span>
+    </button>
+  </div>
+</header>
+<p class="sb-printurl">selcukorkmaz.github.io/blog/bootstrap/ · 8 October 2026</p>
+<div class="wrap">
+<nav class="toc" aria-label="Contents">
+  <b>Contents</b>
+  <a href="#sampling">1 · A sampling distribution</a>
+  <a href="#resample">2 · Resampling</a>
+  <a href="#narrow">3 · Too narrow</a>
+  <a href="#better">4 · Better intervals</a>
+  <a href="#coverage">5 · Coverage</a>
+  <a href="#assume">6 · What to resample</a>
+  <a href="#howmany">7 · How many resamples</a>
+  <a href="#report">8 · How to report</a>
+  <a href="#traps">9 · Five traps</a>
+  <a href="#checklist">10 · Checklist</a>
+  <a href="#refs">References</a>
+</nav>
+
+<main id="main">
+<header class="title">
+  <div class="kicker">Statistics note · Inference in biomedical research</div>
+  <h1>Where a confidence interval comes from <span>The bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples</span></h1>
+  <div class="byline">Selçuk Korkmaz<small>8 October 2026</small></div>
+  <!--md-skip-->
+<div class="pt pt-top" data-md-skip>
+  <div class="pt-row" role="group" aria-label="Post tools">
+    <a class="pt-btn" href="bootstrap.pdf" download><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a>
+    <button class="pt-btn" type="button" data-pt-copy-md><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15V9l2.5 3L12 9v6M16 9v6M14 13l2 2 2-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy as Markdown</button>
+    <a class="pt-btn pt-quiet" href="index.md">View Markdown</a>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-cite"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6.8" cy="9.6" r="3.3" fill="currentColor"/><path d="M10.1 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.2" cy="9.6" r="3.3" fill="currentColor"/><path d="M20.5 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Cite<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-share"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-top-tr"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Translate<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="pt-panel" id="pt-top-cite" hidden>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>BibTeX</b><button class="pt-btn pt-sm" type="button" data-pt-copy="bibtex" data-pt-label="BibTeX"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <pre class="pt-code"><code>@misc{korkmaz2026confidence,
+  author       = {Korkmaz, Sel{\c{c}}uk},
+  title        = {Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples},
+  year         = {2026},
+  month        = oct,
+  date         = {2026-10-08},
+  howpublished = {\url{https://selcukorkmaz.github.io/blog/bootstrap/}},
+  url          = {https://selcukorkmaz.github.io/blog/bootstrap/},
+  note         = {Blog post}
+}</code></pre>
+    </div>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>APA</b><button class="pt-btn pt-sm" type="button" data-pt-copy="apa" data-pt-label="APA citation"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <p class="pt-apa">Korkmaz, S. (2026, October 8). <i>Where a confidence interval comes from: The bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples</i> [Blog post]. https://selcukorkmaz.github.io/blog/bootstrap/</p>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-top-share" hidden>
+    <div class="pt-links">
+        <button class="pt-btn" type="button" data-pt-copy="link" data-pt-label="Link"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy link</button>
+        <button class="pt-btn" type="button" data-pt-native hidden><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share…</button>
+        <a class="pt-btn" href="https://x.com/intent/post?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F&amp;text=Where%20a%20confidence%20interval%20comes%20from%3A%20the%20bootstrap%2C%20the%20sampling%20distribution%20and%20why%20the%20simplest%20bootstrap%20interval%20is%20too%20narrow%20in%20small%20samples" target="_blank" rel="noopener">X</a>
+        <a class="pt-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pt-btn" href="https://bsky.app/intent/compose?text=Where%20a%20confidence%20interval%20comes%20from%3A%20the%20bootstrap%2C%20the%20sampling%20distribution%20and%20why%20the%20simplest%20bootstrap%20interval%20is%20too%20narrow%20in%20small%20samples%20https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener">Bluesky</a>
+        <a class="pt-btn" href="mailto:?subject=Where%20a%20confidence%20interval%20comes%20from%3A%20the%20bootstrap%2C%20the%20sampling%20distribution%20and%20why%20the%20simplest%20bootstrap%20interval%20is%20too%20narrow%20in%20small%20samples&amp;body=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F">Email</a>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-top-tr" hidden>
+    <p class="pt-note">Opens this page in Google Translate (machine translation). It works once the post is public at its web address.</p>
+    <div class="pt-links">
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=tr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="tr" lang="tr">Türkçe</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=de&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="de" lang="de">Deutsch</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=fr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="fr" lang="fr">Français</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=es&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="es" lang="es">Español</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=ar&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="ar" lang="ar" dir="rtl">العربية</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=zh-CN&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </div>
+  </div>
+  <p class="pt-status" role="status" aria-live="polite"></p>
+</div>
+<!--/md-skip-->
+</header>
+<!--md-body-->
+<section class="abstract" aria-label="Summary">
+  <h2>In short</h2>
+  <p>A confidence interval is read off a sampling distribution: the distribution an estimate would have if the study were repeated with new participants. The <i>t</i> interval works with that distribution through a model and a formula. The bootstrap estimates it from the data: it treats the sample as a stand-in for the population, draws new samples from it with replacement, and recomputes the estimate each time. For the 20-person pilot trial of the previous note, the ideal bootstrap distribution, computed exactly, gives a standard error of 3.16 mmHg and a 95% percentile interval of 1.3 to 13.7 mmHg. The <i>t</i> interval is wider, 0.5 to 14.5 mmHg, and in simulated trials with 10 participants per arm the percentile interval covered the true difference only 92% of the time.</p>
+  <p>Three interactive figures build the bootstrap distribution by resampling, set it against the <i>t</i> distribution and two better bootstrap intervals (BCa and the bootstrap-<i>t</i>), and count how often each interval covers the truth in simulated trials. Tables cover the intervals for the pilot data, their coverage, what to resample in each design and how many resamples are enough, and a checklist covers what to report.</p>
+  <div class="kw">Keywords: bootstrap · confidence intervals · standard error · sampling distribution · resampling · small samples</div>
+</section>
+
+<h2 id="sampling"><span class="n">1</span>A confidence interval needs a sampling distribution</h2>
+<p>The <a href="https://selcukorkmaz.github.io/blog/permutation-test/">previous note</a> showed where a <i>p</i>-value comes from: a null distribution, built there by shuffling the group labels. A confidence interval has a source too. In an <a href="https://selcukorkmaz.github.io/blog/sd-or-se/#two">earlier note</a> I described the standard error as a standard deviation: the standard deviation of an estimate across hypothetical repeats of the study, each with new participants. Those repeats form the <em>sampling distribution</em> of the estimate, and a <a href="https://selcukorkmaz.github.io/blog/p-effect-size-ci/#ci">95% confidence interval</a> is built from it, by a procedure that would capture the true value in 95% of the repeats if the model's assumptions hold.</p>
+<p>The pilot trial of the previous note will serve again. Twenty adults with raised blood pressure were randomised, 10 to a lifestyle programme and 10 to usual care, and the outcome is the fall in systolic blood pressure over 12 weeks (Table 1). The programme arm fell by 9.4 mmHg on average and the usual-care arm by 1.9 mmHg, a difference of 7.5 mmHg.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 1.</b> The pilot data: fall in systolic blood pressure over 12 weeks, in mmHg (negative values are rises). The data are made up and are the same as in the previous note.</caption>
+  <thead><tr><th>Arm</th><th>Fall in each participant</th><th class="r">Mean</th><th class="r">SD</th></tr></thead>
+  <tbody>
+    <tr><td>Programme (<i>n</i> = 10)</td><td>21, 17, 15, 14, 13, 7, 6, 2, 2, −3</td><td class="r">9.4</td><td class="r">7.7</td></tr>
+    <tr><td>Usual care (<i>n</i> = 10)</td><td>11, 10, 9, 5, 2, 1, 0, −1, −9, −9</td><td class="r">1.9</td><td class="r">7.1</td></tr>
+  </tbody>
+</table></div>
+
+<p>The usual 95% confidence interval for the difference, from Student's <i>t</i>, runs from 0.5 to 14.5 mmHg:</p>
+<div class="eq"><span>7.5 ± 2.10 × 3.33 = 0.5 to 14.5 mmHg.</span></div>
+<p>Behind the formula is a model: the outcomes in both arms are normally distributed with the same standard deviation (SD). Under that model the difference in means has a normal sampling distribution, whose SD the standard error, 3.33 mmHg, estimates from the data. Because the standard error is itself estimated, the estimation error divided by the standard error follows Student's <i>t</i> distribution with 18 degrees of freedom, and that is where the multiplier 2.10 comes from. Equivalently, the interval's limits are the 2.5th and 97.5th percentiles of a <i>t</i> distribution centred at the estimate and stretched by the standard error. Every step is a mathematical consequence of the model.</p>
+<p>Repeating the trial to see the real sampling distribution is the one thing we cannot do. The bootstrap, which Efron introduced in 1979 <sup class="cite">[<a href="#ref-efron1979">1</a>]</sup>, does the next best thing.</p>
+
+<h2 id="resample"><span class="n">2</span>Resampling the participants</h2>
+<p>The idea is the plug-in principle <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. The sampling distribution describes what happens when samples are drawn from the population. We do not have the population, but we have a sample from it, and the sample is our best picture of it. So we draw samples from the sample. Drawing 10 programme participants at random <em>with replacement</em>, so that some appear twice or more and others not at all, imitates recruiting 10 new participants from a population that looks like the 10 we have. Do the same for the usual-care arm, compute the difference in means, and repeat many times. The spread of the differences estimates the spread of the sampling distribution.</p>
+
+<div class="box"><b>Bootstrap for a difference between two groups.</b>
+<ol>
+  <li>Draw 10 participants with replacement from the programme arm, and separately 10 from the usual-care arm, so that each arm keeps its size <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</li>
+  <li>Compute the statistic for this resample, <i>T</i>* (here the difference in means).</li>
+  <li>Repeat <i>B</i> times.</li>
+  <li>The SD of the <i>B</i> values of <i>T</i>* is the <em>bootstrap standard error</em>. Their 2.5th and 97.5th percentiles are the 95% <em>percentile interval</em>.</li>
+</ol></div>
+
+<!--md-fig fig1-->
+<figure id="f1" class="wide">
+  <div class="ctl" data-md-skip>
+    <span class="lab">Resample</span>
+    <span class="acts" role="group" aria-label="Resample the participants" id="f1-acts"></span>
+  </div>
+  <div class="fig"><svg id="fig1" viewBox="0 0 760 520" role="img" aria-label="Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg."></svg><noscript><img src="fig1.svg" alt="Figure 1. The 20 participants of the pilot trial and the ideal bootstrap distribution of the difference in means. Its standard deviation, the bootstrap standard error, is 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg." width="760" height="520"></noscript></div>
+  <p class="readout" id="f1-read" aria-live="polite"></p>
+  <figcaption><b>Figure 1. Building the bootstrap distribution by resampling.</b> Top: the 20 participants of Table 1, placed by their fall in systolic blood pressure. In a resample, a participant drawn more than once is marked with the number of draws (×2, ×3, …), a participant not drawn is shown as a dashed outline, and the vertical marks are the two arm means of the resample. Bottom: the difference in means (programme minus usual care) for every resample so far, as a share of them, in 1 mmHg bins; the dashed lines are the 2.5th and 97.5th percentiles, the ends of the 95% percentile interval. On the interactive page the buttons draw one, 100 or 1,000 resamples, or show the ideal bootstrap distribution, which ever more resamples approach and which can be computed exactly here; the static copy shows the ideal distribution, with the original sample at the top. Its standard deviation is 3.16 mmHg and its middle 95% runs from 1.3 to 13.7 mmHg.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<p>Figure 1 lets you do it. Each resample is one imitation of the trial, run on a population made of copies of the participants we have. A resample never contains a value that is not in the sample, so the largest difference the bootstrap can produce is 30 mmHg (all 10 programme draws the participant who fell by 21, all 10 usual-care draws a participant who rose by 9), and in the bootstrap's world nobody responds more strongly than the people already observed.</p>
+<p>Random resamples estimate the <em>ideal bootstrap distribution</em>, the one that infinitely many resamples would give. For a difference in means it can be computed exactly. Each arm can be resampled in 10<sup>10</sup> equally likely ordered ways, and the distribution of the sum of 10 draws follows by convolving the distribution of one draw with itself 10 times. The ideal distribution has an SD, the bootstrap standard error, of 3.16 mmHg, and its middle 95% runs from 1.3 to 13.7 mmHg.</p>
+<p>Two features stand out. First, the bootstrap distribution is centred at the observed difference of 7.5 mmHg. It is not centred at zero, as the null distribution of the previous note was, and not at the true difference, which nobody knows. It describes how far an estimate tends to stray, not where the truth is: its job here is to estimate uncertainty, not to change the estimate <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. The two resampling methods answer different questions: shuffling draws without replacement, mixes the arms and builds the distribution the statistic would have if the programme did nothing; the bootstrap draws with replacement within each arm and estimates the distribution the estimate actually has. Second, the bootstrap answer is narrower than the <i>t</i>-test's: a standard error of 3.16 mmHg against 3.33, and an interval of 1.3 to 13.7 against 0.5 to 14.5.</p>
+
+<h2 id="narrow"><span class="n">3</span>Why the simplest interval is too narrow</h2>
+<p>Two well-understood causes account for both gaps <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</p>
+<ul>
+  <li><b>The bootstrap's SD divides by <i>n</i>.</b> Treated as a population, a sample has variance Σ(<i>x</i> − <i>x̄</i>)<sup>2</sup>/<i>n</i>, not the usual <i>s</i><sup>2</sup>, which divides by <i>n</i> − 1. So the bootstrap standard error of a mean is smaller than the formula's by the factor <span class="nw"><span class="rad"><span class="vh">√[</span>(<i>n</i> − 1)/<i>n</i><span class="vh">]</span></span></span>. When two groups are compared, the factor depends on the size of each group, not on the total <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. With 10 per arm it is <span class="nw"><span class="rad"><span class="vh">√[</span>9/10<span class="vh">]</span></span></span> = 0.949, and 3.33 × 0.949 = 3.16.</li>
+  <li><b>The percentile interval makes no allowance for the uncertainty in the SD.</b> The bootstrap distribution of the difference is close to normal, so its 2.5th and 97.5th percentiles lie about 1.96 bootstrap standard errors either side of the estimate: 7.5 ± 1.96 × 3.16 = 1.3 to 13.7 mmHg. The <i>t</i> interval multiplies by 2.10 instead of 1.96, because its standard error is itself an estimate from only 20 values, and the <i>t</i> distribution allows for that. For symmetric data, the percentile interval behaves like an interval that uses <i>z</i> where <i>t</i> belongs and divides by <i>n</i> instead of <i>n</i> − 1 <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</li>
+</ul>
+<p>Together, 0.949 × 1.96 / 2.10 = 0.885: the percentile interval is about 11% narrower than the <i>t</i> interval, 12.4 mmHg wide against 14.0. Both factors fade as the arms grow. For the same calculation with 5, 10, 20 and 40 per arm, the ratio is 0.76, 0.89, 0.94 and 0.97. So, for a mean or a difference in means, the instinct to reach for the bootstrap because a sample is small has it backwards: the simplest bootstrap interval is at its worst in small samples <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</p>
+
+<h2 id="better"><span class="n">4</span>Better bootstrap intervals</h2>
+<p>The percentile interval is the simplest of several ways to turn a bootstrap distribution into an interval <sup class="cite">[<a href="#ref-hesterberg2015">2</a>,<a href="#ref-diciccio1996">3</a>]</sup>. Two others are widely available, for example in R's boot package, which implements the methods of Davison and Hinkley <sup class="cite">[<a href="#ref-davison1997">4</a>]</sup>:</p>
+<ul>
+  <li><b>BCa</b> (bias-corrected and accelerated), introduced by Efron in 1987 <sup class="cite">[<a href="#ref-efron1987">5</a>]</sup>. It reads the interval off the bootstrap distribution, but at shifted percentiles. A bias correction comes from the share of the bootstrap distribution below the estimate, and an acceleration constant allows for a standard error that changes with the true value, which shows up as skewness <sup class="cite">[<a href="#ref-hesterberg2015">2</a>,<a href="#ref-efron1987">5</a>]</sup>. It has no adjustment for the narrowness described in Section 3 <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. For the pilot data the shifts are tiny, and BCa gives 1.3 to 13.7 mmHg again.</li>
+  <li><b>Bootstrap-<i>t</i></b> (the studentised bootstrap). Instead of the difference itself, it bootstraps a <i>t</i> statistic: each resample's difference minus the observed one, divided by that resample's own standard error. The 2.5th and 97.5th percentiles of these values take the place of ±2.10 from the <i>t</i> table <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. Because every resample estimates its own standard error, the method sees how uncertain the standard error is, as the <i>t</i> interval does. For the pilot data it gives 0.5 to 14.6 mmHg, close to the <i>t</i> interval.</li>
+</ul>
+
+<!--md-fig fig2-->
+<figure id="f2" class="wide">
+  <div class="ctl" data-md-skip>
+    <span class="lab">Data</span>
+    <span class="seg" role="group" aria-label="Data set" id="f2-data"></span>
+    <span class="lab">Statistic</span>
+    <span class="seg" role="group" aria-label="Statistic" id="f2-stat"></span>
+  </div>
+  <div class="fig"><svg id="fig2" viewBox="0 0 760 440" role="img" aria-label="Figure 2. The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg."></svg><noscript><img src="fig2.svg" alt="Figure 2. The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg." width="760" height="440"></noscript></div>
+  <p class="readout" id="f2-read" aria-live="polite"></p>
+  <figcaption><b>Figure 2. The bootstrap distribution, the <i>t</i> distribution and three intervals.</b> Bars: the ideal bootstrap distribution of the statistic, computed exactly, as a share in 1 mmHg bins (for medians, one bar for each possible value, 0.5 mmHg apart); the parts outside the 95% percentile interval are shaded. Curve (difference in means only): the distribution the <i>t</i> interval reads its limits from, a <i>t</i> distribution with 18 degrees of freedom centred at the estimate and stretched by the <i>t</i>-test's standard error (3.33 mmHg for the data of Table 1; 4.80 mmHg with the 45 mmHg value). Strictly, the <i>t</i> distribution describes the estimation error divided by its estimated standard error; under the normal model the difference in means itself has a normal sampling distribution. Below the axis: the 95% <i>t</i>, percentile and BCa intervals (for medians, the percentile interval only). On the interactive page the buttons switch to a data set in which the largest fall in the programme arm is 45 mmHg instead of 21, and to the difference in medians, for which there is no <i>t</i> interval; the static copy shows the data of Table 1 and the difference in means. With the 45 mmHg value, the bootstrap standard error is 4.55 mmHg and the intervals are 1.8 to 19.5 (percentile), 2.8 to 21.5 (BCa) and −0.2 to 20.0 mmHg (<i>t</i>); for the difference in medians the percentile interval is −2.5 to 15.5 mmHg in both data sets.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<p>Figure 2 sets the ideal bootstrap distribution against the curve the <i>t</i> interval reads its limits from. For the pilot data they have the same centre and a similar shape, and the bootstrap distribution is the narrower of the two, for the reasons of Section 3. Table 2 collects the intervals, including the one from inverting the permutation test in the previous note.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 2.</b> Six 95% confidence intervals for the difference in mean fall in systolic blood pressure (programme minus usual care), in mmHg. The percentile and BCa intervals come from the ideal bootstrap distribution, computed exactly; the bootstrap-<i>t</i> interval from 10 million random resamples. The inverted permutation interval assumes a constant shift <i>δ</i> (the programme lowers everyone's blood pressure by the same amount) and collects the values of <i>δ</i> for which the exact permutation test of the raw difference in means, run after subtracting <i>δ</i> from each programme value, gives a two-sided <i>p</i> above 0.05 (previous note, Section 7).</caption>
+  <thead><tr><th>Method</th><th class="r w">Data of Table 1 (difference 7.5)</th><th class="r w">Largest fall 45 mmHg (difference 9.9)</th></tr></thead>
+  <tbody>
+    <tr><td>Student's <i>t</i></td><td class="r">0.5 to 14.5</td><td class="r">−0.2 to 20.0</td></tr>
+    <tr><td>Welch's <i>t</i></td><td class="r">0.5 to 14.5</td><td class="r">−0.4 to 20.2</td></tr>
+    <tr><td>Inverted permutation test (previous note)</td><td class="r">0.5 to 14.5</td><td class="r">0.6 to 20.0</td></tr>
+    <tr><td>Bootstrap percentile</td><td class="r">1.3 to 13.7</td><td class="r">1.8 to 19.5</td></tr>
+    <tr><td>Bootstrap BCa</td><td class="r">1.3 to 13.7</td><td class="r">2.8 to 21.5</td></tr>
+    <tr><td>Bootstrap-<i>t</i></td><td class="r">0.5 to 14.6</td><td class="r">1.7 to 23.7</td></tr>
+  </tbody>
+</table></div>
+
+<p>Now switch Figure 2 to the second data set, in which the largest fall in the programme arm is 45 mmHg instead of 21. The bootstrap distribution becomes skewed to the right. In 35% of resamples the 45 is not drawn at all, in 39% it is drawn once, and in 26% twice or more, and each copy adds about 3.7 mmHg to the difference. The percentile and BCa intervals follow the skew and move to the right, and the bootstrap-<i>t</i> stretches its upper limit to 23.7 mmHg. Across the six methods the upper limit now ranges from 19.5 to 23.7 mmHg. Each method makes its own guess about how far the upper tail of the population reaches, and ten participants, one of whom carries much of the information about that tail, cannot settle the question. As in the previous note, the honest reading is that the difference in means rests heavily on one person.</p>
+<p>Switch the statistic to the difference in medians, for which there is no simple standard-error formula: the situation the bootstrap is often recommended for. Its bootstrap distribution is lumpy. The median of 10 resampled values is the average of the 5th and 6th smallest, so for the data of Table 1 the difference in medians can take only 85 values, and the most likely one, 5.0 mmHg, carries 4.5% of the distribution. The percentile interval runs from −2.5 to 15.5 mmHg in both data sets, because the median ignores how far the largest value lies from the rest. The bootstrap tends not to work well for medians and other quantiles in small samples, which depend heavily on a few observations near the middle, though it does better in large samples, and percentile intervals for a median can still be reasonable <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</p>
+
+<h2 id="coverage"><span class="n">5</span>How often do the intervals cover the truth?</h2>
+<p>A 95% interval method should capture the true value in 95% of repeated studies, and that can be checked by simulation: generate many trials with a known true difference, compute each interval, and count how often it contains the truth. Figure 3 does this for 1,000 trials at a time, with a true difference of 8 mmHg and an SD of 8 mmHg in each arm, and Table 3 shows the long run from 10,000 trials per row.</p>
+
+<!--md-fig fig3-->
+<figure id="f3" class="wide">
+  <div class="ctl" data-md-skip>
+    <span class="lab">Outcomes</span>
+    <span class="seg" role="group" aria-label="Distribution of the outcomes" id="f3-pop"></span>
+    <span class="lab">Per arm</span>
+    <span class="seg" role="group" aria-label="Participants per arm" id="f3-n"></span>
+    <span class="lab">Intervals shown</span>
+    <span class="seg" role="group" aria-label="Interval method shown on the left" id="f3-m"></span>
+  </div>
+  <div class="fig"><svg id="fig3" viewBox="0 0 760 400" role="img" aria-label="Figure 3."></svg><noscript><img src="fig3.svg" alt="Figure 3." width="760" height="400"></noscript></div>
+  <p class="readout" id="f3-read" aria-live="polite"></p>
+  <figcaption><b>Figure 3. How often do the intervals cover the true difference?</b> Each of 1,000 simulated trials draws participants for both arms from the same distribution with an SD of 8 mmHg, shifted by a true difference of 8 mmHg, and computes four 95% intervals for the difference in means: the <i>t</i> interval and, from the same 999 resamples, the percentile, BCa and bootstrap-<i>t</i> intervals. Left: the first 100 intervals of the chosen method, with those that miss the true difference in red. Right: the share of all 1,000 intervals of each method that cover it; the dashed line is the nominal 95%. On the interactive page the buttons switch between normal and right-skewed (log-normal) outcomes, between 5, 10, 20 and 40 participants per arm, and between the methods shown on the left; the static copy shows normal outcomes, 10 per arm and the percentile interval.</figcaption>
+</figure>
+<!--/md-fig-->
+
+<div class="tw"><table>
+  <caption><b>Table 3.</b> Coverage of four 95% intervals for a difference in means between two arms of equal size: the share of 10,000 simulated trials per row in which the interval contained the true difference (simulation standard error about 0.2 percentage points near 95% and 0.4 near 85%). Each trial draws both arms from the same distribution with an SD of 8 mmHg: normal, or skewed, 8 × (e<sup><i>Z</i></sup> − e<sup>0.5</sup>) / <span class="nw"><span class="rad tall"><span class="vh">√[</span>(e − 1)e<span class="vh">]</span></span></span> with <i>Z</i> standard normal (a log-normal distribution with σ = 1 on the log scale, skewness about 6). All four methods shift with the data, so the true difference was set to zero without loss. The <i>t</i> interval is Student's; the percentile, BCa (bias correction from the share of resamples below the estimate, acceleration from the empirical influence values) and bootstrap-<i>t</i> intervals use the same 1,999 resamples within each arm, with percentiles by linear interpolation; a resample with a standard error of zero (every draw in each arm the same participant, which is possible but very rare) would count as an infinitely large <i>t</i> value in the direction of its difference. Python 3.9 with NumPy 2.0.2 and SciPy 1.13.1; four runs of 2,500 trials, seeds 11, 22, 33 and 44.</caption>
+  <thead><tr><th>Outcomes</th><th class="r w">Per arm</th><th class="r w"><i>t</i> interval</th><th class="r w">Percentile</th><th class="r w">BCa</th><th class="r w">Bootstrap-<i>t</i></th></tr></thead>
+  <tbody>
+    <tr><td>Normal</td><td class="r">5</td><td class="r">95%</td><td class="r warn">88%</td><td class="r warn">88%</td><td class="r">96%</td></tr>
+    <tr><td>Normal</td><td class="r">10</td><td class="r">95%</td><td class="r warn">92%</td><td class="r warn">92%</td><td class="r">95%</td></tr>
+    <tr><td>Normal</td><td class="r">20</td><td class="r">95%</td><td class="r">94%</td><td class="r">94%</td><td class="r">95%</td></tr>
+    <tr><td>Normal</td><td class="r">40</td><td class="r">95%</td><td class="r">94%</td><td class="r">94%</td><td class="r">95%</td></tr>
+    <tr><td>Skewed</td><td class="r">5</td><td class="r">97%</td><td class="r warn">87%</td><td class="r warn">83%</td><td class="r">97%</td></tr>
+    <tr><td>Skewed</td><td class="r">10</td><td class="r">96%</td><td class="r warn">90%</td><td class="r warn">85%</td><td class="r">92%</td></tr>
+    <tr><td>Skewed</td><td class="r">20</td><td class="r">96%</td><td class="r">92%</td><td class="r warn">87%</td><td class="r">91%</td></tr>
+    <tr><td>Skewed</td><td class="r">40</td><td class="r">96%</td><td class="r">93%</td><td class="r warn">89%</td><td class="r">91%</td></tr>
+  </tbody>
+</table></div>
+
+<ul>
+  <li><b>Normal outcomes.</b> The <i>t</i> interval covers 95% of the time at every size, as theory says it should. The percentile interval covers 88% of the time with 5 per arm, 92% with 10 and 94% with 20 or 40, as Section 3 predicts, and BCa does no better in these scenarios. The bootstrap-<i>t</i> covers about 95% throughout, but with 5 per arm its intervals are on average wider than the <i>t</i> interval's (25.8 against 22.5 mmHg). Hesterberg's simulations for a single mean tell the same story: the percentile interval does poorly in small normal samples and the bootstrap-<i>t</i> does very well <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</li>
+  <li><b>Skewed outcomes.</b> The <i>t</i> interval is, if anything, conservative, at 96% to 97%. The percentile interval covers 87% to 93%, BCa only 83% to 89%, and the bootstrap-<i>t</i> 97% with 5 per arm, where its intervals are on average almost twice as wide as the <i>t</i> interval's (34.2 against 18.3 mmHg), then 91% to 92%.</li>
+</ul>
+<p>One feature of this setting helps to read the skewed rows. When both arms have the same shape and the same size, the sampling distribution of the difference in means is exactly symmetric, however skewed each arm is: the errors in the two arm means have the same distribution, and the difference of two such errors is as likely to be positive as negative. So the true bias correction and acceleration that BCa estimates are both zero here, and any asymmetry that BCa or the bootstrap-<i>t</i> builds into an interval comes from the sample alone. With strongly skewed outcomes and 10 or 20 per arm, those sample-based estimates vary a lot from trial to trial. In a further check with 3,000 trials at each of these two sizes, the bias correction alone lowered coverage by 1 to 1.5 percentage points below the percentile interval's, and the acceleration by about 3.5 more. That is a finding about these simulated scenarios, not a general verdict on BCa: where the sampling distribution really is skewed, as for a single mean from a skewed population, adjusting for skewness is the point of the method, though in Hesterberg's simulations that problem was much harder for every method he tried <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</p>
+<p>So in these scenarios, a difference in means between two equal arms of the same shape, the <i>t</i> interval is hard to beat, the percentile interval is too narrow with 10 per arm, and the bootstrap is no remedy for a small sample. Its strengths lie elsewhere.</p>
+
+<h2 id="assume"><span class="n">6</span>What the bootstrap assumes, and what to resample</h2>
+<p>The bootstrap needs no normal distribution, but it is not assumption-free. Its essential assumption is that the sample can stand in for the population. That needs observations, or units of resampling, that are independent of one another, and enough of them for their spread and shape to resemble the population's. With 10 per arm, the sample's tails say little about the population's tails, as the 45 mmHg example showed.</p>
+<p>Where those conditions hold, the bootstrap earns its keep with statistics that have no easy standard-error formula: a median in a large sample, a ratio, a correlation, an area under a ROC curve, or a summary of a whole analysis. It is also a useful check on a formula-based interval: compute both and compare them <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. Agreement can be reassuring, but it does not show that either interval has its nominal coverage, because both rest on the same sample and neither can see tails that the sample does not contain. Disagreement is a reason to find out why.</p>
+<p>The general rule for what to resample is to resample in the way the data were drawn, but conditioning on what was observed: each group keeps its observed size, even if the sampling could have produced other sizes <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. Table 4 applies it to common designs. It mirrors the rule of the previous note, to shuffle only what was randomised. The entries are starting points, not guarantees: with few clusters, complex survey designs or long-range dependence, the resampling scheme needs more care. Even for simple clustered data, whether a scheme gives consistent variance estimates depends on the model assumed for the data <sup class="cite">[<a href="#ref-field2007">6</a>]</sup>.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 4.</b> Resample what was sampled.</caption>
+  <thead><tr><th>Design</th><th>What to resample</th></tr></thead>
+  <tbody>
+    <tr><td>Two independent groups</td><td>participants within each group, keeping the group sizes <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup></td></tr>
+    <tr><td>Stratified sampling or randomisation</td><td>participants within each stratum <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup></td></tr>
+    <tr><td>Matched pairs, crossover, before and after</td><td>whole pairs or whole participants, keeping each one's measurements together</td></tr>
+    <tr><td>Clustered data (practices, wards, schools)</td><td>whole clusters, with all their members <sup class="cite">[<a href="#ref-field2007">6</a>]</sup></td></tr>
+    <tr><td>Repeated measures over time</td><td>whole participants, with all their measurements</td></tr>
+    <tr><td>A time series</td><td>blocks of consecutive observations, not single observations <sup class="cite">[<a href="#ref-kunsch1989">7</a>]</sup></td></tr>
+    <tr><td>Regression</td><td>whole rows (cases); or residuals added back to the fitted values, which keeps the <i>x</i> values fixed: natural when they were fixed by design, and safer when rare categories could drop out of a resample, provided the model fits and the variance is constant <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup></td></tr>
+    <tr><td>Any analysis with data-driven steps (variable selection, tuning, imputation, outlier removal)</td><td>the raw data, rerunning every step in each resample</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="howmany"><span class="n">7</span>How many resamples?</h2>
+<p>Random resamples estimate the ideal bootstrap distribution with Monte Carlo error, just as random shuffles estimated the exact permutation <i>p</i>-value in the previous note. The error matters most for the ends of an interval, which depend on the few resamples in each tail. Table 5 shows how much the bootstrap standard error and the ends of the percentile and bootstrap-<i>t</i> intervals for the pilot data move from one run to the next.</p>
+
+<div class="tw"><table>
+  <caption><b>Table 5.</b> How precise are bootstrap results from <i>B</i> random resamples? For the pilot data: the central range that holds 95% of the results of repeated runs, each with <i>B</i> resamples (percentiles as in R's boot package), and the ideal values in the last row.</caption>
+  <thead><tr><th class="r">Resamples, <i>B</i></th><th class="r w">Bootstrap standard error</th><th class="r w">Percentile interval, lower end</th><th class="r w">Percentile interval, upper end</th><th class="r w">Bootstrap-<i>t</i>, lower end</th><th class="r w">Bootstrap-<i>t</i>, upper end</th></tr></thead>
+  <tbody>
+    <tr><td class="r">999</td><td class="r">3.02 to 3.30</td><td class="r">0.8 to 1.8</td><td class="r">13.2 to 14.3</td><td class="r">−0.2 to 1.2</td><td class="r">14.0 to 15.4</td></tr>
+    <tr><td class="r">9,999</td><td class="r">3.12 to 3.20</td><td class="r">1.2 to 1.5</td><td class="r">13.5 to 13.9</td><td class="r">0.3 to 0.8</td><td class="r">14.4 to 14.9</td></tr>
+    <tr><td class="r">99,999</td><td class="r">3.14 to 3.17</td><td class="r">1.3 to 1.4</td><td class="r">13.6 to 13.8</td><td class="r">0.5 to 0.6</td><td class="r">14.6 to 14.7</td></tr>
+    <tr><td class="r">Ideal</td><td class="r">3.16</td><td class="r">1.3</td><td class="r">13.7</td><td class="r">0.5</td><td class="r">14.6</td></tr>
+  </tbody>
+</table></div>
+
+<p>With 999 resamples the lower end of the percentile interval can come out anywhere from 0.8 to 1.8 mmHg, and with 9,999 from 1.2 to 1.5 mmHg. The bootstrap-<i>t</i> interval moves more, because its ends depend on the tails of a distribution of ratios. Hesterberg recommends 10,000 resamples for routine use and more when accuracy matters, and calculates that at least 15,000 are needed for Monte Carlo variation to have only a small effect on percentile and bootstrap-<i>t</i> intervals <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. As with shuffles, choose <i>B</i> so that the Monte Carlo error is small next to the precision you report, and give the seed so that others can reproduce the numbers.</p>
+
+<h2 id="report"><span class="n">8</span>How to report a bootstrap interval</h2>
+<div class="box"><b>Rule of thumb.</b> Name the statistic, say what was resampled and within what, name the interval method, and give the number of resamples, the software and the seed, alongside the estimate.</div>
+<p>A bootstrap interval is still a confidence interval, and the <a href="https://selcukorkmaz.github.io/blog/p-effect-size-ci/#report">reporting advice of the earlier note</a> applies to it. The methods section needs enough extra detail for someone else to get the same numbers:</p>
+<ul>
+  <li><b>The statistic</b>: difference in means, difference in medians, a ratio, or another.</li>
+  <li><b>What was resampled</b>, and within what: participants within arms, strata, clusters or pairs, matching the design.</li>
+  <li><b>The interval method.</b> "Bootstrap 95% CI" alone does not say which: percentile, BCa and bootstrap-<i>t</i> can differ by several mmHg, as in Table 2.</li>
+  <li><b>The number of resamples</b>, the software with its version, and the random seed.</li>
+  <li><b>With small samples</b>, why a bootstrap interval was used instead of, or alongside, a formula-based one.</li>
+</ul>
+
+<h3><span class="n">8.1</span>Sentences to adapt</h3>
+<ul>
+  <li><b>Methods.</b> "The 95% confidence interval for the difference in mean fall in systolic blood pressure (programme minus usual care) was a bootstrap-<i>t</i> interval from 9,999 bootstrap resamples, drawn with replacement separately within each arm (R 4.5.2, boot package 1.3-32, seed 2026)."</li>
+  <li><b>Results.</b> "Systolic blood pressure fell 7.5 mmHg more in the programme group than in the usual-care group (95% CI 0.6 to 14.4, bootstrap-<i>t</i>; the <i>t</i> interval was 0.5 to 14.5)."</li>
+</ul>
+<p>The boot package does the resampling in a few lines. The interval in the results sentence is the one this code gives; it differs from the ideal 0.5 to 14.6 by Monte Carlo error of the size shown in Table 5.</p>
+<pre class="r"><code>library(boot)
+prog  &lt;- c(21, 17, 15, 14, 13, 7, 6, 2, 2, -3)
+usual &lt;- c(11, 10, 9, 5, 2, 1, 0, -1, -9, -9)
+d &lt;- data.frame(fall = c(prog, usual), arm = rep(c("programme", "usual care"), each = 10))
+
+<span class="c"># The difference in means, and its estimated variance (for the bootstrap-t), in one resample</span>
+stat &lt;- function(data, i) {
+  x &lt;- data[i, ]
+  p &lt;- x$fall[x$arm == "programme"]; u &lt;- x$fall[x$arm == "usual care"]
+  c(mean(p) - mean(u), var(p) / length(p) + var(u) / length(u))
+}
+set.seed(2026)
+b &lt;- boot(d, stat, R = 9999, strata = factor(d$arm))   <span class="c"># resample within each arm</span>
+sd(b$t[, 1])                                            <span class="c"># bootstrap SE: 3.11 (ideal 3.16)</span>
+boot.ci(b, type = c("perc", "stud"))                    <span class="c"># percentile 1.5 to 13.6; bootstrap-t 0.59 to 14.41</span>
+t.test(prog, usual, var.equal = TRUE)$conf.int          <span class="c"># 0.51 to 14.49</span></code></pre>
+
+<h2 id="traps"><span class="n">9</span>Five traps</h2>
+<h3><span class="n">9.1</span>Reaching for the bootstrap because the sample is small</h3>
+<p>The simplest bootstrap interval is too narrow precisely when samples are small (Section 3): with 10 per arm, the percentile interval covered the true difference 92% of the time and the <i>t</i> interval 95% (Table 3). A small sample is a reason for caution with any method, not a reason to switch to the bootstrap <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>.</p>
+<h3><span class="n">9.2</span>Resampling the wrong unit</h3>
+<p>Resampling individual participants in a cluster-randomised trial, or individual measurements in a repeated-measures study, treats correlated observations as independent. The resamples then vary less than real repeats of the study would, and the interval is too narrow. Follow Table 4.</p>
+<h3><span class="n">9.3</span>Leaving steps out of the resampling</h3>
+<p>If the analysis made choices with the data, such as selecting variables, tuning a model, removing outliers or imputing missing values, each resample must make them again. Otherwise the bootstrap measures the variability of a simpler procedure than the one that was used, and the interval is too narrow. The same applies to bootstrap estimates of a prediction model's performance, where leaving steps out leaks information from the evaluation into the fitting (see my <a href="https://selcukorkmaz.github.io/blog/leakage-defence-in-layers/">note on leakage</a>, which treats the same problem in cross-validation).</p>
+<h3><span class="n">9.4</span>"A bootstrap 95% CI" without saying which</h3>
+<p>For the data with the 45 mmHg value, the percentile, BCa and bootstrap-<i>t</i> intervals have upper ends of 19.5, 21.5 and 23.7 mmHg (Table 2). A reader cannot judge an interval without knowing which method made it, how many resamples it used and what was resampled.</p>
+<h3><span class="n">9.5</span>Treating the bootstrap as a better estimate</h3>
+<p>The bootstrap's main job is to describe the estimate's uncertainty, not to replace the estimate <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. For a difference in means the ideal bootstrap distribution is centred exactly at the estimate, so the mean of random resamples differs from it only by Monte Carlo noise; for other statistics the two can differ, and the gap is a bootstrap estimate of bias. Correcting for it is possible, but bias estimates can be highly variable <sup class="cite">[<a href="#ref-hesterberg2015">2</a>]</sup>. Report the estimate from the data, and if you correct it for bias, say so and report both.</p>
+
+<h2 id="checklist"><span class="n">10</span>A checklist for authors and reviewers</h2>
+<ul class="check">
+  <li>The statistic is named, and the estimate is reported with its interval.</li>
+  <li>What was resampled matches the design: each arm kept at its size, and strata, clusters or pairs kept intact.</li>
+  <li>Every data-driven step of the analysis was repeated in each resample.</li>
+  <li>The interval method is named: percentile, BCa, bootstrap-<i>t</i> or another.</li>
+  <li>The number of resamples is given, with the software and the seed, and it is large enough for the precision reported.</li>
+  <li>With small samples, the bootstrap interval was compared with a formula-based one, and the choice is explained.</li>
+  <li>The text does not claim that the bootstrap needs no assumptions or makes up for a small sample.</li>
+</ul>
+<p>The bootstrap turns the sampling distribution into something you can watch being built, from the only sample you have. Every confidence interval has a sampling distribution behind it, whether it comes from a formula or from resampling, and an interval means only as much as the sampling distribution behind it.</p>
+
+<section id="refs">
+<h2>References</h2>
+<ol class="refs">
+<li id="ref-efron1979">Efron B. Bootstrap methods: another look at the jackknife. <i>The Annals of Statistics</i>. 1979;7(1):1–26. doi:10.1214/aos/1176344552</li>
+<li id="ref-hesterberg2015">Hesterberg TC. What teachers should know about the bootstrap: resampling in the undergraduate statistics curriculum. <i>The American Statistician</i>. 2015;69(4):371–386. doi:10.1080/00031305.2015.1089789. Extended version: arXiv:1411.5279, 2014.</li>
+<li id="ref-diciccio1996">DiCiccio TJ, Efron B. Bootstrap confidence intervals. <i>Statistical Science</i>. 1996;11(3):189–228. doi:10.1214/ss/1032280214</li>
+<li id="ref-davison1997">Davison AC, Hinkley DV. <i>Bootstrap Methods and Their Application</i>. Cambridge University Press; 1997. doi:10.1017/CBO9780511802843</li>
+<li id="ref-efron1987">Efron B. Better bootstrap confidence intervals. <i>Journal of the American Statistical Association</i>. 1987;82(397):171–185. doi:10.1080/01621459.1987.10478410</li>
+<li id="ref-field2007">Field CA, Welsh AH. Bootstrapping clustered data. <i>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</i>. 2007;69(3):369–390. doi:10.1111/j.1467-9868.2007.00593.x</li>
+<li id="ref-kunsch1989">Künsch HR. The jackknife and the bootstrap for general stationary observations. <i>The Annals of Statistics</i>. 1989;17(3):1217–1241. doi:10.1214/aos/1176347265</li>
+</ol>
+</section>
+<!--/md-body-->
+
+<!--md-skip-->
+<div class="pt pt-end" data-md-skip>
+  <p class="pt-lead">Download, cite or share this post</p>
+  <div class="pt-row" role="group" aria-label="Post tools">
+    <a class="pt-btn" href="bootstrap.pdf" download><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>PDF</a>
+    <button class="pt-btn" type="button" data-pt-copy-md><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 15V9l2.5 3L12 9v6M16 9v6M14 13l2 2 2-2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy as Markdown</button>
+    <a class="pt-btn pt-quiet" href="index.md">View Markdown</a>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-cite"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6.8" cy="9.6" r="3.3" fill="currentColor"/><path d="M10.1 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="17.2" cy="9.6" r="3.3" fill="currentColor"/><path d="M20.5 9.6c0 4.3-2.1 7.1-5.9 8.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Cite<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-share"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <button class="pt-btn" type="button" aria-expanded="false" aria-controls="pt-end-tr"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Translate<svg class="pt-chev" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+  </div>
+  <div class="pt-panel" id="pt-end-cite" hidden>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>BibTeX</b><button class="pt-btn pt-sm" type="button" data-pt-copy="bibtex" data-pt-label="BibTeX"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <pre class="pt-code"><code>@misc{korkmaz2026confidence,
+  author       = {Korkmaz, Sel{\c{c}}uk},
+  title        = {Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples},
+  year         = {2026},
+  month        = oct,
+  date         = {2026-10-08},
+  howpublished = {\url{https://selcukorkmaz.github.io/blog/bootstrap/}},
+  url          = {https://selcukorkmaz.github.io/blog/bootstrap/},
+  note         = {Blog post}
+}</code></pre>
+    </div>
+    <div class="pt-cite">
+      <div class="pt-cite-h"><b>APA</b><button class="pt-btn pt-sm" type="button" data-pt-copy="apa" data-pt-label="APA citation"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy</button></div>
+      <p class="pt-apa">Korkmaz, S. (2026, October 8). <i>Where a confidence interval comes from: The bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples</i> [Blog post]. https://selcukorkmaz.github.io/blog/bootstrap/</p>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-end-share" hidden>
+    <div class="pt-links">
+        <button class="pt-btn" type="button" data-pt-copy="link" data-pt-label="Link"><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 15V6a2 2 0 0 1 2-2h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Copy link</button>
+        <button class="pt-btn" type="button" data-pt-native hidden><svg class="pt-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="18" cy="5" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="12" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="19" r="2.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.2 10.8l7.6-4.4M8.2 13.2l7.6 4.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>Share…</button>
+        <a class="pt-btn" href="https://x.com/intent/post?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F&amp;text=Where%20a%20confidence%20interval%20comes%20from%3A%20the%20bootstrap%2C%20the%20sampling%20distribution%20and%20why%20the%20simplest%20bootstrap%20interval%20is%20too%20narrow%20in%20small%20samples" target="_blank" rel="noopener">X</a>
+        <a class="pt-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="pt-btn" href="https://bsky.app/intent/compose?text=Where%20a%20confidence%20interval%20comes%20from%3A%20the%20bootstrap%2C%20the%20sampling%20distribution%20and%20why%20the%20simplest%20bootstrap%20interval%20is%20too%20narrow%20in%20small%20samples%20https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener">Bluesky</a>
+        <a class="pt-btn" href="mailto:?subject=Where%20a%20confidence%20interval%20comes%20from%3A%20the%20bootstrap%2C%20the%20sampling%20distribution%20and%20why%20the%20simplest%20bootstrap%20interval%20is%20too%20narrow%20in%20small%20samples&amp;body=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F">Email</a>
+    </div>
+  </div>
+  <div class="pt-panel" id="pt-end-tr" hidden>
+    <p class="pt-note">Opens this page in Google Translate (machine translation). It works once the post is public at its web address.</p>
+    <div class="pt-links">
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=tr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="tr" lang="tr">Türkçe</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=de&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="de" lang="de">Deutsch</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=fr&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="fr" lang="fr">Français</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=es&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="es" lang="es">Español</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=ar&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="ar" lang="ar" dir="rtl">العربية</a>
+        <a class="pt-btn" href="https://translate.google.com/translate?sl=en&amp;tl=zh-CN&amp;u=https%3A%2F%2Fselcukorkmaz.github.io%2Fblog%2Fbootstrap%2F" target="_blank" rel="noopener" hreflang="zh-CN" lang="zh-CN">中文</a>
+    </div>
+  </div>
+  <p class="pt-status" role="status" aria-live="polite"></p>
+</div>
+<section class="comments" id="comments" aria-labelledby="comments-h" data-md-skip>
+<h2 id="comments-h">Comments</h2>
+<div class="giscus"><p class="cm-note">Comments are coming soon.</p></div>
+</section>
+<textarea id="pt-md" class="pt-ta" readonly tabindex="-1" aria-hidden="true" data-md-skip></textarea>
+<!--/md-skip-->
+</main>
+</div>
+
+<script>
+(function () {
+'use strict';
+var NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent, text) {
+  var e = document.createElementNS(NS, tag);
+  for (var k in attrs) e.setAttribute(k, attrs[k]);
+  if (text != null) e.textContent = text;
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function clear(svg) { while (svg.firstChild) svg.removeChild(svg.firstChild); }
+
+/* ---------- random numbers (seeded, so the page renders the same way every time) ---------- */
+function rng(seed) {
+  var a = seed >>> 0;
+  return function () {
+    a = (a + 0x6D2B79F5) >>> 0;
+    var t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function normal(r) { var u = 0; while (u === 0) u = r(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * r()); }
+
+/* ---------- the normal and t distributions ---------- */
+function lgamma(x) {
+  var c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028, 771.32342877765313, -176.61502916214059,
+    12.507343278686905, -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
+  if (x < 0.5) return Math.log(Math.PI / Math.abs(Math.sin(Math.PI * x))) - lgamma(1 - x);
+  x -= 1; var a = c[0], t = x + 7.5;
+  for (var i = 1; i < 9; i++) a += c[i] / (x + i);
+  return 0.5 * Math.log(2 * Math.PI) + (x + 0.5) * Math.log(t) - t + Math.log(a);
+}
+function betacf(a, b, x) {
+  var TINY = 1e-300, qab = a + b, qap = a + 1, qam = a - 1, c = 1, d = 1 - qab * x / qap;
+  if (Math.abs(d) < TINY) d = TINY; d = 1 / d; var h = d;
+  for (var m = 1; m <= 300; m++) {
+    var m2 = 2 * m, aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+    d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d; h *= d * c;
+    aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+    d = 1 + aa * d; if (Math.abs(d) < TINY) d = TINY; c = 1 + aa / c; if (Math.abs(c) < TINY) c = TINY; d = 1 / d;
+    var del = d * c; h *= del; if (Math.abs(del - 1) < 3e-14) break;
+  }
+  return h;
+}
+function ibeta(x, a, b) {
+  if (x <= 0) return 0; if (x >= 1) return 1;
+  var bt = Math.exp(lgamma(a + b) - lgamma(a) - lgamma(b) + a * Math.log(x) + b * Math.log(1 - x));
+  return x < (a + 1) / (a + b + 2) ? bt * betacf(a, b, x) / a : 1 - bt * betacf(b, a, 1 - x) / b;
+}
+/* Two-sided p for a t statistic, the t density, and the t value that leaves 2.5% in each tail. */
+function tp(t, df) { return ibeta(df / (df + t * t), df / 2, 0.5); }
+function tdens(t, df) { return Math.exp(lgamma((df + 1) / 2) - lgamma(df / 2) - 0.5 * Math.log(df * Math.PI) - (df + 1) / 2 * Math.log(1 + t * t / df)); }
+function qt975(df) { var lo = 0, hi = 60; for (var i = 0; i < 100; i++) { var m = (lo + hi) / 2; if (tp(m, df) > 0.05) lo = m; else hi = m; } return (lo + hi) / 2; }
+/* Standard normal distribution function (the erf series for |z| < 3√2, the erfc continued fraction beyond)
+   and its inverse (Acklam's approximation, refined by one Halley step). */
+function pnorm(z) {
+  var x = Math.abs(z) / Math.SQRT2, q;
+  if (x < 3) {   /* erf series */
+    var s = x, term = x, k = 0;
+    do { k++; term *= -x * x / k; s += term / (2 * k + 1); } while (Math.abs(term / (2 * k + 1)) > 1e-17 * Math.abs(s) && k < 200);
+    q = 0.5 * (1 - 2 / Math.sqrt(Math.PI) * s);   /* upper tail of |z| */
+  } else {       /* erfc continued fraction */
+    var f = 0; for (var j = 60; j >= 1; j--) f = (j / 2) / (x + f);
+    q = 0.5 * Math.exp(-x * x) / Math.sqrt(Math.PI) / (x + f);
+  }
+  return z >= 0 ? 1 - q : q;
+}
+function qnorm(p) {
+  var a = [-3.969683028665376e+01, 2.209460984245205e+02, -2.759285104469687e+02, 1.383577518672690e+02, -3.066479806614716e+01, 2.506628277459239e+00],
+    b = [-5.447609879822406e+01, 1.615858368580409e+02, -1.556989798598866e+02, 6.680131188771972e+01, -1.328068155288572e+01],
+    c = [-7.784894002430293e-03, -3.223964580411365e-01, -2.400758277161838e+00, -2.549732539343734e+00, 4.374664141464968e+00, 2.938163982698783e+00],
+    d = [7.784695709041462e-03, 3.224671290700398e-01, 2.445134137142996e+00, 3.754408661907416e+00], q, r, x;
+  if (p < 0.02425) { q = Math.sqrt(-2 * Math.log(p)); x = (((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1); }
+  else if (p > 1 - 0.02425) { q = Math.sqrt(-2 * Math.log(1 - p)); x = -(((((c[0] * q + c[1]) * q + c[2]) * q + c[3]) * q + c[4]) * q + c[5]) / ((((d[0] * q + d[1]) * q + d[2]) * q + d[3]) * q + 1); }
+  else { q = p - 0.5; r = q * q; x = (((((a[0] * r + a[1]) * r + a[2]) * r + a[3]) * r + a[4]) * r + a[5]) * q / (((((b[0] * r + b[1]) * r + b[2]) * r + b[3]) * r + b[4]) * r + 1); }
+  var e = pnorm(x) - p, u = e * Math.sqrt(2 * Math.PI) * Math.exp(x * x / 2);
+  return x - u / (1 + x * u / 2);
+}
+
+function neg(x, d) { var s = Math.abs(x).toFixed(d == null ? 1 : d); return (x < 0 && +s !== 0 ? '−' : '') + s; }
+function big(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+function pct(x) { return (100 * x).toFixed(1) + '%'; }
+function iv(lo, hi) { return neg(lo) + ' to ' + neg(hi); }
+
+/* A row of toggle buttons that behaves like a radio group. */
+function segmented(host, options, value, onChange) {
+  var buttons = options.map(function (o) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = o.label; b.setAttribute('aria-pressed', String(o.value === value));
+    b.addEventListener('click', function () {
+      buttons.forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      onChange(o.value);
+    });
+    host.appendChild(b); return b;
+  });
+}
+/* Nice upper limit and step for a share axis. */
+function shareAxis(max) {
+  var steps = [0.02, 0.04, 0.05, 0.1, 0.2, 0.25];
+  for (var i = 0; i < steps.length; i++) { var s = steps[i]; if (max <= 4 * s) return { top: Math.max(s, Math.ceil(max / s - 1e-9) * s), step: s }; }
+  return { top: 1, step: 0.25 };
+}
+function shareTicks(svg, ax, xa, xb, Y, label) {
+  for (var s = 0; s <= ax.top + 1e-9; s += ax.step) {
+    el('line', { x1: xa, x2: xb, y1: Y(s), y2: Y(s), 'class': 'grid' }, svg);
+    el('text', { x: xa - 8, y: Y(s) + 4, 'text-anchor': 'end', 'class': 't-mu', 'font-size': 11.5 }, svg, Math.round(s * 100) + '%');
+  }
+  if (label) el('text', { x: 0, y: Y(ax.top) - 26, 'class': 't-mu', 'font-size': 12 }, svg, label);
+}
+
+/* ---------- the pilot data (Table 1): fall in systolic blood pressure, mmHg ---------- */
+var PROG = [21, 17, 15, 14, 13, 7, 6, 2, 2, -3], USUAL = [11, 10, 9, 5, 2, 1, 0, -1, -9, -9], N = 10;
+function sum(a) { var s = 0; for (var i = 0; i < a.length; i++) s += a[i]; return s; }
+function mean(a) { return sum(a) / a.length; }
+function vr(a) { var m = mean(a), s = 0; for (var i = 0; i < a.length; i++) s += (a[i] - m) * (a[i] - m); return s / (a.length - 1); }
+
+/* ---------- the ideal bootstrap distribution, computed exactly ----------
+   A distribution on the integers is {lo, p}: p[k] is the probability of the value lo + k.
+   The sum of 10 draws with replacement from one arm is the 10-fold convolution of that arm's values;
+   the difference in sums, programme minus usual care, is 10 × the difference in means. */
+function convolve(A, B) {
+  var p = new Float64Array(A.p.length + B.p.length - 1);
+  for (var i = 0; i < A.p.length; i++) if (A.p[i]) for (var j = 0; j < B.p.length; j++) p[i + j] += A.p[i] * B.p[j];
+  return { lo: A.lo + B.lo, p: p };
+}
+function flip(A) { var p = new Float64Array(A.p.length); for (var i = 0; i < p.length; i++) p[i] = A.p[p.length - 1 - i]; return { lo: -(A.lo + p.length - 1), p: p }; }
+function sumDist(x) {
+  var mn = Math.min.apply(null, x), mx = Math.max.apply(null, x), one = { lo: mn, p: new Float64Array(mx - mn + 1) }, d = { lo: 0, p: new Float64Array([1]) };
+  x.forEach(function (v) { one.p[v - mn] += 1 / x.length; });
+  for (var k = 0; k < x.length; k++) d = convolve(d, one);
+  return d;
+}
+/* Exact bootstrap distribution of the difference in medians, kept as 2 × the difference (an integer).
+   The median of 10 resampled values is the average of the 5th and 6th smallest. */
+var FACT = [1]; for (var f = 1; f <= 10; f++) FACT[f] = FACT[f - 1] * f;
+function medianDist(x) {
+  var n = x.length, v = x.slice().sort(function (a, b) { return a - b; }).filter(function (u, i, s) { return !i || u !== s[i - 1]; });
+  var p = v.map(function (u) { return x.filter(function (w) { return w === u; }).length / n; }), K = v.length, below = [], acc = 0, i, j, a, b;
+  for (a = 0; a < K; a++) { below.push(acc); acc += p[a]; }
+  var lo = 2 * v[0], out = new Float64Array(2 * (v[K - 1] - v[0]) + 1);
+  for (a = 0; a < K; a++) {
+    var Fa = below[a], pa = p[a], rest = Math.max(0, 1 - Fa - pa);
+    /* 5th and 6th smallest both equal v[a]: i draws below v[a], j at v[a], i ≤ 4 and i + j ≥ 6 */
+    var same = 0;
+    for (i = 0; i <= 4; i++) for (j = 6 - i; j <= n - i; j++) same += FACT[n] / (FACT[i] * FACT[j] * FACT[n - i - j]) * Math.pow(Fa, i) * Math.pow(pa, j) * Math.pow(rest, n - i - j);
+    out[2 * v[a] - lo] += same;
+    /* 5th smallest v[a], 6th smallest v[b] > v[a]: exactly 5 draws at or below v[a], at least one of them at v[a],
+       and the other 5 at or above v[b] with at least one at v[b] */
+    for (b = a + 1; b < K; b++) {
+      var ge = 0, gt = 0; for (var k = b; k < K; k++) { ge += p[k]; if (k > b) gt += p[k]; }
+      var pr = 0; for (i = 0; i <= 4; i++) { j = 5 - i; pr += FACT[n] / (FACT[i] * FACT[j] * FACT[5]) * Math.pow(Fa, i) * Math.pow(pa, j) * (Math.pow(ge, 5) - Math.pow(gt, 5)); }
+      out[v[a] + v[b] - lo] += pr;
+    }
+  }
+  return { lo: lo, p: out };
+}
+function moments(D, unit) { var m = 0, s = 0, i; for (i = 0; i < D.p.length; i++) m += D.p[i] * (D.lo + i); for (i = 0; i < D.p.length; i++) s += D.p[i] * Math.pow(D.lo + i - m, 2); return { mean: m * unit, sd: Math.sqrt(s) * unit }; }
+/* Quantile: the smallest value whose cumulative probability reaches a (R's quantile type 1). */
+function quant(D, a) { var c = 0; for (var i = 0; i < D.p.length; i++) { c += D.p[i]; if (c >= a - 1e-12) return D.lo + i; } return D.lo + D.p.length - 1; }
+function below(D, w) { var c = 0; for (var i = 0; i < D.p.length && D.lo + i < w; i++) c += D.p[i]; return c; }
+/* BCa (Efron 1987): percentile levels moved by the bias correction z0 and the acceleration a, here from the
+   empirical influence values of the difference in means (two arms of equal size). */
+function accel(a, b) {
+  var ma = mean(a), mb = mean(b), s2 = 0, s3 = 0;
+  a.forEach(function (v) { s2 += Math.pow(v - ma, 2); s3 += Math.pow(v - ma, 3); });
+  b.forEach(function (v) { s2 += Math.pow(v - mb, 2); s3 -= Math.pow(v - mb, 3); });
+  return s3 / (6 * Math.pow(s2, 1.5));
+}
+function bcaLevels(z0, acc) {
+  return [0.025, 0.975].map(function (al) { var z = qnorm(al); return pnorm(z0 + (z0 + z) / (1 - acc * (z0 + z))); });
+}
+
+var EXACT = {};
+function exactFor(key, stat) {
+  var id = key + ':' + stat;
+  if (EXACT[id]) return EXACT[id];
+  var prog = key === 'table' ? PROG : [45].concat(PROG.slice(1)), r = { prog: prog };
+  if (stat === 'mean') {
+    var D = convolve(sumDist(prog), flip(sumDist(USUAL))), obs = sum(prog) - sum(USUAL);   /* tenths of a mmHg */
+    var mo = moments(D, 0.1), z0 = qnorm(below(D, obs)), acc = accel(prog, USUAL), lv = bcaLevels(z0, acc);
+    var se = Math.sqrt(vr(prog) / N + vr(USUAL) / N), tq = qt975(18);
+    r = { prog: prog, D: D, unit: 0.1, obs: obs * 0.1, se: mo.sd, seT: se,
+      perc: [quant(D, 0.025) * 0.1, quant(D, 0.975) * 0.1], bca: [quant(D, lv[0]) * 0.1, quant(D, lv[1]) * 0.1],
+      t: [obs * 0.1 - tq * se, obs * 0.1 + tq * se], z0: z0, acc: acc };
+  } else {
+    var M = convolve(medianDist(prog), flip(medianDist(USUAL))), sp = prog.slice().sort(function (a, b) { return a - b; }), su = USUAL.slice().sort(function (a, b) { return a - b; });
+    var o = sp[4] + sp[5] - su[4] - su[5], mm = moments(M, 0.5), nz = 0, top = 0, at = 0;
+    for (var i = 0; i < M.p.length; i++) if (M.p[i] > 1e-15) { nz++; if (M.p[i] > top) { top = M.p[i]; at = (M.lo + i) * 0.5; } }
+    r = { prog: prog, D: M, unit: 0.5, obs: o * 0.5, se: mm.sd, perc: [quant(M, 0.025) * 0.5, quant(M, 0.975) * 0.5], support: nz, mode: at, modeP: top };
+  }
+  return (EXACT[id] = r);
+}
+
+/* Bins for the histograms: a difference in means is a multiple of 0.1, binned in 1 mmHg bins [k, k + 1);
+   a difference in medians is a multiple of 0.5 and gets one bar per possible value. */
+function binsOf(D, unit) {
+  var bins = {};
+  for (var i = 0; i < D.p.length; i++) {
+    if (!D.p[i]) continue;
+    var v = (D.lo + i) * unit, k = unit === 0.5 ? Math.round(v / 0.5) : Math.floor(v + 1e-9);
+    bins[k] = (bins[k] || 0) + D.p[i];
+  }
+  return bins;
+}
+
+/* ================= Figure 1: building the bootstrap distribution by resampling ================= */
+(function () {
+  var svg = document.getElementById('fig1');
+  if (!svg) return;
+  var EX = exactFor('table', 'mean'), r = rng(20261008);
+  var state = { mode: 'exact', counts: null, n: 0, ws: [], bins: {}, last: null };
+  var xa = 120, xb = 700;
+  var dl = -12, dh = 24, DX = function (v) { return xa + (v - dl) / (dh - dl) * (xb - xa); };     /* top: data */
+  var hl = -6, hh = 21, HX = function (v) { return xa + (v - hl) / (hh - hl) * (xb - xa); };      /* bottom: differences */
+  var ROW = { 1: 74, 0: 134 }, hy0 = 470, hy1 = 292;
+
+  function resample() {
+    var c1 = [], c0 = [], s1 = 0, s0 = 0, i, j;
+    for (i = 0; i < N; i++) { c1.push(0); c0.push(0); }
+    for (i = 0; i < N; i++) { j = Math.floor(r() * N); c1[j]++; s1 += PROG[j]; j = Math.floor(r() * N); c0[j]++; s0 += USUAL[j]; }
+    var w = s1 - s0, k = Math.floor(w / 10);   /* w: 10 × the difference in means */
+    state.bins[k] = (state.bins[k] || 0) + 1; state.ws.push(w); state.n++;
+    state.counts = { 1: c1, 0: c0 }; state.last = w / 10;
+  }
+  function act(what) {
+    if (what === 'reset' || what === 'exact' || state.mode === 'exact') {
+      state.mode = what === 'exact' ? 'exact' : 'random'; state.n = 0; state.ws = []; state.bins = {}; state.last = null; state.counts = null;
+    }
+    var times = { one: 1, hundred: 100, thousand: 1000 }[what] || 0;
+    for (var i = 0; i < times; i++) resample();
+    draw();
+  }
+  /* percentile interval of the resamples so far: R's quantile type 1, as for the exact distribution */
+  function sampleQ(a) { var s = state.ws.slice().sort(function (x, y) { return x - y; }); return s[Math.max(0, Math.ceil(a * s.length - 1e-9) - 1)]; }
+  function sampleSd() { var m = 0, v = 0, n = state.ws.length; state.ws.forEach(function (w) { m += w; }); m /= n; state.ws.forEach(function (w) { v += (w - m) * (w - m); }); return Math.sqrt(v / (n - 1)) / 10; }
+
+  function draw() {
+    clear(svg);
+    /* legend */
+    el('circle', { cx: 6, cy: 14, r: 5.5, style: 'fill:var(--s2)' }, svg);
+    el('text', { x: 18, y: 18, 'class': 't-2', 'font-size': 12 }, svg, 'programme arm');
+    el('rect', { x: 128, y: 9, width: 10, height: 10, style: 'fill:var(--s1)' }, svg);
+    el('text', { x: 146, y: 18, 'class': 't-2', 'font-size': 12 }, svg, 'usual-care arm');
+    el('circle', { cx: 262, cy: 14, r: 5, style: 'fill:none;stroke:var(--muted)', 'stroke-width': 1.2, 'stroke-dasharray': '2 2' }, svg);
+    el('text', { x: 274, y: 18, 'class': 't-2', 'font-size': 12 }, svg, 'not drawn');
+    var orig = state.counts === null, head = orig ? 'The original sample: everyone once' : 'Resample ' + big(state.n) + ': 10 drawn with replacement from each arm';
+    el('text', { x: xb, y: 18, 'text-anchor': 'end', 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, head);
+
+    /* top panel: who was drawn, and how often */
+    var means = {};
+    [[1, PROG], [0, USUAL]].forEach(function (q) {
+      var a = q[0], xs = q[1], cnt = orig ? xs.map(function () { return 1; }) : state.counts[a], seen = {}, s = 0;
+      el('text', { x: 0, y: ROW[a] + 4, 'class': 't-ink', 'font-size': 13, 'font-weight': 600 }, svg, a ? 'Programme' : 'Usual care');
+      el('line', { x1: xa, x2: xb, y1: ROW[a], y2: ROW[a], 'class': 'grid' }, svg);
+      xs.forEach(function (v, i) { (seen[v] = seen[v] || []).push(i); s += v * cnt[i]; });
+      means[a] = s / N;
+      xs.forEach(function (v, i) {
+        var grp = seen[v], m = grp.indexOf(i), y = ROW[a] + (m - (grp.length - 1) / 2) * 14, x = DX(v), k = cnt[i];
+        var st = k ? 'fill:var(--' + (a ? 's2' : 's1') + ');stroke:var(--panel)' : 'fill:none;stroke:var(--muted)';
+        var extra = k ? { 'stroke-width': 1.2 } : { 'stroke-width': 1.2, 'stroke-dasharray': '2 2' };
+        var e = a ? el('circle', { cx: x, cy: y, r: 6, style: st }, svg) : el('rect', { x: x - 5.5, y: y - 5.5, width: 11, height: 11, style: st }, svg);
+        for (var kk in extra) e.setAttribute(kk, extra[kk]);
+        if (k > 1) el('text', { x: x + (grp.length > 1 ? (m ? 9 : -9) : 0), y: y - 9, 'text-anchor': grp.length > 1 ? (m ? 'start' : 'end') : 'middle', 'class': 't-ink', 'font-size': 11, 'font-weight': 600 }, svg, '×' + k);
+      });
+    });
+    [[1, means[1]], [0, means[0]]].forEach(function (q) {
+      var x = DX(q[1]);
+      el('line', { x1: x, x2: x, y1: ROW[q[0]] - 21, y2: ROW[q[0]] + 21, style: 'stroke:var(--ink)', 'stroke-width': 2 }, svg);
+      el('text', { x: x, y: ROW[q[0]] - 26, 'text-anchor': 'middle', 'class': 't-ink', 'font-size': 11.5 }, svg, 'mean ' + neg(q[1]));
+    });
+    var ay = 178;
+    el('line', { x1: xa, x2: xb, y1: ay, y2: ay, 'class': 'axis' }, svg);
+    for (var t = -10; t <= 20; t += 5) {
+      el('line', { x1: DX(t), x2: DX(t), y1: ay, y2: ay + 5, 'class': 'axis' }, svg);
+      el('text', { x: DX(t), y: ay + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, neg(t, 0));
+    }
+    el('text', { x: (xa + xb) / 2, y: ay + 36, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Fall in systolic blood pressure (mmHg)');
+    el('text', { x: 0, y: ay + 18, 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, 'Difference');
+    el('text', { x: 0, y: ay + 34, 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, neg(means[1] - means[0]) + ' mmHg');
+
+    /* bottom panel: the differences so far, with the middle 95% between the dashed lines */
+    var exact = state.mode === 'exact', bins = exact ? binsOf(EX.D, 0.1) : state.bins, total = exact ? 1 : state.n, mx = 0, lo = null, hi = null;
+    Object.keys(bins).forEach(function (k) { mx = Math.max(mx, bins[k] / Math.max(1, total)); });
+    if (exact) { lo = EX.perc[0]; hi = EX.perc[1]; } else if (state.n >= 40) { lo = sampleQ(0.025) / 10; hi = sampleQ(0.975) / 10; }
+    var ax = shareAxis(Math.max(mx, 0.1)), Y = function (s) { return hy0 - s / ax.top * (hy0 - hy1); };
+    shareTicks(svg, ax, xa, xb, Y, exact ? 'Share of the ideal bootstrap distribution, per 1 mmHg' : 'Share of the ' + big(state.n) + (state.n === 1 ? ' resample' : ' resamples') + ' so far, per 1 mmHg');
+    Object.keys(bins).forEach(function (key) {
+      var k = +key; if (k < hl || k + 1 > hh) return;
+      var x0 = HX(k) + 0.6, w = HX(k + 1) - HX(k) - 1.2, h = bins[key] / Math.max(1, total);
+      el('rect', { x: x0, y: Y(h), width: w, height: Y(0) - Y(h), style: 'fill:color-mix(in srgb, var(--ci) 45%, transparent)' }, svg);
+    });
+    if (lo !== null) {
+      [lo, hi].forEach(function (v, i) {
+        var x = HX(v);
+        el('line', { x1: x, x2: x, y1: hy1 - 4, y2: hy0, style: 'stroke:var(--pv)', 'stroke-width': 1.4, 'stroke-dasharray': '4 3' }, svg);
+        el('text', { x: x + (i ? 4 : -4), y: hy1 - 8, 'text-anchor': i ? 'start' : 'end', style: 'fill:var(--pv)', 'font-size': 11.5, 'font-weight': 600 }, svg, (i ? '97.5th percentile ' : '2.5th percentile ') + neg(v));
+      });
+    }
+    var xo = HX(7.5);
+    el('line', { x1: xo, x2: xo, y1: hy1 + 12, y2: hy0, style: 'stroke:var(--ink)', 'stroke-width': 1.6 }, svg);
+    el('text', { x: xo, y: hy1 + 6, 'text-anchor': 'middle', 'class': 't-ink', 'font-size': 11.5, 'font-weight': 600 }, svg, 'observed 7.5');
+    if (!exact && state.last !== null) {
+      var lx = HX(Math.max(hl, Math.min(hh, state.last)));
+      el('path', { d: 'M' + lx + ',' + (hy0 + 4) + 'l-5,9h10z', style: 'fill:var(--ink)' }, svg);
+    }
+    el('line', { x1: xa, x2: xb, y1: hy0, y2: hy0, 'class': 'axis' }, svg);
+    for (t = -6; t <= 21; t += 3) {
+      el('line', { x1: HX(t), x2: HX(t), y1: hy0, y2: hy0 + 5, 'class': 'axis' }, svg);
+      el('text', { x: HX(t), y: hy0 + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, neg(t, 0));
+    }
+    el('text', { x: (xa + xb) / 2, y: hy0 + 40, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Difference in means in the resample (programme − usual care, mmHg)');
+
+    var msg;
+    if (exact) {
+      msg = 'The ideal bootstrap distribution, which ever more resamples approach, computed exactly: its standard deviation, the bootstrap standard error, is ' +
+        EX.se.toFixed(2) + ' mmHg, and its middle 95% runs from ' + iv(EX.perc[0], EX.perc[1]) + ' mmHg (the percentile interval). The <i>t</i> interval is ' + iv(EX.t[0], EX.t[1]) + ' mmHg. The top panel shows the original sample.';
+    } else if (state.n === 0) {
+      msg = 'No resamples yet. The top panel shows the original sample, with a difference of 7.5 mmHg. Resample to build the bootstrap distribution.';
+    } else {
+      msg = big(state.n) + (state.n === 1 ? ' resample' : ' resamples') + ' so far (the last gave ' + neg(state.last) + ' mmHg). ' +
+        (state.n >= 2 ? 'Their standard deviation, the bootstrap standard error, is ' + sampleSd().toFixed(2) + ' mmHg' : '') +
+        (lo !== null ? ', and their middle 95% runs from ' + iv(lo, hi) + ' mmHg. ' : (state.n >= 2 ? '; the percentile interval appears once there are at least 40 resamples. ' : 'The percentile interval appears once there are at least 40 resamples. ')) +
+        'The ideal distribution gives ' + EX.se.toFixed(2) + ' mmHg and ' + iv(EX.perc[0], EX.perc[1]) + ' mmHg.';
+    }
+    document.getElementById('f1-read').innerHTML = msg;
+  }
+
+  var host = document.getElementById('f1-acts');
+  [['one', 'Once'], ['hundred', '100 times'], ['thousand', '1,000 times'], ['exact', 'Ideal (exact)'], ['reset', 'Start again']].forEach(function (b) {
+    var btn = document.createElement('button');
+    btn.type = 'button'; btn.textContent = b[1];
+    btn.addEventListener('click', function () { act(b[0]); });
+    host.appendChild(btn);
+  });
+  draw();
+})();
+
+/* ================= Figure 2: the bootstrap distribution, the t curve and the intervals ================= */
+(function () {
+  var svg = document.getElementById('fig2');
+  if (!svg) return;
+  var state = { data: 'table', stat: 'mean' };
+  var xa = 110, xb = 720, lo = -10, hi = 30, X = function (v) { return xa + (v - lo) / (hi - lo) * (xb - xa); };
+  var y0 = 300, y1 = 70;
+
+  function draw() {
+    clear(svg);
+    var E = exactFor(state.data, state.stat), isMean = state.stat === 'mean', bins = binsOf(E.D, E.unit), mx = 0, bw = isMean ? 1 : 0.5;
+    /* the part of each bin outside the percentile interval (below its lower end or above its upper end) */
+    var outside = {};
+    for (var i = 0; i < E.D.p.length; i++) {
+      var val = (E.D.lo + i) * E.unit;
+      if (E.D.p[i] && (val < E.perc[0] - 1e-9 || val > E.perc[1] + 1e-9)) { var kk = isMean ? Math.floor(val + 1e-9) : Math.round(val / 0.5); outside[kk] = (outside[kk] || 0) + E.D.p[i]; }
+    }
+    Object.keys(bins).forEach(function (k) { mx = Math.max(mx, bins[k]); });
+    if (isMean) mx = Math.max(mx, tdens(0, 18) / E.seT);
+    var ax = shareAxis(Math.max(mx, 0.04)), Y = function (s) { return y0 - s / ax.top * (y0 - y1); };
+    shareTicks(svg, ax, xa, xb, Y, 'Share of the ideal bootstrap distribution, ' + (isMean ? 'per 1 mmHg' : 'one bar per possible value, 0.5 mmHg apart'));
+    Object.keys(bins).forEach(function (key) {
+      var k = +key, a = isMean ? k : (k - 0.5) * 0.5, b = a + bw;
+      if (a < lo || b > hi) return;
+      var h = bins[key], ho = outside[key] || 0, x0 = X(a) + 0.5, w = Math.max(0.8, X(b) - X(a) - 1);
+      if (h - ho > 0) el('rect', { x: x0, y: Y(h), width: w, height: Y(ho) - Y(h), style: 'fill:color-mix(in srgb, var(--ci) 45%, transparent)' }, svg);
+      if (ho > 0) el('rect', { x: x0, y: Y(ho), width: w, height: Y(0) - Y(ho), style: 'fill:var(--pv)' }, svg);
+    });
+    if (isMean) {
+      var c = [];
+      for (var v = lo; v <= hi + 1e-9; v += 0.1) c.push((c.length ? 'L' : 'M') + X(v).toFixed(1) + ',' + Y(tdens((v - E.obs) / E.seT, 18) / E.seT).toFixed(1));
+      el('path', { d: c.join(' '), style: 'fill:none;stroke:var(--ink)', 'stroke-width': 2, 'stroke-linejoin': 'round' }, svg);
+    }
+    var xo = X(E.obs);
+    el('line', { x1: xo, x2: xo, y1: y1 - 4, y2: y0, style: 'stroke:var(--ink-2)', 'stroke-width': 1.2, 'stroke-dasharray': '4 3' }, svg);
+    el('text', { x: xo, y: y1 - 9, 'text-anchor': 'middle', 'class': 't-2', 'font-size': 11.5, 'font-weight': 600 }, svg, 'observed ' + neg(E.obs));
+    el('line', { x1: xa, x2: xb, y1: y0, y2: y0, 'class': 'axis' }, svg);
+    for (var t = lo; t <= hi; t += 5) {
+      el('line', { x1: X(t), x2: X(t), y1: y0, y2: y0 + 5, 'class': 'axis' }, svg);
+      el('text', { x: X(t), y: y0 + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, neg(t, 0));
+    }
+    el('text', { x: (xa + xb) / 2, y: y0 + 38, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg,
+      'Difference in ' + (isMean ? 'means' : 'medians') + ' in the resample (programme − usual care, mmHg)');
+
+    /* the 95% intervals, one row each */
+    var rows = isMean ? [['t interval', E.t, 'var(--ink)'], ['Percentile', E.perc, 'var(--pv)'], ['BCa', E.bca, 'var(--ef)']] : [['Percentile', E.perc, 'var(--pv)']];
+    rows.forEach(function (row, i) {
+      var y = 366 + i * 24, a = X(Math.max(lo, row[1][0])), b = X(Math.min(hi, row[1][1]));
+      el('text', { x: 0, y: y + 4, 'class': 't-ink', 'font-size': 12.5, 'font-weight': 600 }, svg, row[0]);
+      el('line', { x1: a, x2: b, y1: y, y2: y, style: 'stroke:' + row[2], 'stroke-width': 3, 'stroke-linecap': 'round' }, svg);
+      el('line', { x1: xo, x2: xo, y1: y - 6, y2: y + 6, style: 'stroke:' + row[2], 'stroke-width': 1.5 }, svg);
+      el('text', { x: a - 6, y: y + 4, 'text-anchor': 'end', 'class': 't-2', 'font-size': 11.5 }, svg, neg(row[1][0]));
+      el('text', { x: b + 6, y: y + 4, 'class': 't-2', 'font-size': 11.5 }, svg, neg(row[1][1]));
+    });
+    /* legend */
+    el('rect', { x: xa, y: 6, width: 14, height: 10, style: 'fill:color-mix(in srgb, var(--ci) 45%, transparent)' }, svg);
+    el('text', { x: xa + 20, y: 15, 'class': 't-2', 'font-size': 12 }, svg, 'bootstrap distribution');
+    el('rect', { x: xa + 168, y: 6, width: 14, height: 10, style: 'fill:var(--pv)' }, svg);
+    el('text', { x: xa + 188, y: 15, 'class': 't-2', 'font-size': 12 }, svg, 'outside the percentile interval');
+    if (isMean) {
+      el('line', { x1: xa + 392, x2: xa + 412, y1: 11, y2: 11, style: 'stroke:var(--ink)', 'stroke-width': 2 }, svg);
+      el('text', { x: xa + 418, y: 15, 'class': 't-2', 'font-size': 12 }, svg, 't-test: t distribution × SE (' + E.seT.toFixed(2) + ')');
+    } else {
+      el('text', { x: xa + 392, y: 15, 'class': 't-mu', 'font-size': 12 }, svg, 'no t curve: the t-test is for means');
+    }
+
+    var lab = state.data === 'table' ? 'Data of Table 1' : 'Largest fall 45 mmHg', msg;
+    if (isMean) {
+      msg = lab + ': difference in means ' + E.obs.toFixed(1) + ' mmHg. Bootstrap standard error ' + E.se.toFixed(2) + ' mmHg, against ' + E.seT.toFixed(2) +
+        ' from the <i>t</i>-test formula. 95% intervals: <span class="sw" style="background:var(--pv)"></span>percentile ' + iv(E.perc[0], E.perc[1]) +
+        ', <span class="sw" style="background:var(--ef)"></span>BCa ' + iv(E.bca[0], E.bca[1]) + ', <span class="sw" style="background:var(--ink)"></span><i>t</i> ' + iv(E.t[0], E.t[1]) + ' mmHg.';
+    } else {
+      msg = lab + ': difference in medians ' + E.obs.toFixed(1) + ' mmHg. Bootstrap standard error ' + E.se.toFixed(2) + ' mmHg; 95% percentile interval ' + iv(E.perc[0], E.perc[1]) +
+        ' mmHg. The distribution sits on only ' + E.support + ' possible values, and the most likely one, ' + neg(E.mode) + ' mmHg, carries ' + pct(E.modeP) + ' of it.';
+    }
+    svg.setAttribute('aria-label', 'Figure 2. The ideal bootstrap distribution of the difference in ' + (isMean ? 'means' : 'medians') + ' for the ' +
+      (state.data === 'table' ? 'pilot data' : 'data with a 45 mmHg value') + (isMean ? ', with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval ' + iv(E.perc[0], E.perc[1]) +
+      ', BCa ' + iv(E.bca[0], E.bca[1]) + ', t interval ' + iv(E.t[0], E.t[1]) + ' mmHg.' : '. Percentile interval ' + iv(E.perc[0], E.perc[1]) + ' mmHg.'));
+    document.getElementById('f2-read').innerHTML = msg;
+  }
+  segmented(document.getElementById('f2-data'), [{ label: 'Table 1', value: 'table' }, { label: 'Largest fall 45 mmHg', value: 'outlier' }], state.data, function (v) { state.data = v; draw(); });
+  segmented(document.getElementById('f2-stat'), [{ label: 'Difference in means', value: 'mean' }, { label: 'Difference in medians', value: 'median' }], state.stat, function (v) { state.stat = v; draw(); });
+  draw();
+})();
+
+/* ================= Figure 3: how often do the intervals cover the true difference? ================= */
+(function () {
+  var svg = document.getElementById('fig3');
+  if (!svg) return;
+  var SD = 8, TRUE = 8, RUNS = 1000, B = 999, SHOW = 100, cache = {};
+  var METHODS = [['t', 't interval', 'var(--ink)'], ['perc', 'Percentile', 'var(--pv)'], ['bca', 'BCa', 'var(--ef)'], ['boott', 'Bootstrap-t', 'var(--ci)']];
+  var state = { pop: 'normal', n: 10, method: 'perc' };
+  var LN = Math.sqrt((Math.E - 1) * Math.E), LM = Math.exp(0.5);   /* SD and mean of a log-normal variable with sigma 1 */
+
+  function quantSorted(s, a) { return s[Math.min(s.length - 1, Math.max(0, Math.ceil(a * s.length - 1e-9) - 1))]; }
+  /* RUNS simulated trials of n per arm; each is analysed with a t interval and three bootstrap intervals from the same B resamples. */
+  function simulate(pop, n) {
+    var id = pop + ':' + n;
+    if (cache[id]) return cache[id];
+    var r = rng(9000 + 100 * n + (pop === 'skew' ? 1 : 0)), tq = qt975(2 * n - 2), a = new Array(n), b = new Array(n);
+    var hits = { t: 0, perc: 0, bca: 0, boott: 0 }, width = { t: 0, perc: 0, bca: 0, boott: 0 }, shown = { t: [], perc: [], bca: [], boott: [] };
+    var d = new Float64Array(B), ts = new Float64Array(B), i, k;
+    function noise() { var z = normal(r); return pop === 'skew' ? SD * (Math.exp(z) - LM) / LN : SD * z; }
+    for (var run = 0; run < RUNS; run++) {
+      for (i = 0; i < n; i++) { a[i] = TRUE + noise(); b[i] = noise(); }
+      var D = mean(a) - mean(b), se = Math.sqrt(vr(a) / n + vr(b) / n), below = 0;
+      for (k = 0; k < B; k++) {
+        var s1 = 0, q1 = 0, s0 = 0, q0 = 0, v;
+        for (i = 0; i < n; i++) { v = a[Math.floor(r() * n)]; s1 += v; q1 += v * v; v = b[Math.floor(r() * n)]; s0 += v; q0 += v * v; }
+        var m1 = s1 / n, m0 = s0 / n, sek = Math.sqrt(Math.max(0, (q1 - n * m1 * m1) / (n - 1)) / n + Math.max(0, (q0 - n * m0 * m0) / (n - 1)) / n);
+        d[k] = m1 - m0; if (d[k] < D) below++;
+        ts[k] = sek > 1e-12 ? (d[k] - D) / sek : (d[k] > D ? Infinity : d[k] < D ? -Infinity : 0);
+      }
+      var ds = Array.prototype.slice.call(d).sort(function (x, y) { return x - y; }), tss = Array.prototype.slice.call(ts).sort(function (x, y) { return x - y; });
+      var z0 = qnorm(Math.min(1 - 0.5 / B, Math.max(0.5 / B, below / B))), lv = bcaLevels(z0, accel(a, b));
+      var res = {
+        t: [D - tq * se, D + tq * se],
+        perc: [quantSorted(ds, 0.025), quantSorted(ds, 0.975)],
+        bca: [quantSorted(ds, lv[0]), quantSorted(ds, lv[1])],
+        boott: [D - quantSorted(tss, 0.975) * se, D - quantSorted(tss, 0.025) * se]
+      };
+      for (var m in res) {
+        if (res[m][0] <= TRUE && TRUE <= res[m][1]) hits[m]++;
+        width[m] += res[m][1] - res[m][0];
+        if (run < SHOW) shown[m].push(res[m]);
+      }
+    }
+    var out = { cover: {}, width: {}, shown: shown };
+    for (var mm in hits) { out.cover[mm] = hits[mm] / RUNS; out.width[mm] = width[mm] / RUNS; }
+    return (cache[id] = out);
+  }
+
+  function draw() {
+    clear(svg);
+    var S = simulate(state.pop, state.n), half = { 5: 24, 10: 16, 20: 11, 40: 8 }[state.n];
+    var xa = 40, xb = 400, lo = TRUE - half, hi = TRUE + half, X = function (v) { return xa + (v - lo) / (hi - lo) * (xb - xa); };
+    var top = 52, rowH = 2.8, meth = METHODS.filter(function (m) { return m[0] === state.method; })[0];
+    el('text', { x: xa, y: 20, 'class': 't-ink', 'font-size': 13, 'font-weight': 600 }, svg, meth[1] + ': the first ' + SHOW + ' of ' + big(RUNS) + ' trials');
+    var miss = 0;
+    S.shown[state.method].forEach(function (ci, i) {
+      var y = top + i * rowH, ok = ci[0] <= TRUE && TRUE <= ci[1];
+      if (!ok) miss++;
+      var a = Math.max(lo, ci[0]), b = Math.min(hi, ci[1]);
+      if (b > a) el('line', { x1: X(a), x2: X(b), y1: y, y2: y, style: 'stroke:' + (ok ? 'color-mix(in srgb, var(--ci) 60%, transparent)' : 'var(--leak)'), 'stroke-width': ok ? 1.6 : 2 }, svg);
+    });
+    var yb = top + SHOW * rowH + 6;
+    el('line', { x1: X(TRUE), x2: X(TRUE), y1: top - 10, y2: yb, style: 'stroke:var(--ink)', 'stroke-width': 1.4 }, svg);
+    el('text', { x: X(TRUE), y: top - 14, 'text-anchor': 'middle', 'class': 't-ink', 'font-size': 11.5 }, svg, 'true difference ' + TRUE);
+    el('line', { x1: xa, x2: xb, y1: yb, y2: yb, 'class': 'axis' }, svg);
+    var step = half >= 16 ? 8 : 4;
+    for (var t = Math.ceil(lo / step) * step; t <= hi; t += step) {
+      el('line', { x1: X(t), x2: X(t), y1: yb, y2: yb + 5, 'class': 'axis' }, svg);
+      el('text', { x: X(t), y: yb + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, neg(t, 0));
+    }
+    el('text', { x: (xa + xb) / 2, y: yb + 36, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, '95% interval for the difference in means (mmHg)');
+    el('text', { x: xb, y: 20, 'text-anchor': 'end', style: 'fill:var(--leak)', 'font-size': 12, 'font-weight': 600 }, svg, miss + ' of ' + SHOW + ' miss');
+
+    /* right: coverage over all runs */
+    var ca = 505, cb = 700, C = function (p) { return ca + (p - 0.8) / 0.2 * (cb - ca); }, yc = 70 + 4 * 52 - 20;
+    el('text', { x: ca - 90, y: 20, 'class': 't-ink', 'font-size': 13, 'font-weight': 600 }, svg, 'Coverage in all ' + big(RUNS) + ' trials');
+    el('line', { x1: C(0.95), x2: C(0.95), y1: 50, y2: yc, style: 'stroke:var(--ink-2)', 'stroke-width': 1.2, 'stroke-dasharray': '4 3' }, svg);
+    el('text', { x: C(0.95), y: 44, 'text-anchor': 'middle', 'class': 't-2', 'font-size': 11 }, svg, '95%');
+    METHODS.forEach(function (m, i) {
+      var y = 70 + i * 52, p = S.cover[m[0]], sel = m[0] === state.method;
+      el('text', { x: ca - 10, y: y + 5, 'text-anchor': 'end', 'class': 't-ink', 'font-size': 12.5, 'font-weight': sel ? 700 : 500 }, svg, m[1]);
+      el('rect', { x: ca, y: y - 10, width: Math.max(0, C(Math.max(0.8, p)) - ca), height: 20, style: 'fill:' + m[2] + ';opacity:' + (sel ? 1 : 0.55) }, svg);
+      el('text', { x: cb + 8, y: y + 5, 'class': 't-ink', 'font-size': 12, 'font-weight': sel ? 700 : 500 }, svg, pct(p));
+    });
+    el('line', { x1: ca, x2: cb, y1: yc, y2: yc, 'class': 'axis' }, svg);
+    [0.8, 0.85, 0.9, 0.95, 1].forEach(function (p) {
+      el('line', { x1: C(p), x2: C(p), y1: yc, y2: yc + 5, 'class': 'axis' }, svg);
+      el('text', { x: C(p), y: yc + 18, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 11.5 }, svg, Math.round(p * 100) + '%');
+    });
+    el('text', { x: (ca + cb) / 2, y: yc + 36, 'text-anchor': 'middle', 'class': 't-mu', 'font-size': 12 }, svg, 'Share of intervals that cover the truth');
+
+    var popLab = state.pop === 'normal' ? 'Normal outcomes' : 'Right-skewed (log-normal) outcomes';
+    document.getElementById('f3-read').innerHTML = popLab + ', ' + state.n + ' per arm, ' + big(RUNS) + ' simulated trials: the 95% interval covered the true difference of 8 mmHg in ' +
+      METHODS.map(function (m) { return pct(S.cover[m[0]]) + ' (' + m[1].replace('t interval', '<i>t</i>').replace('Bootstrap-t', 'bootstrap-<i>t</i>') + ')'; }).join(', ') +
+      '. Average widths: ' + METHODS.map(function (m) { return S.width[m[0]].toFixed(1); }).join(', ') + ' mmHg in the same order.';
+    var low = function (name) { return name === 'BCa' ? name : name.charAt(0).toLowerCase() + name.slice(1); };
+    svg.setAttribute('aria-label', 'Figure 3. ' + popLab + ', ' + state.n + ' per arm: the first 100 of 1,000 simulated ' + low(meth[1]).replace('t interval', 't') + ' intervals, ' + miss +
+      ' of which miss the true difference, and the coverage of each method over all 1,000 trials: ' + METHODS.map(function (m) { return low(m[1]) + ' ' + pct(S.cover[m[0]]); }).join(', ') + '.');
+  }
+  segmented(document.getElementById('f3-pop'), [{ label: 'Normal', value: 'normal' }, { label: 'Skewed', value: 'skew' }], state.pop, function (v) { state.pop = v; draw(); });
+  segmented(document.getElementById('f3-n'), [5, 10, 20, 40].map(function (v) { return { label: String(v), value: v }; }), state.n, function (v) { state.n = v; draw(); });
+  segmented(document.getElementById('f3-m'), METHODS.map(function (m) { return { label: m[1], value: m[0] }; }), state.method, function (v) { state.method = v; draw(); });
+  draw();
+})();
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+
+  /* ================= giscus comments: the one place to configure them =================
+     Comments load only when both "category" and "categoryId" are filled in.
+     Same settings as the other posts (see README.md, "Comments (giscus)"). */
+  var GISCUS = {
+      "repo": "selcukorkmaz/selcukorkmaz.github.io",
+      "repoId": "R_kgDOPupOnA",
+      "category": "Announcements",
+      "categoryId": "DIC_kwDOPupOnM4DGb_J",
+      "mapping": "pathname",
+      "strict": "1",
+      "reactionsEnabled": "1",
+      "emitMetadata": "0",
+      "inputPosition": "top",
+      "lang": "en",
+      "loading": "lazy",
+      "themeLight": "light",
+      "themeDark": "dark"
+  };
+
+  var root = document.documentElement;
+  var meta = document.getElementById('metaThemeColor');
+  var COLORS = {"light": "#f6f7f5", "dark": "#11161c"};
+  var URL = "https://selcukorkmaz.github.io/blog/bootstrap/";
+
+  /* ---------------- theme (shared with the main site) ---------------- */
+  function current() {
+    var t = root.getAttribute('data-theme');
+    if (t === 'dark' || t === 'light') return t;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function label(t) {
+    document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+      b.setAttribute('title', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    });
+  }
+  function giscusTheme(t) { return t === 'dark' ? GISCUS.themeDark : GISCUS.themeLight; }
+  function apply(t) {
+    root.classList.remove('light', 'dark');
+    root.classList.add(t);                 /* the main site's convention */
+    root.setAttribute('data-theme', t);    /* the paper's convention */
+    if (meta) meta.setAttribute('content', COLORS[t]);
+    try { localStorage.setItem('theme', t); } catch (e) {}
+    label(t);
+    var frame = document.querySelector('iframe.giscus-frame');
+    if (frame && frame.contentWindow) {
+      frame.contentWindow.postMessage({ giscus: { setConfig: { theme: giscusTheme(t) } } }, 'https://giscus.app');
+    }
+  }
+  if (meta) meta.setAttribute('content', COLORS[current()]);
+  label(current());
+  document.querySelectorAll('[data-theme-toggle]').forEach(function (b) {
+    b.addEventListener('click', function () { apply(current() === 'dark' ? 'light' : 'dark'); });
+  });
+  if (window.matchMedia) {
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    var onScheme = function () { if (!root.getAttribute('data-theme')) apply(current()); };
+    if (mq.addEventListener) mq.addEventListener('change', onScheme);
+  }
+
+  /* ---------------- comments ---------------- */
+  (function () {
+    var slot = document.querySelector('#comments .giscus');
+    if (!slot || !GISCUS.category || !GISCUS.categoryId) return;   /* keep the "coming soon" note */
+    slot.innerHTML = '';
+    var s = document.createElement('script');
+    s.src = 'https://giscus.app/client.js';
+    var data = { repo: GISCUS.repo, 'repo-id': GISCUS.repoId, category: GISCUS.category,
+      'category-id': GISCUS.categoryId, mapping: GISCUS.mapping, strict: GISCUS.strict,
+      'reactions-enabled': GISCUS.reactionsEnabled, 'emit-metadata': GISCUS.emitMetadata,
+      'input-position': GISCUS.inputPosition, theme: giscusTheme(current()), lang: GISCUS.lang,
+      loading: GISCUS.loading };
+    Object.keys(data).forEach(function (k) { s.setAttribute('data-' + k, data[k]); });
+    s.setAttribute('crossorigin', 'anonymous');
+    s.async = true;
+    slot.appendChild(s);
+  })();
+
+  /* ---------------- post tools ---------------- */
+  var TEXT = {"bibtex": "@misc{korkmaz2026confidence,\n  author       = {Korkmaz, Sel{\\c{c}}uk},\n  title        = {Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples},\n  year         = {2026},\n  month        = oct,\n  date         = {2026-10-08},\n  howpublished = {\\url{https://selcukorkmaz.github.io/blog/bootstrap/}},\n  url          = {https://selcukorkmaz.github.io/blog/bootstrap/},\n  note         = {Blog post}\n}", "apa": "Korkmaz, S. (2026, October 8). Where a confidence interval comes from: The bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples [Blog post]. https://selcukorkmaz.github.io/blog/bootstrap/", "link": "https://selcukorkmaz.github.io/blog/bootstrap/"};
+  var mdCache = null;
+
+  function status(bar, msg) {
+    var el = bar && bar.querySelector('.pt-status');
+    if (!el) return;
+    el.textContent = msg;
+    clearTimeout(el._t);
+    el._t = setTimeout(function () { el.textContent = ''; }, 3000);
+  }
+  function legacyCopy(ta) {
+    ta.removeAttribute('hidden');
+    ta.focus({ preventScroll: true });
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    return ok;
+  }
+  function copy(bar, text, what, ta) {
+    var fallback = function () {
+      var own = !ta;
+      if (own) { ta = document.createElement('textarea'); ta.className = 'pt-ta'; ta.value = text; bar.appendChild(ta); }
+      if (legacyCopy(ta)) { status(bar, what + ' copied'); if (own) bar.removeChild(ta); return; }
+      /* Last resort: show the text selected so it can be copied by hand. */
+      if (!own) bar.appendChild(ta);
+      ta.classList.add('show'); ta.removeAttribute('aria-hidden'); ta.removeAttribute('tabindex');
+      ta.focus(); ta.select();
+      status(bar, 'Press ' + (/Mac|iP/.test(navigator.platform) ? '⌘C' : 'Ctrl+C') + ' to copy the selected text');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () { status(bar, what + ' copied'); }, fallback);
+    } else { fallback(); }
+  }
+
+  var bars = Array.prototype.slice.call(document.querySelectorAll('.pt'));
+  bars.forEach(function (bar) {
+    var toggles = Array.prototype.slice.call(bar.querySelectorAll('.pt-row [aria-controls]'));
+    function close(btn) {
+      btn.setAttribute('aria-expanded', 'false');
+      document.getElementById(btn.getAttribute('aria-controls')).hidden = true;
+    }
+    toggles.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var open = btn.getAttribute('aria-expanded') === 'true';
+        toggles.forEach(close);
+        if (!open) {
+          btn.setAttribute('aria-expanded', 'true');
+          document.getElementById(btn.getAttribute('aria-controls')).hidden = false;
+        }
+      });
+    });
+    bar.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var openBtn = toggles.filter(function (b) { return b.getAttribute('aria-expanded') === 'true'; })[0];
+      if (openBtn) { close(openBtn); openBtn.focus(); }
+    });
+    bar.querySelectorAll('[data-pt-copy]').forEach(function (b) {
+      b.addEventListener('click', function () { copy(bar, TEXT[b.getAttribute('data-pt-copy')], b.getAttribute('data-pt-label')); });
+    });
+    var nativeBtn = bar.querySelector('[data-pt-native]');
+    if (nativeBtn && navigator.share) {
+      nativeBtn.hidden = false;
+      nativeBtn.addEventListener('click', function () {
+        navigator.share({ title: document.title, text: "Where a confidence interval comes from: the bootstrap, the sampling distribution and why the simplest bootstrap interval is too narrow in small samples", url: URL }).catch(function () {});
+      });
+    }
+    var mdBtn = bar.querySelector('[data-pt-copy-md]');
+    if (mdBtn) mdBtn.addEventListener('click', function () {
+      var ta = document.getElementById('pt-md');
+      var done = function (text) { mdCache = text; copy(bar, text, 'Markdown', ta); };
+      if (mdCache) return done(mdCache);
+      fetch('index.md', { cache: 'no-cache' })
+        .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then(done, function () { done(ta.value); });   /* offline or file://: use the copy embedded in the page */
+    });
+  });
+
+  /* ---------------- opened from disk (file://) ---------------- */
+  // "../" would show a directory listing; point folder links at index.html instead.
+  if (location.protocol === 'file:') {
+    document.querySelectorAll('.sitebar a[href]').forEach(function (a) {
+      var h = a.getAttribute('href'), m = h.match(/^([^#?]*)(.*)$/);
+      if (!/^[a-z][a-z0-9+.-]*:|^\/|^#/i.test(h) && m[1].slice(-1) === '/') a.setAttribute('href', m[1] + 'index.html' + m[2]);
+    });
+  }
+})();
+</script>
+</body>
+</html>

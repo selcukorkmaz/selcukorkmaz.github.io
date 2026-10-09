@@ -1,0 +1,86 @@
+{
+  "375": {
+    "states": 3,
+    "errors": [],
+    "overflow": {
+      "client": 375,
+      "scroll": 375
+    },
+    "issues": []
+  },
+  "1280": {
+    "states": 45,
+    "errors": [],
+    "overflow": {
+      "client": 1280,
+      "scroll": 1280
+    },
+    "issues": [
+      [
+        "f2-initial",
+        {
+          "aria": "Figure 2. The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg.",
+          "clipped": [],
+          "overlapping": [
+            [
+              "0%",
+              "−10"
+            ]
+          ]
+        }
+      ],
+      [
+        "f2-0-0",
+        {
+          "aria": "Figure 2. The ideal bootstrap distribution of the difference in means for the pilot data, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.3 to 13.7, BCa 1.3 to 13.7, t interval 0.5 to 14.5 mmHg.",
+          "clipped": [],
+          "overlapping": [
+            [
+              "0%",
+              "−10"
+            ]
+          ]
+        }
+      ],
+      [
+        "f2-0-1",
+        {
+          "aria": "Figure 2. The ideal bootstrap distribution of the difference in medians for the pilot data. Percentile interval −2.5 to 15.5 mmHg.",
+          "clipped": [],
+          "overlapping": [
+            [
+              "0%",
+              "−10"
+            ]
+          ]
+        }
+      ],
+      [
+        "f2-1-0",
+        {
+          "aria": "Figure 2. The ideal bootstrap distribution of the difference in means for the data with a 45 mmHg value, with the t distribution the t interval reads its limits from drawn on the same scale. Percentile interval 1.8 to 19.5, BCa 2.8 to 21.5, t interval −0.2 to 20.0 mmHg.",
+          "clipped": [],
+          "overlapping": [
+            [
+              "0%",
+              "−10"
+            ]
+          ]
+        }
+      ],
+      [
+        "f2-1-1",
+        {
+          "aria": "Figure 2. The ideal bootstrap distribution of the difference in medians for the data with a 45 mmHg value. Percentile interval −2.5 to 15.5 mmHg.",
+          "clipped": [],
+          "overlapping": [
+            [
+              "0%",
+              "−10"
+            ]
+          ]
+        }
+      ]
+    ]
+  }
+}
